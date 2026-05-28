@@ -1,0 +1,11 @@
+{
+  "name": "rpg-vault-guardian",
+  "description": "Guardião da integridade de vaults Obsidian para campanhas de RPG. Valida schema, links, coerência e órfãos; cria entidades validadas (write gate); audita a campanha; e scaffolda a estrutura inicial de pastas.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Vagner Strapasson",
+    "email": "vagnerstrapasson@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": ["rpg", "ttrpg", "obsidian", "vault", "validation", "gm", "campaign"]
+}
