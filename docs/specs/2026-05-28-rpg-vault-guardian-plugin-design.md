@@ -1,63 +1,63 @@
 # RPG Vault Guardian — Plugin & Marketplace Design
 
-**Data:** 2026-05-28  
-**Status:** Aprovado  
-**Repo alvo:** `~/projects/rpg-marketplace`
+**Date:** 2026-05-28  
+**Status:** Approved  
+**Target repo:** `~/projects/rpg-marketplace`
 
 ---
 
-## Contexto
+## Context
 
-O sistema de integridade de vault RPG (v1) foi construído como código local no vault Obsidian em `.claude/rpg/` + skills em `.claude/skills/` + agente em `.claude/agents/`. Consiste em:
+The RPG vault integrity system (v1) was built as local code in the Obsidian vault at `.claude/rpg/` + skills at `.claude/skills/` + agent at `.claude/agents/`. It consists of:
 
-- 9 módulos Node ESM (`lib/*.mjs`) — parser YAML, validador de schema, checker de links/coerência/órfãos, autofix, gerador de MOCs, write gate
+- 9 Node ESM modules (`lib/*.mjs`) — YAML parser, schema validator, link/coherence/orphan checker, autofix, MOC generator, write gate
 - 2 CLIs (`validate.mjs`, `gen-mocs.mjs`)
 - 2 skills (`rpg-preserve`, `rpg-audit`)
-- 1 agente (`rpg-guardian`)
-- 47 testes com fixtures
+- 1 agent (`rpg-guardian`)
+- 47 tests with fixtures
 
-O objetivo é transformar esse sistema em um **plugin Claude Code** publicado em um **marketplace local**, para que possa ser instalado em qualquer vault como project scope — sem depender de cópias manuais de arquivos.
+The goal is to transform this system into a **Claude Code plugin** published in a **local marketplace**, so it can be installed in any vault as project scope — without relying on manual file copies.
 
 ---
 
-## Decisões de design
+## Design decisions
 
-| # | Decisão | Escolha |
+| # | Decision | Choice |
 |---|---------|---------|
-| 1 | Layout do marketplace | Monorepo (padrão `claude-plugins-official`): `plugins/<nome>/` |
-| 2 | Nome do plugin | `rpg-vault-guardian` v1.0.0 |
-| 3 | Abordagem de transformação | Repackage fiel (A): copia o código testado, adapta só os caminhos |
-| 4 | Raiz do conteúdo validado | `cwd` direto — o usuário lança o Claude de dentro da pasta de conteúdo; validator usa `--vault .` |
-| 5 | Scaffold inicial | Slash command `/rpg-init` + `scripts/init.mjs` derivado do schema |
-| 6 | Hook ativo (write gate automático) | Fora do escopo v1.0 (YAGNI); pode ser adicionado em v1.1 |
-| 7 | Vault Obsidian | **Não tocado** durante a criação do plugin. Instalação project-scope é fase 2. |
+| 1 | Marketplace layout | Monorepo (pattern `claude-plugins-official`): `plugins/<name>/` |
+| 2 | Plugin name | `rpg-vault-guardian` v1.0.0 |
+| 3 | Transformation approach | Faithful repackage (A): copies tested code, adapts only the paths |
+| 4 | Validated content root | Direct cwd — user launches Claude from inside the content folder; validator uses `--vault .` |
+| 5 | Initial scaffold | Slash command `/rpg-init` + `scripts/init.mjs` derived from schema |
+| 6 | Active hook (automatic write gate) | Out of scope v1.0 (YAGNI); can be added in v1.1 |
+| 7 | Obsidian vault | **Untouched** during plugin creation. Project-scope installation is phase 2. |
 
 ---
 
-## Estrutura do repositório
+## Repository structure
 
 ```
 rpg-marketplace/
 ├─ .claude-plugin/
-│  └─ marketplace.json          ← manifesto do marketplace
+│  └─ marketplace.json          ← marketplace manifest
 ├─ plugins/
 │  └─ rpg-vault-guardian/
 │     ├─ .claude-plugin/
-│     │  └─ plugin.json         ← manifesto do plugin
+│     │  └─ plugin.json         ← plugin manifest
 │     ├─ commands/
 │     │  └─ rpg-init.md         ← slash command /rpg-init
 │     ├─ skills/
 │     │  ├─ rpg-preserve/
 │     │  │  └─ SKILL.md         ← write gate
 │     │  └─ rpg-audit/
-│     │     └─ SKILL.md         ← auditoria em 7 passos
+│     │     └─ SKILL.md         ← 7-step audit
 │     ├─ agents/
-│     │  └─ rpg-guardian.md     ← agente de auditoria isolada
+│     │  └─ rpg-guardian.md     ← isolated audit agent
 │     ├─ scripts/
-│     │  ├─ schema.mjs          ← FONTE DA VERDADE (registry)
-│     │  ├─ validate.mjs        ← CLI validador
-│     │  ├─ gen-mocs.mjs        ← CLI gerador de MOCs
-│     │  ├─ init.mjs            ← CLI scaffolding (NOVO)
+│     │  ├─ schema.mjs          ← TRUTH SOURCE (registry)
+│     │  ├─ validate.mjs        ← validator CLI
+│     │  ├─ gen-mocs.mjs        ← MOC generator CLI
+│     │  ├─ init.mjs            ← scaffolding CLI (NEW)
 │     │  └─ lib/
 │     │     ├─ yaml.mjs
 │     │     ├─ frontmatter.mjs
@@ -69,9 +69,9 @@ rpg-marketplace/
 │     │     ├─ mocs.mjs
 │     │     └─ preserve.mjs
 │     ├─ test/
-│     │  ├─ *.test.mjs          ← 47 testes existentes
-│     │  ├─ init.test.mjs       ← NOVO: garante init↔schema
-│     │  └─ fixtures/vault/     ← 14 notas de fixture
+│     │  ├─ *.test.mjs          ← 47 existing tests
+│     │  ├─ init.test.mjs       ← NEW: ensures init↔schema
+│     │  └─ fixtures/vault/     ← 14 fixture notes
 │     └─ README.md
 ├─ docs/
 │  └─ specs/
@@ -84,12 +84,12 @@ rpg-marketplace/
 
 ## Plugin: rpg-vault-guardian
 
-### Manifesto (`plugin.json`)
+### Manifest (`plugin.json`)
 
 ```json
 {
   "name": "rpg-vault-guardian",
-  "description": "Guardião da integridade de vaults Obsidian para campanhas de RPG. Valida schema, links, coerência e órfãos; cria entidades validadas (write gate); audita a campanha; e scaffolda a estrutura inicial de pastas.",
+  "description": "Obsidian vault integrity guardian for RPG campaigns. Validates schema, links, coherence, and orphans; creates validated entities (write gate); audits the campaign; and scaffolds the initial folder structure.",
   "version": "1.0.0",
   "author": {
     "name": "Vagner Strapasson",
@@ -102,50 +102,50 @@ rpg-marketplace/
 
 ### Skill: `rpg-preserve` (write gate)
 
-Invocada sempre que o GM criar ou editar uma entidade da campanha. Fluxo:
-1. Determina o caminho alvo via `targetPath(type, name, '.')`.
-2. Constrói o frontmatter com `buildFrontmatter` + `buildNoteContent`.
-3. Valida em memória via `validateCandidate` — **obrigatório antes de gravar**.
-4. Zero erros → grava via `writeEntityFile`; erros → não grava, reporta ao usuário.
+Invoked whenever the GM creates or edits a campaign entity. Flow:
+1. Determines the target path via `targetPath(type, name, '.')`.
+2. Builds the frontmatter with `buildFrontmatter` + `buildNoteContent`.
+3. Validates in memory via `validateCandidate` — **required before writing**.
+4. Zero errors → writes via `writeEntityFile`; errors → does not write, reports to user.
 
-Scripts referenciados via `${CLAUDE_PLUGIN_ROOT}/scripts/lib/preserve.mjs`.
+Scripts referenced via `${CLAUDE_PLUGIN_ROOT}/scripts/lib/preserve.mjs`.
 
-### Skill: `rpg-audit` (auditoria em 7 passos)
+### Skill: `rpg-audit` (7-step audit)
 
-1. Snapshot git (prompt ao usuário).
-2. Validação determinística: `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" --vault . --json`.
-3. Auto-fix seguro: inferir tipo, normalizar, stampar `updated`.
-4. Health check LLM: notas stale/incompletas/duplicatas.
-5. Propor + confirmar correções destrutivas.
-6. Regenerar MOCs: `node "${CLAUDE_PLUGIN_ROOT}/scripts/gen-mocs.mjs" --vault .`.
-7. Relatório final com re-execução do validador.
+1. Git snapshot (prompt to user).
+2. Deterministic validation: `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" --vault . --json`.
+3. Safe auto-fix: infer type, normalize, stamp `updated`.
+4. LLM health check: stale/incomplete/duplicate notes.
+5. Propose + confirm destructive fixes.
+6. Regenerate MOCs: `node "${CLAUDE_PLUGIN_ROOT}/scripts/gen-mocs.mjs" --vault .`.
+7. Final report with re-run of the validator.
 
-Inclui modo migração (primeiro uso com muitas notas sem `type`).
+Includes migration mode (first use with many notes missing `type`).
 
-### Agente: `rpg-guardian`
+### Agent: `rpg-guardian`
 
-Ponto de entrada de auditoria em contexto isolado. Executa todos os 7 passos da `rpg-audit` e retorna sumário estruturado:
-- erros/avisos iniciais
-- auto-fixes aplicados
-- correções destrutivas confirmadas
-- MOCs regenerados
-- estado final (`X erro(s) remanescente(s)`)
+Entry point for isolated-context audit. Executes all 7 steps of `rpg-audit` and returns a structured summary:
+- initial errors/warnings
+- auto-fixes applied
+- destructive fixes confirmed
+- MOCs regenerated
+- final state (`X error(s) remaining`)
 
-### Command: `/rpg-init` (NOVO)
+### Command: `/rpg-init` (NEW)
 
-**Arquivo:** `commands/rpg-init.md`  
+**File:** `commands/rpg-init.md`  
 **Script:** `scripts/init.mjs`
 
-Comportamento:
-- Lê todos os `ENTITIES` do `schema.mjs` e extrai `folder` de cada tipo.
-- Lê `NON_ENTITY` (transcricoes).
-- Acrescenta `_indices` (para MOCs).
-- Cria todas as pastas faltantes no cwd (idempotente: não sobrescreve).
-- Grava `.gitkeep` em cada pasta criada.
-- Imprime o que foi criado vs o que já existia.
+Behavior:
+- Reads all `ENTITIES` from `schema.mjs` and extracts the `folder` for each type.
+- Reads `NON_ENTITY` (transcricoes).
+- Adds `_indices` (for MOCs).
+- Creates all missing folders in cwd (idempotent: does not overwrite).
+- Writes `.gitkeep` in each created folder.
+- Prints what was created vs. what already existed.
 
 ```
-# pastas criadas (14 total):
+# folders created (14 total):
 regioes/  locais/  npcs/  jogadores/  inimigos/  faccoes/
 quests/   sessoes/ sessoes/transcricoes/  eventos/  atos/
 itens/    lore/    _indices/
@@ -159,7 +159,7 @@ itens/    lore/    _indices/
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rpg-marketplace",
-  "description": "Marketplace de plugins Claude Code para campanhas de RPG.",
+  "description": "Claude Code plugin marketplace for RPG campaigns.",
   "owner": {
     "name": "Vagner Strapasson",
     "email": "vagnerstrapasson@gmail.com"
@@ -167,7 +167,7 @@ itens/    lore/    _indices/
   "plugins": [
     {
       "name": "rpg-vault-guardian",
-      "description": "Guardião da integridade de vaults Obsidian para campanhas de RPG.",
+      "description": "Obsidian vault integrity guardian for RPG campaigns.",
       "version": "1.0.0",
       "source": "./plugins/rpg-vault-guardian",
       "category": "productivity"
@@ -178,43 +178,43 @@ itens/    lore/    _indices/
 
 ---
 
-## Adaptações de caminho (Vault → Plugin)
+## Path adaptations (Vault → Plugin)
 
-Todos os módulos `.mjs` usam imports relativos entre si — movem como unidade, **sem alteração**. Apenas as referências nas skills/agente precisam mudar:
+All `.mjs` modules use relative imports among themselves — they move as a unit, **without changes**. Only the references in skills/agent need to change:
 
-| Contexto | Antes (vault) | Depois (plugin) |
+| Context | Before (vault) | After (plugin) |
 |---|---|---|
-| Skills chamam CLIs | `node "…/.claude/rpg/validate.mjs"` | `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs"` |
-| Skills importam a lib | `import … from "…/.claude/rpg/lib/preserve.mjs"` | `import … from "${CLAUDE_PLUGIN_ROOT}/scripts/lib/preserve.mjs"` |
-| Raiz do conteúdo | `--vault rpg` / path absoluto | `--vault .` (cwd — padrão do validator) |
-| Skill file names | `rpg-preserve.md`, `rpg-audit.md` | `SKILL.md` (padrão Anthropic) |
+| Skills call CLIs | `node "…/.claude/rpg/validate.mjs"` | `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs"` |
+| Skills import lib | `import … from "…/.claude/rpg/lib/preserve.mjs"` | `import … from "${CLAUDE_PLUGIN_ROOT}/scripts/lib/preserve.mjs"` |
+| Content root | `--vault rpg` / absolute path | `--vault .` (cwd — validator default) |
+| Skill file names | `rpg-preserve.md`, `rpg-audit.md` | `SKILL.md` (Anthropic standard) |
 
-`${CLAUDE_PLUGIN_ROOT}` é injetado automaticamente pelo Claude Code para cada plugin instalado.
-
----
-
-## Testes
-
-Todos os 47 testes existentes são copiados e executados no novo local. Passagem esperada: 47/47 sem alteração de lógica.
-
-**Novo teste `init.test.mjs`:**
-- Verifica que o conjunto de pastas geradas por `init.mjs` é idêntico ao conjunto derivado do schema (`folderForType` de todos os tipos + `NON_ENTITY.transcricao.folder` + `_indices`).
-- Garante que adicionar um tipo no schema sem atualizar o init seria detectado imediatamente.
+`${CLAUDE_PLUGIN_ROOT}` is automatically injected by Claude Code for each installed plugin.
 
 ---
 
-## Fase 2 — Instalação project-scope no vault (após plugin pronto)
+## Tests
 
-Esta fase toca o vault Obsidian. Passos:
+All 47 existing tests are copied and run in the new location. Expected pass rate: 47/47 with no logic changes.
 
-1. **Registrar marketplace local:**  
+**New test `init.test.mjs`:**
+- Verifies that the set of folders generated by `init.mjs` is identical to the set derived from the schema (`folderForType` for all types + `NON_ENTITY.transcricao.folder` + `_indices`).
+- Ensures that adding a type to the schema without updating init would be detected immediately.
+
+---
+
+## Phase 2 — Project-scope installation in the vault (after plugin is ready)
+
+This phase touches the Obsidian vault. Steps:
+
+1. **Register local marketplace:**  
    `/plugin marketplace add ~/projects/rpg-marketplace`
 
-2. **Instalar o plugin:**  
+2. **Install the plugin:**  
    `/plugin install rpg-vault-guardian@rpg-marketplace`
 
-3. **Fixar como project scope:**  
-   Adicionar ao `.claude/settings.json` do vault (criando se não existir):
+3. **Pin as project scope:**  
+   Add to the vault's `.claude/settings.json` (creating it if it doesn't exist):
    ```json
    {
      "extraKnownMarketplaces": {
@@ -229,18 +229,18 @@ Esta fase toca o vault Obsidian. Passos:
    }
    ```
 
-4. **Remover cópias antigas** (evitar colisão de nomes):
-   - `.claude/rpg/` (scripts e lib)
+4. **Remove old copies** (to avoid name collisions):
+   - `.claude/rpg/` (scripts and lib)
    - `.claude/skills/rpg-preserve/`
    - `.claude/skills/rpg-audit/`
    - `.claude/agents/rpg-guardian.md`
 
-> **Nota — reestruturação do vault:** Após a instalação, a pasta `rpg/` deve ser removida e o conteúdo movido para a raiz do vault, para que o cwd-direto funcione ao lançar o Claude da raiz. Esse trabalho é separado e fora do escopo deste plugin.
+> **Note — vault restructuring:** After installation, the `rpg/` folder should be removed and its content moved to the vault root so that direct-cwd works when launching Claude from the root. This work is separate and out of scope for this plugin.
 
 ---
 
-## Fora do escopo (v1.0)
+## Out of scope (v1.0)
 
-- Hook `PreToolUse` para write gate automático — planejado para v1.1.
-- Segundo plugin no marketplace (ex: content-creation skillkit) — futuro.
-- Publicação em marketplace remoto (GitHub) — futuro.
+- `PreToolUse` hook for automatic write gate — planned for v1.1.
+- Second plugin in the marketplace (e.g., content-creation skillkit) — future.
+- Publishing to a remote marketplace (GitHub) — future.

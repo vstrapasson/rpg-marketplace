@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import { extractFrontmatter, extractWikilinks, normalizeLinkTarget } from '../lib/frontmatter.mjs';
 
 test('extracts frontmatter and body', () => {
-  const { frontmatter, body, hasFrontmatter } = extractFrontmatter('---\ntype: npc\n---\n# Título\ntexto');
+  const { frontmatter, body, hasFrontmatter } = extractFrontmatter('---\ntype: npc\n---\n# Title\nbody');
   assert.equal(hasFrontmatter, true);
   assert.equal(frontmatter.type, 'npc');
-  assert.equal(body.trim(), '# Título\ntexto');
+  assert.equal(body.trim(), '# Title\nbody');
 });
 
 test('note without frontmatter', () => {
-  const { frontmatter, hasFrontmatter } = extractFrontmatter('# Só corpo');
+  const { frontmatter, hasFrontmatter } = extractFrontmatter('# Just body');
   assert.equal(hasFrontmatter, false);
   assert.deepEqual(frontmatter, {});
 });

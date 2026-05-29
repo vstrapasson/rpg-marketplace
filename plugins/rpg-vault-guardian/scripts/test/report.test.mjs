@@ -4,7 +4,7 @@ import { buildReport, formatHuman } from '../lib/report.mjs';
 
 const issues = [
   { file: 'npcs/A.md', family: 'schema', severity: 'error', code: 'missing-required', message: 'falta x', field: 'x' },
-  { file: 'npcs/B.md', family: 'links', severity: 'warning', code: 'orphan', message: 'órfã', field: null },
+  { file: 'npcs/B.md', family: 'links', severity: 'warning', code: 'orphan', message: 'orphan', field: null },
 ];
 
 test('buildReport groups and counts', () => {

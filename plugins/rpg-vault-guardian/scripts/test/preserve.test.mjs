@@ -38,8 +38,8 @@ test('targetPath builds the correct path for each type', () => {
 
 test('validateCandidate approves valid entity (regiao with no required relations)', async () => {
   const fm = buildFrontmatter('regiao', { status: 'stub' });
-  const content = buildNoteContent(fm, 'Nova Região');
-  const report = await validateCandidate('Nova Região', content, 'regiao', VAULT);
+  const content = buildNoteContent(fm, 'New Region');
+  const report = await validateCandidate('New Region', content, 'regiao', VAULT);
   assert.equal(report.summary.errors, 0);
 });
 
