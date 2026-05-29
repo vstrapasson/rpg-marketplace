@@ -11,17 +11,17 @@ import { parseFlatYaml } from '../lib/yaml.mjs';
 
 const VAULT = join(import.meta.dirname, 'fixtures', 'vault');
 
-test('buildFrontmatter inclui type, campo fornecido e updated', () => {
+test('buildFrontmatter includes type, provided field, and updated', () => {
   const fm = buildFrontmatter('npc', { role: 'ally', status: 'stub' });
   assert.equal(fm.type, 'npc');
   assert.equal(fm.role, 'ally');
-  assert.ok(fm.updated); // carimbado com data de hoje
+  assert.ok(fm.updated); // stamped with today's date
 });
 
 test('serializeFrontmatter round-trips via parseFlatYaml', () => {
   const fm = { type: 'npc', role: 'ally', faction: '[[Culto do Inverno]]', number: 3 };
   const yaml = serializeFrontmatter(fm);
-  // extrai o bloco entre os ---
+  // extract the block between ---
   const inner = yaml.replace(/^---\n/, '').replace(/\n---\n$/, '');
   const parsed = parseFlatYaml(inner);
   assert.equal(parsed.type, 'npc');
@@ -30,28 +30,28 @@ test('serializeFrontmatter round-trips via parseFlatYaml', () => {
   assert.equal(parsed.number, 3);
 });
 
-test('targetPath monta caminho correto para cada tipo', () => {
+test('targetPath builds the correct path for each type', () => {
   assert.ok(targetPath('npc', 'Gandalf', '/vault').endsWith('npcs/Gandalf.md'));
   assert.ok(targetPath('regiao', 'Norte', '/vault').endsWith('regioes/Norte.md'));
   assert.ok(targetPath('faccao', 'Culto', '/vault').endsWith('faccoes/Culto.md'));
 });
 
-test('validateCandidate aprova entidade válida (regiao sem relações obrigatórias)', async () => {
+test('validateCandidate approves valid entity (regiao with no required relations)', async () => {
   const fm = buildFrontmatter('regiao', { status: 'stub' });
   const content = buildNoteContent(fm, 'Nova Região');
   const report = await validateCandidate('Nova Região', content, 'regiao', VAULT);
   assert.equal(report.summary.errors, 0);
 });
 
-test('validateCandidate rejeita npc sem role (campo obrigatório)', async () => {
-  const fm = buildFrontmatter('npc', { status: 'stub' }); // sem role
+test('validateCandidate rejects npc without role (required field)', async () => {
+  const fm = buildFrontmatter('npc', { status: 'stub' }); // no role
   const content = buildNoteContent(fm, 'Sem Role');
   const report = await validateCandidate('Sem Role', content, 'npc', VAULT);
   assert.ok(report.summary.errors > 0);
   assert.ok(report.issues.some((i) => i.code === 'missing-required' && i.field === 'role'));
 });
 
-test('writeEntityFile cria arquivo no caminho correto', async () => {
+test('writeEntityFile creates file at the correct path', async () => {
   const tmpVault = join(tmpdir(), 'rpg-preserve-test-' + Date.now());
   const fm = buildFrontmatter('regiao', { status: 'stub' });
   const content = buildNoteContent(fm, 'Temp');

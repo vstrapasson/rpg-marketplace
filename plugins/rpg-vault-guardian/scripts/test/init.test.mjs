@@ -6,39 +6,39 @@ import { join } from 'node:path';
 import { ENTITIES, NON_ENTITY } from '../schema.mjs';
 import { foldersFromSchema, initVault } from '../init.mjs';
 
-test('foldersFromSchema cobre todos os tipos do schema', () => {
+test('foldersFromSchema covers all schema types', () => {
   const folders = foldersFromSchema();
 
   for (const def of Object.values(ENTITIES)) {
-    assert.ok(folders.includes(def.folder), `falta pasta de entidade: ${def.folder}`);
+    assert.ok(folders.includes(def.folder), `missing entity folder: ${def.folder}`);
   }
   for (const def of Object.values(NON_ENTITY)) {
-    assert.ok(folders.includes(def.folder), `falta pasta NON_ENTITY: ${def.folder}`);
+    assert.ok(folders.includes(def.folder), `missing NON_ENTITY folder: ${def.folder}`);
   }
-  assert.ok(folders.includes('_indices'), 'falta _indices');
-  assert.strictEqual(folders.length, 14, `esperado 14 pastas, encontrado ${folders.length}`);
+  assert.ok(folders.includes('_indices'), 'missing _indices');
+  assert.strictEqual(folders.length, 14, `expected 14 folders, found ${folders.length}`);
 });
 
-test('initVault cria as 14 pastas com .gitkeep', async () => {
+test('initVault creates the 14 folders with .gitkeep', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'rpg-init-'));
   try {
     const results = await initVault(dir);
-    assert.ok(results.every(r => r.created), 'todas devem ser criadas no dir vazio');
+    assert.ok(results.every(r => r.created), 'all should be created in empty dir');
     for (const { folder } of results) {
       const entries = await readdir(join(dir, folder));
-      assert.ok(entries.includes('.gitkeep'), `falta .gitkeep em ${folder}`);
+      assert.ok(entries.includes('.gitkeep'), `missing .gitkeep in ${folder}`);
     }
   } finally {
     await rm(dir, { recursive: true });
   }
 });
 
-test('initVault é idempotente', async () => {
+test('initVault is idempotent', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'rpg-init-'));
   try {
     await initVault(dir);
     const results2 = await initVault(dir);
-    assert.ok(results2.every(r => !r.created), 'segunda execução não deve criar nada');
+    assert.ok(results2.every(r => !r.created), 'second run must not create anything');
   } finally {
     await rm(dir, { recursive: true });
   }
