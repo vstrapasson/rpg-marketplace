@@ -1,18 +1,18 @@
 ---
-description: Write gate para vaults Obsidian de RPG. Toda criação ou edição de entidade DEVE passar por aqui — valida em memória antes de gravar em disco.
+description: Write gate for RPG Obsidian vaults. Every entity creation or edit MUST go through here — validates in memory before writing to disk.
 ---
 
 # rpg-preserve — Write Gate
 
-Você é o ponto único de escrita do vault de RPG. Nenhuma entidade é gravada em disco sem passar pela validação. Contrato: **validar → passar? gravar : perguntar**.
+You are the single write point of the RPG vault. No entity is written to disk without passing validation. Contract: **validate → pass? write : ask**.
 
-## Workflow obrigatório
+## Mandatory workflow
 
-### 1. Determinar pasta e caminho alvo
+### 1. Determine target folder and path
 
-Use `targetPath` de `lib/preserve.mjs`. A pasta é definida pelo schema:
+Use `targetPath` from `lib/preserve.mjs`. The folder is defined by the schema:
 
-| Tipo | Pasta |
+| Type | Folder |
 |---|---|
 | regiao | regioes/ |
 | local | locais/ |
@@ -27,17 +27,17 @@ Use `targetPath` de `lib/preserve.mjs`. A pasta é definida pelo schema:
 | item | itens/ |
 | lore | lore/ |
 
-### 2. Construir frontmatter e conteúdo
+### 2. Build frontmatter and content
 
-Use `buildFrontmatter(type, fields)` e `buildNoteContent(fm, name)` de `lib/preserve.mjs`.
+Use `buildFrontmatter(type, fields)` and `buildNoteContent(fm, name)` from `lib/preserve.mjs`.
 
-Regras de formatação obrigatórias:
-- Campos com wikilink: sempre `"[[Nome da Entidade]]"` (aspas + colchetes)
-- Lista de wikilinks: bloco YAML com item por linha (`  - "[[Nome]]"`)
-- `status` padrão quando não especificado: `stub`
-- `updated` é carimbado automaticamente com a data de hoje
+Mandatory formatting rules:
+- Fields with wikilink: always `"[[Entity Name]]"` (quotes + brackets)
+- List of wikilinks: YAML block with one item per line (`  - "[[Name]]"`)
+- Default `status` when not specified: `stub`
+- `updated` is automatically stamped with today's date
 
-### 3. Validar o candidato (OBRIGATÓRIO antes de gravar)
+### 3. Validate the candidate (REQUIRED before writing)
 
 ```bash
 PLUGIN="${CLAUDE_PLUGIN_ROOT}"
@@ -45,16 +45,16 @@ node --input-type=module << EOF
 import { buildFrontmatter, buildNoteContent, validateCandidate }
   from "${PLUGIN}/scripts/lib/preserve.mjs";
 const vaultDir = process.cwd();
-const fm = buildFrontmatter('TIPO', { /* campos */ });
-const content = buildNoteContent(fm, 'NOME');
-const report = await validateCandidate('NOME', content, 'TIPO', vaultDir);
+const fm = buildFrontmatter('TYPE', { /* fields */ });
+const content = buildNoteContent(fm, 'NAME');
+const report = await validateCandidate('NAME', content, 'TYPE', vaultDir);
 console.log(JSON.stringify(report, null, 2));
 EOF
 ```
 
-### 4. Decisão baseada no relatório
+### 4. Decision based on the report
 
-**Se `report.summary.errors === 0` → gravar:**
+**If `report.summary.errors === 0` → write:**
 
 ```bash
 PLUGIN="${CLAUDE_PLUGIN_ROOT}"
@@ -62,40 +62,40 @@ node --input-type=module << EOF
 import { buildFrontmatter, buildNoteContent, writeEntityFile }
   from "${PLUGIN}/scripts/lib/preserve.mjs";
 const vaultDir = process.cwd();
-const fm = buildFrontmatter('TIPO', { /* campos */ });
-const content = buildNoteContent(fm, 'NOME');
-const path = await writeEntityFile('TIPO', 'NOME', content, vaultDir);
-console.log('Criado em: ' + path);
+const fm = buildFrontmatter('TYPE', { /* fields */ });
+const content = buildNoteContent(fm, 'NAME');
+const path = await writeEntityFile('TYPE', 'NAME', content, vaultDir);
+console.log('Created at: ' + path);
 EOF
 ```
 
-Confirme ao usuário: `✅ Entidade criada em <pasta>/NOME.md`
+Confirm to the user: `✅ Entity created at <folder>/NAME.md`
 
-**Se `report.summary.errors > 0` → NÃO gravar:**
+**If `report.summary.errors > 0` → do NOT write:**
 
-Mostre os erros e pergunte:
-> "Existem X erro(s) de validação. Deseja corrigir os campos e tentar de novo?"
+Show the errors and ask:
+> "There are X validation error(s). Would you like to fix the fields and try again?"
 
-Liste cada erro com o campo afetado. Não grave até que a validação passe com 0 erros.
+List each error with the affected field. Do not write until validation passes with 0 errors.
 
-## Campos obrigatórios por tipo (referência rápida)
+## Required fields per type (quick reference)
 
-| Tipo | Obrigatórios |
+| Type | Required |
 |---|---|
 | regiao | type |
-| local | type, region (→ [[Região]]) |
+| local | type, region (→ [[Region]]) |
 | npc | type, role (ally/neutral/antagonist/patron) |
 | jogador | type, player |
 | inimigo | type |
 | faccao | type |
-| quest | type, act (→ [[Ato]]), status (available/active/completed/failed/abandoned) |
+| quest | type, act (→ [[Act]]), status (available/active/completed/failed/abandoned) |
 | sessao | type, date (YYYY-MM-DD) |
-| evento | type, act (→ [[Ato]]) |
-| ato | type, number (inteiro) |
+| evento | type, act (→ [[Act]]) |
+| ato | type, number (integer) |
 | item | type |
 | lore | type |
 
-## Exemplo completo — Criar NPC "Elara"
+## Full example — Create NPC "Elara"
 
 ```bash
 PLUGIN="${CLAUDE_PLUGIN_ROOT}"
@@ -113,7 +113,7 @@ const content = buildNoteContent(fm, 'Elara');
 const report = await validateCandidate('Elara', content, 'npc', vaultDir);
 if (report.summary.errors === 0) {
   const path = await writeEntityFile('npc', 'Elara', content, vaultDir);
-  console.log('✅ Criado em: ' + path);
+  console.log('✅ Created at: ' + path);
 } else {
   console.log(JSON.stringify(report.issues, null, 2));
 }

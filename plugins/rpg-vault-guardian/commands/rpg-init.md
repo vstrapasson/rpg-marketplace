@@ -1,13 +1,13 @@
 ---
-description: Scaffolda a estrutura inicial de pastas para um vault de campanha RPG.
+description: Scaffolds the initial folder structure for an RPG campaign vault.
 ---
 
-# rpg-init — Estrutura inicial do vault
+# rpg-init — Initial vault structure
 
-Execute o script de scaffolding no diretório atual (raiz do vault):
+Run the scaffolding script in the current directory (vault root):
 
 ```bash
 node "${CLAUDE_PLUGIN_ROOT}/scripts/init.mjs"
 ```
 
-Mostre o resultado ao usuário, indicando quais pastas foram criadas (✅) e quais já existiam (⏭).
+Show the result to the user, indicating which folders were created (✅) and which already existed (⏭).

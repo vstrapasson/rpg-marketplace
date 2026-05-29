@@ -1,49 +1,49 @@
 ---
-description: Auditoria completa do vault de RPG — validação determinística, julgamento LLM, auto-fix seguro, proposta de correções destrutivas e regeneração de MOCs.
+description: Complete RPG vault audit — deterministic validation, LLM judgment, safe auto-fix, destructive fix proposals, and MOC regeneration.
 ---
 
 # rpg-audit — Vault Audit
 
-Execute uma auditoria completa do vault. Siga os 7 passos abaixo **em ordem**.
+Run a complete vault audit. Follow the 7 steps below **in order**.
 
-Execute todos os comandos a partir da **raiz do vault** (diretório onde estão as pastas `regioes/`, `npcs/`, etc.).
+Run all commands from the **vault root** (directory containing the `regioes/`, `npcs/`, etc. folders).
 
 ---
 
-## Passo 1 — Snapshot (antes de qualquer modificação)
+## Step 1 — Snapshot (before any modifications)
 
-Pergunte ao usuário:
-> "Deseja fazer um commit de snapshot antes de continuar?"
+Ask the user:
+> "Would you like to make a snapshot commit before continuing?"
 
-Se sim:
+If yes:
 ```bash
-git add . && git commit -m "snapshot: antes da auditoria $(date +%Y-%m-%d)"
+git add . && git commit -m "snapshot: before audit $(date +%Y-%m-%d)"
 ```
 
 ---
 
-## Passo 2 — Validação determinística
+## Step 2 — Deterministic validation
 
 ```bash
 node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" --vault . --json
 ```
 
-Parse o JSON retornado. Categorize os problemas por família:
-- **schema**: `type` ausente, campo obrigatório faltando, enum inválido
-- **links**: link quebrado (`broken-link`), entidade órfã (`orphan`)
-- **coherence**: tipo de alvo errado (`wrong-target-type`)
+Parse the returned JSON. Categorize issues by family:
+- **schema**: missing `type`, missing required field, invalid enum
+- **links**: broken link (`broken-link`), orphan entity (`orphan`)
+- **coherence**: wrong target type (`wrong-target-type`)
 
-Mostre um resumo: `"X erro(s), Y aviso(s) encontrados."`
+Show a summary: `"X error(s), Y warning(s) found."`
 
 ---
 
-## Passo 3 — Auto-fix seguro (aplicar sem confirmação)
+## Step 3 — Safe auto-fix (apply without confirmation)
 
-Aplique automaticamente e liste cada arquivo alterado.
+Apply automatically and list each modified file.
 
-### 3a — `type` ausente ou errado → inferir da pasta
+### 3a — Missing or wrong `type` → infer from folder
 
-Para cada nota com `missing-type` ou `type-folder-mismatch` no relatório do Passo 2:
+For each note with `missing-type` or `type-folder-mismatch` in the Step 2 report:
 
 ```bash
 PLUGIN="${CLAUDE_PLUGIN_ROOT}"
@@ -55,7 +55,7 @@ import { inferType, normalizeFrontmatter, stampUpdated } from "${PLUGIN}/scripts
 import { serializeFrontmatter } from "${PLUGIN}/scripts/lib/preserve.mjs";
 import { typeForFolder } from "${PLUGIN}/scripts/lib/schema.mjs";
 
-const filePath = 'CAMINHO_ABSOLUTO_DA_NOTA';
+const filePath = 'ABSOLUTE_NOTE_PATH';
 const raw = await readFile(filePath, 'utf8');
 const { frontmatter: fm, body } = extractFrontmatter(raw);
 const folder = relative(process.cwd(), filePath).split('/')[0];
@@ -70,9 +70,9 @@ if (correctedType) {
 EOF
 ```
 
-### 3b — `updated` ausente → carimbar com data de hoje
+### 3b — Missing `updated` → stamp with today's date
 
-Para cada entidade sem campo `updated`:
+For each entity missing the `updated` field:
 
 ```bash
 PLUGIN="${CLAUDE_PLUGIN_ROOT}"
@@ -82,7 +82,7 @@ import { extractFrontmatter } from "${PLUGIN}/scripts/lib/frontmatter.mjs";
 import { stampUpdated } from "${PLUGIN}/scripts/lib/autofix.mjs";
 import { serializeFrontmatter } from "${PLUGIN}/scripts/lib/preserve.mjs";
 
-const filePath = 'CAMINHO_ABSOLUTO_DA_NOTA';
+const filePath = 'ABSOLUTE_NOTE_PATH';
 const raw = await readFile(filePath, 'utf8');
 const { frontmatter: fm, body } = extractFrontmatter(raw);
 if (!fm.updated) {
@@ -95,36 +95,36 @@ EOF
 
 ---
 
-## Passo 4 — Checagem de saúde (julgamento LLM)
+## Step 4 — Health check (LLM judgment)
 
-Leia cada entidade e avalie:
+Read each entity and evaluate:
 
-**Stale:** `status: active` + `updated` com mais de 30 dias → aviso  
-**Incompleto:** `status: stub` OU corpo da nota contém "TODO" → aviso  
-**Duplicata:** nomes muito similares (ex: "Malareph" e "Malareph o Necromante") → propõe merge
+**Stale:** `status: active` + `updated` more than 30 days ago → warning  
+**Incomplete:** `status: stub` OR note body contains "TODO" → warning  
+**Duplicate:** very similar names (e.g., "Malareph" and "Malareph the Necromancer") → propose merge
 
-Agrupe os avisos por tipo e apresente ao usuário.
+Group warnings by type and present to the user.
 
 ---
 
-## Passo 5 — Propor + confirmar correções destrutivas
+## Step 5 — Propose + confirm destructive fixes
 
-Liste **todas** as correções propostas antes de aplicar qualquer uma:
+List **all** proposed fixes before applying any:
 
-| # | Problema | Nota | Proposta |
+| # | Issue | Note | Proposal |
 |---|---|---|---|
-| 1 | Link quebrado `[[X]]` em `campo` | npcs/Foo.md | Criar `[[X]]` via rpg-preserve ou remover o campo? |
-| 2 | Tipo de alvo errado (`faction` → regiao) | npcs/Bar.md | Corrigir campo `faction`? |
-| 3 | Entidade órfã | faccoes/Baz.md | Manter, mover para lore/, ou apagar? |
-| 4 | Duplicata provável | npcs/A.md + npcs/B.md | Mesclar? Qual é a nota principal? |
+| 1 | Broken link `[[X]]` in `field` | npcs/Foo.md | Create `[[X]]` via rpg-preserve or remove the field? |
+| 2 | Wrong target type (`faction` → regiao) | npcs/Bar.md | Fix `faction` field? |
+| 3 | Orphan entity | faccoes/Baz.md | Keep, move to lore/, or delete? |
+| 4 | Likely duplicate | npcs/A.md + npcs/B.md | Merge? Which is the primary note? |
 
-Pergunte: `"Deseja resolver esses itens? Responda s/n para cada número."`
+Ask: `"Would you like to resolve these items? Answer y/n for each number."`
 
-Para cada item confirmado (s), aplique a correção usando as ferramentas disponíveis (Edit, Write, Bash). Para criação de entidades faltantes, use rpg-preserve.
+For each confirmed item (y), apply the fix using the available tools (Edit, Write, Bash). For creating missing entities, use rpg-preserve.
 
 ---
 
-## Passo 6 — Regenerar MOCs
+## Step 6 — Regenerate MOCs
 
 ```bash
 node "${CLAUDE_PLUGIN_ROOT}/scripts/gen-mocs.mjs" --vault .
@@ -132,20 +132,20 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/gen-mocs.mjs" --vault .
 
 ---
 
-## Passo 7 — Relatório final
+## Step 7 — Final report
 
 ```bash
 node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" --vault .
 ```
 
-Mostre o relatório final e um resumo do que foi alterado nesta auditoria.
+Show the final report and a summary of what was changed in this audit.
 
 ---
 
-## Modo migração (primeiro uso)
+## Migration mode (first use)
 
-Se você detectar muitas notas em pastas de entidade sem campo `type`, você está em **modo migração**. Anuncie:
+If you detect many notes in entity folders without a `type` field, you are in **migration mode**. Announce:
 
-> "Encontrei X notas sem campo `type` nas pastas de entidade. Posso inferir o tipo pela pasta e adicionar o frontmatter mínimo a todas. Deseja continuar? [s/n]"
+> "Found X notes without a `type` field in entity folders. I can infer the type from the folder and add the minimum frontmatter to all of them. Would you like to continue? [y/n]"
 
-Se confirmado, aplique o auto-fix 3a a todas as notas afetadas em lote, reportando cada arquivo alterado.
+If confirmed, apply auto-fix 3a to all affected notes in batch, reporting each modified file.

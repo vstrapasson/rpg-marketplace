@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rpg-marketplace",
-  "description": "Marketplace de plugins Claude Code para campanhas de RPG.",
+  "description": "Claude Code plugin marketplace for RPG campaigns.",
   "owner": {
     "name": "Vagner Strapasson",
     "email": "vagnerstrapasson@gmail.com"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "rpg-vault-guardian",
-      "description": "Guardião da integridade de vaults Obsidian para campanhas de RPG.",
+      "description": "Obsidian vault integrity guardian for RPG campaigns.",
       "version": "1.0.0",
       "source": "./plugins/rpg-vault-guardian",
       "category": "productivity"
