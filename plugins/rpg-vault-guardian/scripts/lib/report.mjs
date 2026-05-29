@@ -12,9 +12,9 @@ export function buildReport(issues) {
 
 export function formatHuman(report) {
   const { errors, warnings, total } = report.summary;
-  const lines = [`Integridade do vault: ${errors} erro(s), ${warnings} aviso(s), ${total} no total.`];
+  const lines = [`Vault integrity: ${errors} error(s), ${warnings} warning(s), ${total} total.`];
   for (const i of report.issues) {
-    const tag = i.severity === 'error' ? 'ERRO ' : 'AVISO';
+    const tag = i.severity === 'error' ? 'ERROR' : 'WARNING';
     lines.push(`  [${tag}] ${i.file} — (${i.family}) ${i.message}`);
   }
   return lines.join('\n');

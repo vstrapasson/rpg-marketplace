@@ -32,12 +32,12 @@ export function checkSchemaIntegrity() {
     for (const [field, rel] of Object.entries(def.relations ?? {})) {
       const targets = Array.isArray(rel.target) ? rel.target : [rel.target];
       for (const t of targets) {
-        if (!known.has(t)) issues.push(`Tipo '${type}', relação '${field}': alvo desconhecido '${t}'`);
+        if (!known.has(t)) issues.push(`Type '${type}', relation '${field}': unknown target '${t}'`);
       }
     }
     for (const [field, fd] of Object.entries(def.fields ?? {})) {
       if (fd.type === 'enum' && !Array.isArray(fd.values)) {
-        issues.push(`Tipo '${type}', campo '${field}': enum sem 'values'`);
+        issues.push(`Type '${type}', field '${field}': enum missing 'values'`);
       }
     }
   }

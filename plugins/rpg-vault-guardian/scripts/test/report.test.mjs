@@ -7,7 +7,7 @@ const issues = [
   { file: 'npcs/B.md', family: 'links', severity: 'warning', code: 'orphan', message: 'órfã', field: null },
 ];
 
-test('buildReport agrupa e conta', () => {
+test('buildReport groups and counts', () => {
   const r = buildReport(issues);
   assert.equal(r.summary.total, 2);
   assert.equal(r.summary.errors, 1);
@@ -16,9 +16,9 @@ test('buildReport agrupa e conta', () => {
   assert.equal(r.byFamily.links.length, 1);
 });
 
-test('formatHuman inclui contagem e cada problema', () => {
+test('formatHuman includes count and each issue', () => {
   const text = formatHuman(buildReport(issues));
-  assert.match(text, /1 erro\(s\)/);
+  assert.match(text, /1 error\(s\)/);
   assert.match(text, /npcs\/A\.md/);
-  assert.match(text, /\[ERRO/);
+  assert.match(text, /\[ERROR/);
 });
