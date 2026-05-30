@@ -5,7 +5,7 @@ import { run } from '../validate.mjs';
 
 const VAULT = join(import.meta.dirname, 'fixtures', 'vault');
 
-test('run com --json retorna exit code 1 (há erros) e relatório válido', async () => {
+test('run with --json returns exit code 1 (has errors) and valid report', async () => {
   const logs = [];
   const origLog = console.log;
   console.log = (s) => logs.push(s);
@@ -15,7 +15,7 @@ test('run com --json retorna exit code 1 (há erros) e relatório válido', asyn
   } finally {
     console.log = origLog;
   }
-  assert.equal(code, 1); // fixtures contêm erros propositais
+  assert.equal(code, 1); // fixtures intentionally contain errors
   const report = JSON.parse(logs.join('\n'));
   const codes = report.issues.map((i) => i.code);
   assert.ok(codes.includes('missing-required'));
@@ -24,7 +24,7 @@ test('run com --json retorna exit code 1 (há erros) e relatório válido', asyn
   assert.ok(codes.includes('bad-enum'));
 });
 
-test('run com --file valida só uma nota', async () => {
+test('run with --file validates only one note', async () => {
   const logs = [];
   const origLog = console.log;
   console.log = (s) => logs.push(s);
@@ -34,7 +34,7 @@ test('run com --file valida só uma nota', async () => {
   } finally {
     console.log = origLog;
   }
-  assert.equal(code, 0); // Malareph é válida
+  assert.equal(code, 0); // Malareph is valid
   const report = JSON.parse(logs.join('\n'));
   assert.equal(report.summary.errors, 0);
 });

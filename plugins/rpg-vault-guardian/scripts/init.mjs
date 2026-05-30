@@ -36,6 +36,6 @@ export async function initVault(vaultDir) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const results = await initVault(process.cwd());
   for (const { folder, created } of results) {
-    console.log(`${created ? '✅ criado' : '⏭  existe'}: ${folder}`);
+    console.log(`${created ? '✅ created' : '⏭  exists'}: ${folder}`);
   }
 }

@@ -5,14 +5,14 @@ import { loadVault, classify } from '../lib/vault.mjs';
 
 const VAULT = join(import.meta.dirname, 'fixtures', 'vault');
 
-test('classifica entidade, não-entidade e ignorada', () => {
+test('classifies entity, non-entity, and ignored', () => {
   assert.equal(classify(VAULT, join(VAULT, 'npcs', 'Malareph.md')).kind, 'entity');
   assert.equal(classify(VAULT, join(VAULT, 'npcs', 'Malareph.md')).type, 'npc');
   assert.equal(classify(VAULT, join(VAULT, 'sessoes', 'transcricoes', 'Sessao 0 - Transcricao.md')).kind, 'non-entity');
   assert.equal(classify(VAULT, join(VAULT, 'Welcome.md')).kind, 'ignore');
 });
 
-test('loadVault indexa por nome e lê frontmatter', async () => {
+test('loadVault indexes by name and reads frontmatter', async () => {
   const { notes, index } = await loadVault(VAULT);
   assert.ok(notes.length >= 13);
   const malareph = index.get('Malareph');

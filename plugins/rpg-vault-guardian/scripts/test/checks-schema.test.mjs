@@ -11,18 +11,18 @@ function codesFor(notes, name) {
   return checkSchema(note).map((i) => i.code);
 }
 
-test('nota válida não gera erro de schema', async () => {
+test('valid note generates no schema error', async () => {
   const { notes } = await loadVault(VAULT);
   assert.deepEqual(codesFor(notes, 'Malareph'), []);
 });
 
-test('campo obrigatório ausente', async () => {
+test('missing required field', async () => {
   const { notes } = await loadVault(VAULT);
   assert.ok(codesFor(notes, 'Sem Papel').includes('missing-required'));
   assert.ok(codesFor(notes, 'Sem Regiao').includes('missing-required'));
 });
 
-test('valor de enum inválido', async () => {
+test('invalid enum value', async () => {
   const { notes } = await loadVault(VAULT);
   assert.ok(codesFor(notes, 'Papel Errado').includes('bad-enum'));
 });

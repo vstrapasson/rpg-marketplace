@@ -1,12 +1,13 @@
 # rpg-marketplace
 
-Marketplace de plugins Claude Code para campanhas de RPG.
+Claude Code plugin marketplace for RPG campaigns.
 
 ## Plugins
 
-- **rpg-vault-guardian** — Guardião da integridade de vaults Obsidian para campanhas de RPG.
+- **rpg-vault-guardian** — Obsidian vault integrity guardian for RPG campaigns.
+- **rpg-loremaster** — Build dark-leaning PF2e campaigns end to end (spine, regions, cities, factions, locations, clue maps, conductor + reviewer).
 
-## Instalação
+## Installation
 
     /plugin marketplace add ~/projects/rpg-marketplace
     /plugin install rpg-vault-guardian@rpg-marketplace

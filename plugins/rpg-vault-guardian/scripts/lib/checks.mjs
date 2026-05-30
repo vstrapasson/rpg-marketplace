@@ -9,15 +9,15 @@ export function checkSchema(note) {
   const issues = [];
   const fm = note.frontmatter;
   if (!fm.type) {
-    issues.push(issue(note, 'schema', 'error', 'missing-type', 'Frontmatter sem campo `type`'));
+    issues.push(issue(note, 'schema', 'error', 'missing-type', 'Frontmatter missing `type` field'));
   } else if (fm.type !== note.type) {
     issues.push(issue(note, 'schema', 'error', 'type-folder-mismatch',
-      `type '${fm.type}' não corresponde à pasta (esperado '${note.type}')`, 'type'));
+      `type '${fm.type}' does not match folder (expected '${note.type}')`, 'type'));
   }
   for (const f of requiredFields(note.type)) {
     const v = fm[f];
     if (v === undefined || v === '' || (Array.isArray(v) && v.length === 0)) {
-      issues.push(issue(note, 'schema', 'error', 'missing-required', `Campo obrigatório ausente: \`${f}\``, f));
+      issues.push(issue(note, 'schema', 'error', 'missing-required', `Missing required field: \`${f}\``, f));
     }
   }
   for (const [key, val] of Object.entries(fm)) {
@@ -26,11 +26,11 @@ export function checkSchema(note) {
     if (!fd) continue;
     if (fd.type === 'enum' && Array.isArray(fd.values) && !fd.values.includes(val)) {
       issues.push(issue(note, 'schema', 'error', 'bad-enum',
-        `Valor inválido em \`${key}\`: '${val}' (permitidos: ${fd.values.join(', ')})`, key));
+        `Invalid value for \`${key}\`: '${val}' (allowed: ${fd.values.join(', ')})`, key));
     } else if (fd.type === 'number' && typeof val !== 'number') {
-      issues.push(issue(note, 'schema', 'error', 'bad-field-type', `\`${key}\` deve ser número`, key));
+      issues.push(issue(note, 'schema', 'error', 'bad-field-type', `\`${key}\` must be a number`, key));
     } else if (fd.type === 'date' && !(typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val))) {
-      issues.push(issue(note, 'schema', 'error', 'bad-field-type', `\`${key}\` deve ser data (YYYY-MM-DD)`, key));
+      issues.push(issue(note, 'schema', 'error', 'bad-field-type', `\`${key}\` must be a date (YYYY-MM-DD)`, key));
     }
   }
   return issues;
@@ -42,7 +42,7 @@ export function checkLinks(note, index) {
     for (const target of extractWikilinks(note.frontmatter[field])) {
       if (!index.has(target)) {
         issues.push(issue(note, 'links', 'error', 'broken-link',
-          `Link quebrado em \`${field}\`: [[${target}]] não existe`, field));
+          `Broken link in \`${field}\`: [[${target}]] does not exist`, field));
       }
     }
   }
@@ -61,7 +61,7 @@ export function checkOrphans(notes, index) {
   for (const note of notes) {
     if (note.kind !== 'entity') continue;
     if (!inbound.has(note.name)) {
-      issues.push(issue(note, 'links', 'warning', 'orphan', 'Entidade órfã (nenhuma outra nota a referencia)'));
+      issues.push(issue(note, 'links', 'warning', 'orphan', 'Orphan entity (no other note references it)'));
     }
   }
   return issues;
@@ -74,10 +74,10 @@ export function checkCoherence(note, index) {
     const allowed = Array.isArray(rel.target) ? rel.target : [rel.target];
     for (const target of extractWikilinks(note.frontmatter[field])) {
       const found = index.get(target);
-      if (!found) continue; // link quebrado já reportado por checkLinks
+      if (!found) continue; // broken link already reported by checkLinks
       if (found.kind !== 'entity' || !allowed.includes(found.type)) {
         issues.push(issue(note, 'coherence', 'error', 'wrong-target-type',
-          `\`${field}\` aponta para [[${target}]] (tipo '${found.type ?? '—'}'), esperado: ${allowed.join('/')}`, field));
+          `\`${field}\` points to [[${target}]] (type '${found.type ?? '—'}'), expected: ${allowed.join('/')}`, field));
       }
     }
   }

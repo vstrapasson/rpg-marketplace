@@ -19,7 +19,7 @@ export async function run(argv) {
   const args = parseArgs(argv);
   const schemaIssues = checkSchemaIntegrity();
   if (schemaIssues.length) {
-    console.error('Registro de schema inválido:\n' + schemaIssues.map((s) => '  - ' + s).join('\n'));
+    console.error('Invalid schema registry:\n' + schemaIssues.map((s) => '  - ' + s).join('\n'));
     return 2;
   }
   const { notes, index } = await loadVault(args.vault);

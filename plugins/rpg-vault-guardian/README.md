@@ -1,21 +1,21 @@
 # rpg-vault-guardian
 
-Plugin Claude Code para garantir a integridade estrutural de vaults Obsidian usados em campanhas de RPG.
+Claude Code plugin for ensuring the structural integrity of Obsidian vaults used in RPG campaigns.
 
-## O que faz
+## What it does
 
-- **/rpg-init** — Scaffolda a estrutura de pastas inicial (14 pastas derivadas do schema)
-- **rpg-preserve** — Write gate: valida toda entidade em memória antes de gravar
-- **rpg-audit** — Auditoria em 7 passos: validação, auto-fix, saúde LLM, MOCs
-- **rpg-guardian** — Agente de auditoria em contexto isolado
+- **/rpg-init** — Scaffolds the initial folder structure (14 folders derived from the schema)
+- **rpg-preserve** — Write gate: validates every entity in memory before writing to disk
+- **rpg-audit** — 7-step audit: validation, auto-fix, LLM health check, MOCs
+- **rpg-guardian** — Isolated-context audit agent
 
-## Uso
+## Usage
 
-Lance o Claude Code a partir da raiz do vault de campanha (pasta com `regioes/`, `npcs/`, etc.):
+Launch Claude Code from the campaign vault root (folder containing `regioes/`, `npcs/`, etc.):
 
     cd ~/Documents/obsidian/main
     claude
 
-## Testes
+## Tests
 
     cd plugins/rpg-vault-guardian && npm test
