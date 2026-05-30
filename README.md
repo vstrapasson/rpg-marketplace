@@ -30,6 +30,7 @@ Obsidian vault integrity guardian for RPG campaigns. Validates schema, links, co
 | Command | Description |
 |---|---|
 | `/rpg-init` | Scaffolds the 14-folder initial structure for a new campaign vault |
+| `/rpg-vault-guardian-help` | Guided tour — what the plugin does and the workflows you can run |
 
 **Agents**
 
@@ -58,6 +59,12 @@ Complete GM toolkit for building dark-leaning Pathfinder 2e campaigns end to end
 | `/rpg-location-creator` | Dungeons/lairs/ruins — premise & ecology, fantastic feature, five-room beats or xandered keyed map, inhabitants, treasure & secrets |
 | `/rpg-clue-mapper` | Investigation/mystery layer — Three Clue Rule: ≥3 independent clues per revelation, proactive backstops, node web, GM run-sheet |
 | `/rpg-campaign-conductor` | Orchestrator — ties all six creator skills into one coherent build, maintains the campaign bible, decides what to build next |
+
+**Commands**
+
+| Command | Description |
+|---|---|
+| `/rpg-loremaster-help` | Guided tour — the kit's workflows and where to start |
 
 **Agents**
 

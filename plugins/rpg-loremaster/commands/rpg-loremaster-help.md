@@ -1,0 +1,69 @@
+---
+description: How to use rpg-loremaster — a GM toolkit that builds a whole dark-leaning Pathfinder 2e campaign through chained creator skills, an interactive conductor, and a consistency reviewer.
+---
+
+Present this guide to the user conversationally — walk them through what the kit is and the workflows below — then offer to start the workflow that best fits what they say they want to build.
+
+# What it is for
+
+You want to design a coherent tabletop campaign without drift — where the city remembers the campaign's central truth, the faction's tone matches, and the mystery can't dead-end on one missed roll. This kit gives each layer of your world (campaign spine, region/nation, city, faction, location, clue map) its own co-creation skill that interviews you and ends with structured handoff notes. A **conductor** sequences those skills and keeps one running "campaign bible" as shared memory, and a **reviewer** audits the whole campaign folder for inconsistencies. Everything is just-in-time: start in the middle and expand only what your next session needs. Worlds are original; PF2e (post-Remaster) is the mechanics-and-lore toolkit.
+
+# Quick start
+
+1. Add the marketplace and install the plugin: `/plugin marketplace add ~/projects/rpg-marketplace` (or the GitHub URL), then `/plugin install rpg-loremaster@rpg-marketplace`, then `/reload-plugins`.
+2. Install the external `rpg-npc-creator` skill separately (it is an Anthropic skill, not bundled here) — named characters are handed off to it.
+3. Confirm the seven `rpg-*` skills appear with `/skills`.
+4. For the fastest path to value, let the conductor drive: just type **"Let's build my campaign"** (or "Vamos montar minha campanha"). It starts a campaign bible, runs the foundation interview first, then proposes the smallest next thing to build.
+
+# What you can do
+
+| How to invoke | What it does | Reach for it when |
+| --- | --- | --- |
+| `"Let's build my campaign"` / `"what should I build next?"` / `"continue my campaign"` (skill `rpg-campaign-conductor`) | Orchestrator. Creates or loads the campaign bible, runs the foundation first if there's no spine, then proposes the smallest just-in-time next thing, invokes the right creator skill (injecting your truth/tone/established names), records each artifact and its handoffs back into the bible, and loops — optionally spawning the reviewer. | You want to run the kit as a system: build end-to-end, resume an existing campaign, or ask "where do I start / what next". Not for a single named artifact. |
+| `"Start a campaign"` / `"design my BBEG"` / `"help me plan my campaign"` (skill `rpg-campaign-foundation`) | Builds the campaign spine before any map: central antagonist and true motivation, 3-4 thematic pillars, an act structure, the central secret plus a "GM knows, players discover" bucket, escalating signs, a PF2e gods/planes/creatures stance, session-zero (Lines & Veils), and a downstream planning roadmap. | At the very top of a new campaign or arc, before any details. It is the head of the chain. |
+| `"Create a region"` / `"build a kingdom/nation"` (skill `rpg-region-creator`) | Generates a region dossier in causal order: geography → peoples (PF2e ancestries) → religion → politics → factions → fauna/threats → points of interest → 5-7 hooks. Scales up to a nation, ends with off-stage handoff notes. | An arc needs the area it happens in, or a concept obviously needs a region or nation. Not for a single city/faction/location. |
+| `"Create a city"` / `"detail this town"` (skill `rpg-city-creator`) | Generates a city dossier situation-first and faction-first: one central dramatic question, a web of 2-4 orthogonal factions, a named cast of 4-6 NPCs, the situation greeting the PCs on arrival, a light district spine, urban threats, and 5-7 hooks. Not a gazetteer. | The party will spend time in a town, or you want to flesh out a settlement named in a region dossier. |
+| `"Create a faction"` / `"build the cult"` (skill `rpg-faction-creator`) | Deepens ONE organization into a dynamic agent: drive/ideology, a plan in motion right now, grim portents / a progress clock toward an impending doom, a leader with a voice, an internal fracture the PCs can exploit, secrets, and an escalation/reaction ladder. | A faction named in a region or city dossier needs to become a force the PCs can join, oppose, exploit, or get crushed by. |
+| `"Map a dungeon"` / `"make a lair for the cult"` / `"map a haunted manor"` (skill `rpg-location-creator`) | Builds a location dossier — the bounded space the PCs enter: premise + ecology first (always "why hasn't anyone cleared it yet?"), a fantastic feature, a non-linear keyed map with five-room pacing, inhabitants and hazards from the PF2e bestiary, treasure and secrets, a dynamic element, and hooks. | The party is about to enter a specific site named in a region, city, or faction dossier. |
+| `"Map the clues"` / `"build a mystery"` / `"apply the three clue rule"` (skill `rpg-clue-mapper`) | Builds the clue map using the Three Clue Rule and node-based design: for every revelation, places at least 3 independent clues across the locations, NPCs, factions, and events already built, connects them with leads, adds proactive backstops, and produces a GM run-sheet. Maps information flow, not new fiction. | After the foundation and world exist, to wire an investigation so it can't grind to a halt on a missed roll. |
+| `"Review my campaign"` (agent `rpg-campaign-reviewer`) | Non-interactive auditor. Reads the bible first as source of truth, then reads every artifact and reports cross-artifact inconsistencies — central-truth breaks, tone drift, contradictory proper names, off-palette PF2e canon, `?ID=` AoN links, dangling handoffs, leftover placeholders, and clue-map single-points-of-failure — each tagged Blocker / Should-fix / Nit with a concrete fix, plus a ready-to-build list. It audits and reports; it never edits. | At review checkpoints: before a session, after building several artifacts, or whenever you want to catch drift. The conductor offers to spawn it; you can also request it directly. |
+
+# Workflows
+
+## Build a whole campaign with the conductor — go from a bare idea to a coherent, just-in-time-expanded campaign that stays self-consistent
+
+1. Install the plugin and the external `rpg-npc-creator` prerequisite, then confirm the seven `rpg-*` skills with `/skills`.
+2. Say **"Let's build my campaign"** to trigger `rpg-campaign-conductor`. It asks one quick question to locate you (new / continuing / expanding) and, for a new campaign, prepares the campaign bible.
+3. Because there's no spine yet, the conductor runs `rpg-campaign-foundation` first — its interview produces the central truth, antagonist, pillars, acts, PF2e stance, session-zero, the "GM knows, players discover" bucket, and a planning roadmap.
+4. The conductor populates `campaign-bible-<slug>.md` from that output (truth, tone, names, status, and the roadmap/handoffs as its work queue), saved in your working folder.
+5. It proposes the smallest next thing the campaign needs (e.g. the starting region) and invokes that creator skill — `rpg-region-creator`, then `rpg-city-creator`, etc. — injecting your truth/tone/established names; each skill runs its own interview and ends with off-stage handoff notes.
+6. The conductor records the new artifact and its handoffs into the bible, flags any inconsistency, and loops — proposing the next move (a city in that region, the cult behind the disappearances, the crypt they'll enter, the clue map).
+7. At a checkpoint, accept the conductor's offer to spawn `rpg-campaign-reviewer` over the campaign folder + bible; apply its Blocker / Should-fix / Nit fixes, then continue or stop.
+8. To resume later (fresh session or a co-GM), trigger `rpg-campaign-conductor` again and point it at `campaign-bible-<slug>.md` — it reloads the whole through-line from that one file.
+
+## À la carte: turn a region into a town the party can play tonight — produce a runnable settlement, faction, and dungeon without the full conductor
+
+1. Trigger `rpg-region-creator` ("Create a region: a drowned coast where the towns toll bells underwater"); it interviews you and ends with off-stage notes including "Ready for rpg-city-creator" lines for named settlements.
+2. Paste a "Ready for rpg-city-creator" line into `rpg-city-creator`; it builds the city around one central dramatic question, a 2-4 faction web, and a 4-6 NPC cast, and ends with its own handoffs — e.g. "Ready for rpg-faction-creator" for a named guild and "Ready for a location-creator" for a named site.
+3. Hand a named organization to `rpg-faction-creator` ("build the cult behind the disappearances", or paste the handoff line); it turns that static blurb into a dynamic agent with a plan in motion, a progress clock, a leader, a fracture, and a reaction ladder.
+4. Hand a named site to `rpg-location-creator` ("map the crypt under the chapel", or paste the location handoff); it builds the premise/ecology ("why hasn't it been cleared?"), a non-linear keyed map, inhabitants from the PF2e bestiary, and treasure/secrets.
+5. Whenever any output names a character, hand it to the external `rpg-npc-creator` to flesh the NPC out — this is why that prerequisite must be installed.
+
+## Wire the mystery so it can't dead-end — make the secrets discoverable with redundant paths, then verify the clue map is robust
+
+1. Build the spine first with `rpg-campaign-foundation` so you have the "GM knows, players discover" truths, and build (or already have) the world nodes — regions, cities, factions, locations, NPCs — via the creator skills.
+2. Trigger `rpg-clue-mapper` ("map the clues so my mystery doesn't dead-end") and paste the foundation's "GM knows, players discover" truths as the revelations to wire.
+3. It places at least 3 independent clues per revelation across the existing nodes, connects them with leads, and adds proactive backstops plus a GM run-sheet. If a clue needs a node that doesn't exist yet, it points you back to the right creator skill to build it first, then maps the clue.
+4. Run `rpg-campaign-reviewer` over the campaign folder; its clue-map check flags any core revelation with fewer than 3 surviving clues, or all clues behind one node/check, as a single-point-of-failure with a concrete fix.
+5. Apply the fixes (add or redistribute clues) and re-check as needed.
+
+# Good to know
+
+- **The only slash command this plugin ships is `/rpg-loremaster-help` (this guide).** Every creator and the conductor is a **skill** invoked by natural language, and the reviewer is an **agent**; confirm the skills with `/skills`. The other slash interactions you'll use are the install commands (`/plugin`, `/reload-plugins`) and `/skills`.
+- **`rpg-npc-creator` is a hard prerequisite that is not bundled.** Install it separately (an Anthropic skill). Without it, the NPC handoffs from the conductor and several skills have nowhere to land.
+- **The campaign bible (`campaign-bible-<slug>.md`) is the load-bearing artifact** — the single shared memory holding the central truth, tone, names registry, layer status, and handoff queue. The conductor updates it after every creator-skill run, and it is what lets a clean session or a co-GM resume by just pointing at the file.
+- **Default tone is "dark-leaning" (level 3 of 5)** — heroic fantasy with a shadowy edge, explicitly not grimdark and not noblebright. Every skill honors an explicit tone override; the reviewer flags unrecorded drift unless the bible's "Deliberate Exceptions" section records it.
+- **Handoffs are the glue.** Every creator output ends with structured off-stage notes / "Ready for <skill>" lines. Paste those into the next skill, or let the conductor route them — that is what makes this a kit rather than seven separate tools.
+- **Worlds are original; PF2e (post-Remaster) is the toolkit.** AoN links must be category-level pages (e.g. `/Deities.aspx`); the reviewer flags any `?ID=` link as a nit. Skills generate in the language you write in (PT-BR in → PT-BR out) but keep PF2e proper names in English as canon anchors.
+- **The reviewer only audits — it never edits.** It returns findings tagged Blocker / Should-fix / Nit plus a ready-to-build list; you (or the conductor) apply the fixes.
+- **Skills are co-creation-first** (they interview you), but you can tell any of them to "just run with it" to skip the elicitation when you're in a hurry. Everything is built just-in-time — start in the middle, expand only what the next session needs.
