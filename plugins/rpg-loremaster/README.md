@@ -36,6 +36,8 @@ This kit hands off named characters to **`rpg-npc-creator`** (deep, system-agnos
 
 Confirm with `/skills` (you should see the seven `rpg-*` skills).
 
+New here? Run `/rpg-loremaster-help` for a guided tour of the kit's workflows.
+
 ## How to use it
 
 **The easy path — let the conductor drive:**
