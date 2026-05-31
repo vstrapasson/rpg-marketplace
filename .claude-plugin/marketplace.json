@@ -20,6 +20,13 @@
       "version": "0.1.0",
       "source": "./plugins/rpg-loremaster",
       "category": "creativity"
+    },
+    {
+      "name": "rpg-gamemaster",
+      "description": "Session prep and run layer for PF2e campaigns — runnable sessions, fronts and clocks, balanced encounters, and a GM run sheet.",
+      "version": "0.1.0",
+      "source": "./plugins/rpg-gamemaster",
+      "category": "creativity"
     }
   ]
 }
