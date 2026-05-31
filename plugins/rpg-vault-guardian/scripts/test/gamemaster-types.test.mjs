@@ -36,7 +36,7 @@ test('frente pointing its faction relation at a non-faccao is incoherent', async
   const fm = buildFrontmatter('frente', { status: 'active', faction: '[[Lich]]' });
   const content = buildNoteContent(fm, 'Frente Errada');
   const report = await validateCandidate('Frente Errada', content, 'frente', VAULT);
-  assert.ok(report.summary.errors > 0);
+  assert.ok(report.issues.some((i) => i.code === 'wrong-target-type'));
 });
 
 test('encontro with a bad threat enum is rejected', async () => {
