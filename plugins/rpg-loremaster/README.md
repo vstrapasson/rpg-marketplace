@@ -1,6 +1,6 @@
 # RPG Loremaster
 
-A game master's toolkit for building **dark-leaning Pathfinder 2e campaigns** end to end — from the first spark of an idea down to the room the players walk into, and the clues that let them solve the mystery. Seven skills that hand off to each other, plus an interactive **conductor** that ties them into one consistent campaign, and a **reviewer** subagent that audits it for consistency.
+A game master's toolkit for building **dark-leaning Pathfinder 2e campaigns** end to end — from the first spark of an idea down to the room the players walk into, and the clues that let them solve the mystery. Seven creator skills that hand off to each other, plus an interactive **conductor** that ties them into one consistent campaign, and a **reviewer** subagent that audits it for consistency.
 
 Default tone is **"dark-leaning" (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. Every skill honors an explicit tone override.
 
@@ -17,14 +17,15 @@ These skills are a **creative partner, not a vending machine.** Their job is to 
 | **rpg-city-creator** | a city/settlement built around a dramatic question | a town the party will spend time in |
 | **rpg-faction-creator** | an organization as a *dynamic agent* with a plan in motion | a guild/cult/house/syndicate |
 | **rpg-location-creator** | a dungeon/lair/site (always answers "why hasn't it been cleared?") | the place the party enters |
+| **rpg-npc-creator** | a deep, *system-agnostic* NPC — contradiction, motivation, a performable voice, hooks | a named character needs depth (villain, patron, ally) |
 | **rpg-clue-mapper** | the clue map (Three Clue Rule) so the mystery can't dead-end | wiring an investigation |
 | **rpg-campaign-conductor** | the **orchestrator** — runs the whole chain, keeps a campaign bible | building/continuing a campaign as a system |
 
 Plus the **rpg-campaign-reviewer** subagent — a non-interactive consistency auditor you (or the conductor) can run over a campaign folder to catch tone drift, renamed NPCs, broken canon links, dangling handoffs, and single-points-of-failure in the clue map.
 
-## Prerequisite — the NPC skill
+## The NPC creator (system-agnostic)
 
-This kit hands off named characters to **`rpg-npc-creator`** (deep, system-agnostic NPCs). It is **not bundled** here — install it separately (it's available as an Anthropic skill). The conductor and several skills will reference it; without it, NPC handoffs simply won't have a tool to receive them.
+The kit hands off named characters to **`rpg-npc-creator`** (deep, layered NPCs). It is **bundled here** — no separate install. It is the one **system-agnostic** skill in the kit: it focuses on personality, backstory, contradiction, voice, and narrative hooks rather than PF2e stat blocks, so it works for any system while the rest of the kit speaks Pathfinder 2e. The conductor and several skills route their named-character handoffs to it.
 
 ## Install (local)
 
@@ -34,7 +35,7 @@ This kit hands off named characters to **`rpg-npc-creator`** (deep, system-agnos
 /reload-plugins
 ```
 
-Confirm with `/skills` (you should see the seven `rpg-*` skills).
+Confirm with `/skills` (you should see the eight `rpg-*` skills).
 
 New here? Run `/rpg-loremaster-help` for a guided tour of the kit's workflows.
 

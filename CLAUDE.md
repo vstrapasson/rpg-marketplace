@@ -49,6 +49,7 @@ Seven stateless creator skills (`skills/rpg-*/SKILL.md` + `references/`) plus on
 - **The conductor (`rpg-campaign-conductor`) is the memory between skills.** Each creator skill makes one artifact and ends; the conductor sequences them, injects the campaign's identity downward, carries handoffs forward, and prevents drift. **All campaign state lives in a `campaign-bible-<slug>.md` file, never in chat** — that's what lets a fresh session resume. The orchestration contract is in `references/orchestration-playbook.md`.
 - **`agents/rpg-campaign-reviewer.md`** is a non-interactive subagent (`tools: Read, Glob, Grep`, `model: sonnet`) — it audits a campaign folder against its bible and reports; it never edits.
 - Shared reference files (`co-creation.md`, `output-template.md`, `tone-spectrum.md`) are **duplicated per skill** by design (skills must be self-contained) — edit the copy in each skill, not a shared one.
+- **`rpg-npc-creator` is the one *system-agnostic* creator** — it builds NPCs from personality/backstory (belief, wound, contradiction, voice), not PF2e stat blocks, and uses no Archives of Nethys links, so the PF2e-links rule below doesn't apply to it. Its `references/` omit a canon quickref: `co-creation.md`, `tone-spectrum.md`, `output-template.md`, `npc-frameworks.md`.
 
 ## Conventions
 
