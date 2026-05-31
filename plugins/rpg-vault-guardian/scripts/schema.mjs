@@ -42,6 +42,21 @@ export const ENTITIES = {
     relations: { owner: { target: ['npc', 'jogador'] }, location: { target: 'local' } } },
   lore: { folder: 'lore', required: ['type'],
     relations: { related: { target: '*', many: true } } },
+  frente: { folder: 'frentes', required: ['type'],
+    fields: { status: { type: 'enum', values: ['active', 'dormant', 'resolved'] } },
+    relations: { faction: { target: 'faccao' }, antagonist: { target: 'npc' },
+      clocks: { target: 'relogio', many: true, curated: true }, act: { target: 'ato' } } },
+  relogio: { folder: 'relogios', required: ['type', 'segments'],
+    fields: { segments: { type: 'number', required: true },
+      filled: { type: 'number' },
+      status: { type: 'enum', values: ['ticking', 'filled', 'paused'] } },
+    relations: { front: { target: 'frente' }, faction: { target: 'faccao' },
+      quest: { target: 'quest' } } },
+  encontro: { folder: 'encontros', required: ['type'],
+    fields: { threat: { type: 'enum', values: ['trivial', 'low', 'moderate', 'severe', 'extreme'] },
+      party_level: { type: 'number' }, party_size: { type: 'number' } },
+    relations: { creatures: { target: 'inimigo', many: true }, location: { target: 'local' },
+      session: { target: 'sessao' }, treasure: { target: 'item', many: true }, act: { target: 'ato' } } },
 };
 
 export const NON_ENTITY = {

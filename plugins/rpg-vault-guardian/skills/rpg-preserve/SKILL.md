@@ -26,6 +26,9 @@ Use `targetPath` from `lib/preserve.mjs`. The folder is defined by the schema:
 | ato | atos/ |
 | item | itens/ |
 | lore | lore/ |
+| frente | frentes/ |
+| relogio | relogios/ |
+| encontro | encontros/ |
 
 ### 2. Build frontmatter and content
 
@@ -94,6 +97,9 @@ List each error with the affected field. Do not write until validation passes wi
 | ato | type, number (integer) |
 | item | type |
 | lore | type |
+| frente | type |
+| relogio | type, segments (integer) |
+| encontro | type |
 
 ## Full example — Create NPC "Elara"
 

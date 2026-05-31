@@ -31,3 +31,13 @@ test('isEntityType', () => {
 test('the registry itself is valid (no unknown relation targets)', () => {
   assert.deepEqual(checkSchemaIntegrity(), []);
 });
+
+test('gamemaster types map to folders and keep the registry valid', () => {
+  assert.equal(folderForType('frente'), 'frentes');
+  assert.equal(folderForType('relogio'), 'relogios');
+  assert.equal(folderForType('encontro'), 'encontros');
+  assert.equal(requiredFields('relogio').includes('segments'), true);
+  assert.equal(relationsFor('frente').clocks.target, 'relogio');
+  assert.equal(relationsFor('encontro').creatures.target, 'inimigo');
+  assert.deepEqual(checkSchemaIntegrity(), []); // targets known, enums have values
+});

@@ -16,15 +16,15 @@ Launch Claude Code from your campaign vault root — the folder that contains (o
 cd ~/Documents/obsidian/main && claude
 ```
 
-- **Brand-new vault?** Run `/rpg-init` first to scaffold the 14 folders.
+- **Brand-new vault?** Run `/rpg-init` first to scaffold the 17 folders.
 - **Existing vault?** Just ask Claude to create or edit an entity (e.g. "create an NPC named Sister Avelina") — the write gate engages automatically.
 
 # What you can do
 
 | How to invoke | What it does | Reach for it when |
 | --- | --- | --- |
-| `/rpg-init` | Scaffolds the campaign's initial 14-folder structure in the current directory, then reports which folders were newly created vs. already existed. | Once, at the very start of a new campaign vault, before you create any entities. |
-| `create an NPC named ...` (rpg-preserve) | The single write point: picks the correct folder for the entity type, builds frontmatter and content, validates in memory, and writes the `.md` only when there are zero errors — otherwise it lists the offending fields and asks you to fix them. | Every time you create or edit any of the 12 entity types. The only sanctioned way to write entities to disk. |
+| `/rpg-init` | Scaffolds the campaign's initial 17-folder structure in the current directory, then reports which folders were newly created vs. already existed. | Once, at the very start of a new campaign vault, before you create any entities. |
+| `create an NPC named ...` (rpg-preserve) | The single write point: picks the correct folder for the entity type, builds frontmatter and content, validates in memory, and writes the `.md` only when there are zero errors — otherwise it lists the offending fields and asks you to fix them. | Every time you create or edit any of the 15 entity types. The only sanctioned way to write entities to disk. |
 | `audit my campaign` (rpg-audit) | Runs a 7-step audit: snapshot, deterministic validation, safe auto-fixes, LLM health check, confirmed destructive fixes, MOC/index regeneration, final report. | Periodically or after bulk edits, to repair missing frontmatter, broken links, orphans, and wrong-target references and rebuild your maps-of-content. |
 | `have the rpg-guardian audit the vault` (agent) | Runs the full 7-step audit in an isolated subagent context, then returns a structured summary of initial errors, fixes applied, MOC regeneration, and errors remaining. | When you want the complete audit without cluttering your main conversation, or just a clean consistency report. |
 
@@ -33,7 +33,7 @@ cd ~/Documents/obsidian/main && claude
 ### Bootstrap a brand-new campaign vault — from an empty folder to a structured vault with your first validated entities
 
 1. Create or choose an empty folder and launch Claude Code from inside it: `cd ~/Documents/obsidian/my-campaign && claude`.
-2. Run `/rpg-init` to scaffold the 14 folders, then review the output showing which folders were created.
+2. Run `/rpg-init` to scaffold the 17 folders, then review the output showing which folders were created.
 3. Ask Claude to create your first entities (e.g. a region, then NPCs and quests inside it). Each request routes through the rpg-preserve write gate, which validates frontmatter and links and writes the `.md` only when there are zero errors.
 4. If the gate reports validation errors, supply the missing or corrected fields when asked and let it retry until the file is written.
 
@@ -63,7 +63,7 @@ cd ~/Documents/obsidian/main && claude
 
 - **Always launch from the vault root.** Everything is path-relative to the current working directory, so starting Claude Code anywhere else makes commands operate on the wrong location.
 - **Prerequisites:** an Obsidian or plain-Markdown vault to act as the campaign (the plugin is not bundled with one), and **Node.js** on your PATH. **Git** is only needed for the optional pre-audit snapshot commit, which you can decline.
-- **Entity folders use Portuguese names:** `regiao→regioes/`, `local→locais/`, `npc→npcs/`, `jogador→jogadores/`, `inimigo→inimigos/`, `faccao→faccoes/`, `quest→quests/`, `sessao→sessoes/`, `evento→eventos/`, `ato→atos/`, `item→itens/`, `lore→lore/` — 12 entity types; `/rpg-init` scaffolds 14 folders.
+- **Entity folders use Portuguese names:** `regiao→regioes/`, `local→locais/`, `npc→npcs/`, `jogador→jogadores/`, `inimigo→inimigos/`, `faccao→faccoes/`, `quest→quests/`, `sessao→sessoes/`, `evento→eventos/`, `ato→atos/`, `item→itens/`, `lore→lore/`, `frente→frentes/`, `relogio→relogios/`, `encontro→encontros/` — 15 entity types (the last three are the `rpg-gamemaster` prep/run layer); `/rpg-init` scaffolds 17 folders.
 - **rpg-preserve is a hard write gate** — it will not write a note while any validation error remains; it lists each offending field and asks you to fix and retry.
 - **Frontmatter is enforced:** single wikilinks are quoted-and-bracketed (`"[[Entity Name]]"`), lists of links are one quoted item per YAML line, status defaults to `stub`, and `updated` is auto-stamped with today's date.
 - **Auto-fix vs. confirm:** in rpg-audit, Step 3 auto-fixes (type inferred from folder, missing `updated` stamped) apply without confirmation, while Step 5 destructive fixes require your explicit confirmation.
