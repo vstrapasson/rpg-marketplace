@@ -16,7 +16,7 @@ test('foldersFromSchema covers all schema types', () => {
     assert.ok(folders.includes(def.folder), `missing NON_ENTITY folder: ${def.folder}`);
   }
   assert.ok(folders.includes('_indices'), 'missing _indices');
-  assert.strictEqual(folders.length, 14, `expected 14 folders, found ${folders.length}`);
+  assert.strictEqual(folders.length, 17, `expected 17 folders, found ${folders.length}`);
 });
 
 test('initVault creates the 14 folders with .gitkeep', async () => {
