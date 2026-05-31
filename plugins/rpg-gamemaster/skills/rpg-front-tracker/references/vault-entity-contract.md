@@ -10,7 +10,7 @@
 
 | type | folder | required fields | key own fields | key relations |
 |---|---|---|---|---|
-| sessao | sessoes/ | type, date (YYYY-MM-DD) | date | act→ato, quests→quest[], events→evento[] |
+| sessao | sessoes/ | type, date (YYYY-MM-DD) | date | act→ato, players_present→jogador[], quests→quest[], events→evento[] |
 | frente | frentes/ | type | status (active/dormant/resolved) | faction→faccao, antagonist→npc, clocks→relogio[], act→ato |
 | relogio | relogios/ | type, segments | segments (int), filled (int), status (ticking/filled/paused) | front→frente, faction→faccao, quest→quest |
 | encontro | encontros/ | type | threat (trivial/low/moderate/severe/extreme), party_level (int), party_size (int) | creatures→inimigo[], location→local, session→sessao, treasure→item[] |

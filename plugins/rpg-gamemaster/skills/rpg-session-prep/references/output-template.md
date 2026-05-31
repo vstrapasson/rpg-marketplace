@@ -119,7 +119,7 @@ quests:
 events:
   - "[[Event Vault Name]]"    ← optional; omit if no evento entity exists yet
 players_present:
-  - "[[Player Character Vault Name]]"
+  - "[[Jogador Vault Name]]"    ← optional; jogador entity in jogadores/; omit if none yet
 ```
 
 *The one-pager content lives as the note body (after the frontmatter) in the vault `sessao` entity. Paste the session-plan markdown as the body when routing to rpg-preserve.*

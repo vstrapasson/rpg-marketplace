@@ -54,7 +54,7 @@ Read by exact canonical name. Every wikilink must match the vault's names regist
 
 ## The eight steps, weighted
 
-Full framework details are in `references/lazy-dm-eight-steps.md`. The session one-pager runs them in this weighted order:
+Full framework details are in `references/lazy-dm-eight-steps.md` (which keeps the canonical Lazy DM numbering). The order here is **modular, not fixed** — secrets lead as the spine, and `references/output-template.md` groups related steps rather than numbering all eight. The session one-pager runs them in this weighted order:
 
 1. **Review the characters** — a 30-second check: what do the PCs want right now, what level/resources do they have, any unresolved personal thread? This shapes everything else.
 2. **Strong start** — the opening image that drops the players immediately into action. **Derived from the world-state**: what did the active fronts/clocks produce since last session? Read `rpg-front-tracker`'s "what the world did since last session" beat and turn it into a concrete scene.
