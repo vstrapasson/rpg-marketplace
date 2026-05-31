@@ -21,7 +21,7 @@ The conductor's operating manual: the kit map, the sequence logic, the per-skill
 | `rpg-city-creator` | a city/settlement | central dramatic question + faction web | world layer |
 | `rpg-faction-creator` | an organization (as a dynamic agent) | drive + plan in motion | world layer |
 | `rpg-location-creator` | a bounded site (dungeon, lair, ruin) | premise + ecology ("why not cleared?") | world layer (bottom) |
-| `rpg-npc-creator` | a single character | personality, backstory, hooks | cross-cutting (installed) |
+| `rpg-npc-creator` | a single character | personality, backstory, hooks | cross-cutting (bundled) |
 | `rpg-clue-mapper` | the clue map / revelation list | information flow (Three Clue Rule) | **investigation layer** — consumes the rest |
 
 The conductor invokes these; it never reproduces their work.

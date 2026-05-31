@@ -1,6 +1,6 @@
 {
   "name": "rpg-loremaster",
-  "description": "A game master's toolkit for building dark-leaning Pathfinder 2e campaigns end to end — the campaign spine, regions and nations, cities, factions, locations, and a Three-Clue-Rule clue map, plus an interactive conductor that ties them into one consistent campaign via a running campaign bible.",
+  "description": "A game master's toolkit for building dark-leaning Pathfinder 2e campaigns end to end — the campaign spine, regions and nations, cities, factions, locations, NPCs, and a Three-Clue-Rule clue map, plus an interactive conductor that ties them into one consistent campaign via a running campaign bible.",
   "version": "0.1.0",
   "author": { "name": "Vagner Strapasson", "email": "vagnerstrapasson@gmail.com" },
   "license": "MIT",

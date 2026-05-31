@@ -16,7 +16,7 @@
     },
     {
       "name": "rpg-loremaster",
-      "description": "Build dark-leaning PF2e campaigns end to end: campaign spine, regions/nations, cities, factions, locations, clue maps, and an interactive conductor + a consistency-reviewer subagent.",
+      "description": "Build dark-leaning PF2e campaigns end to end: campaign spine, regions/nations, cities, factions, locations, NPCs, clue maps, and an interactive conductor + a consistency-reviewer subagent.",
       "version": "0.1.0",
       "source": "./plugins/rpg-loremaster",
       "category": "creativity"
