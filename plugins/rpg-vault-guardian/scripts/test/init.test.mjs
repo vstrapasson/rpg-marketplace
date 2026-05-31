@@ -19,7 +19,7 @@ test('foldersFromSchema covers all schema types', () => {
   assert.strictEqual(folders.length, 17, `expected 17 folders, found ${folders.length}`);
 });
 
-test('initVault creates the 14 folders with .gitkeep', async () => {
+test('initVault creates the 17 folders with .gitkeep', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'rpg-init-'));
   try {
     const results = await initVault(dir);
