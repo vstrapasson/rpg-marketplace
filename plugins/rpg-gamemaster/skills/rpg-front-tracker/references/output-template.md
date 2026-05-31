@@ -87,6 +87,7 @@ For each danger, the complete ordered list of portents — what happens, in sequ
 - → `rpg-npc-creator` (loremaster): [any named cast members who need a full dossier]
 - → `rpg-location-creator` (loremaster): [locations named in portents that don't exist yet]
 - → `rpg-clue-mapper` (loremaster): [portents that should be discoverable as clue-map revelations]
+```
 
 ---
 
@@ -122,7 +123,6 @@ quest: "[[Quest Vault Name]]"   ← optional; omit if not quest-linked
 ```
 
 *To advance a clock: re-emit this candidate with `filled` incremented. rpg-preserve will overwrite the existing note and re-validate. This is the intended update path.*
-```
 
 ---
 
