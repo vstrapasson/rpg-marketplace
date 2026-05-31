@@ -1,6 +1,6 @@
-# Vault Entity Contract (front-tracker)
+# Vault Entity Contract (gamemaster kit)
 
-> **Rule:** `rpg-front-tracker` (and every gamemaster skill) **never writes files directly**. It assembles a typed entity candidate and hands it to the **`rpg-preserve` skill**, which runs in the guardian's context and is the single write gate. Reads are direct — use Glob/Read on the vault's typed folders (`frentes/`, `relogios/`, `sessoes/`, `faccoes/`) and loose files (`campaign-bible-*.md`, `clue-map-*.md`) at the vault root.
+> **Rule:** Every gamemaster skill **never writes files directly**. It assembles a typed entity candidate and hands it to the **`rpg-preserve` skill**, which runs in the guardian's context and is the single write gate. Reads are direct — use Glob/Read on the vault's typed folders (`frentes/`, `relogios/`, `sessoes/`, `faccoes/`) and loose files (`campaign-bible-*.md`, `clue-map-*.md`) at the vault root.
 
 > **Sync obligation:** this table mirrors a subset of the vault guardian's `scripts/schema.mjs`. It documents only the entity types this skill reads or emits. If `schema.mjs` changes (fields added, enum values extended, relation targets changed), this file **must be updated to match** — drift here causes silent breakage when rpg-preserve validates a candidate against the current schema.
 

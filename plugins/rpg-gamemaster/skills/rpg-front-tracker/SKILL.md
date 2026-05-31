@@ -34,7 +34,7 @@ Trigger when the user wants to:
 
 Do **not** trigger for:
 - **Authoring a faction's plan** — that is `rpg-faction-creator` (loremaster). This skill *runs* an existing plan; it doesn't invent one. If a faction has no plan-in-motion yet, hand off to `rpg-faction-creator` first.
-- **Building an NPC** the front needs — hand off to `rpg-npc-creator`.
+- **Building an NPC** the front needs — hand off to `rpg-npc-creator` (loremaster).
 - **Planning the upcoming session** — once the front has advanced and produced its "next move", hand off to `rpg-session-prep`, which turns that beat into a strong start and a full session plan.
 - **Building a location** a portent involves — hand off to `rpg-location-creator`.
 
