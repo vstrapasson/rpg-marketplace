@@ -10,11 +10,11 @@
 
 This skill needs **three things** it should *draw out*, not assume:
 
-1. **Party level and size** — REQUIRED. The math is meaningless without both. Never assume; always confirm.
+1. **Party level and size** — REQUIRED. The math is meaningless without both. Never assume *silently* — confirm, or (on "just run with it") state your assumption aloud and flag the math as approximate.
 2. **The threat tier** — how hard should this fight be? (trivial / low / moderate / severe / extreme). If the GM isn't sure, offer the options and the stakes for each.
 3. **The fight's purpose** — what is this encounter *for* in the campaign? What happens if the players skip it, win it, or lose it differently than expected?
 
-These three decisions drive everything else. Default the rest (exact creature flavor, specific item names, precise read-aloud wording).
+These three decisions drive everything else. Default the rest (exact creature flavor, specific item names, precise read-aloud wording). **Match the user's language** in all output, including headings; keep PF2e canon names and AoN category URLs in English.
 
 ### Read the room first
 
@@ -38,7 +38,7 @@ State the **escape hatch early**: "Say 'just run with it' and I'll draft a compl
 
 ### The load-bearing decisions (ask about these; default the rest)
 
-1. **Party level and party size** — never default; never assume. The entire encounter is relative to these.
+1. **Party level and party size** — never assume *silently*; confirm, or state the assumption aloud and flag the math as approximate. The entire encounter is relative to these.
 2. **Desired threat tier** — shapes the budget and the tension. If the GM doesn't know, offer the options.
 3. **The fight's purpose** — why does this encounter exist in the campaign? What changes after it, win or lose?
 

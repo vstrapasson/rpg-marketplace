@@ -1,6 +1,6 @@
 ---
 name: rpg-encounter-builder
-description: Builds balanced Pathfinder 2e encounters from the GM Core math — the mechanical layer the worldbuilding skills deliberately skip. Given party level and size plus a scene or threat brief, it picks a threat tier, assembles creatures referenced to Archives of Nethys category pages (never a VTT compendium), shows the XP-budget arithmetic against the total, and suggests hazards and treasure by level. It wraps every fight as a situation — objective, terrain feature, the reason for the fight, and how it escalates or ends — so the encounter points to play, not just a balanced bag of monsters. Persists the encounter through the rpg-preserve write gate as an encontro entity. Use for building an encounter, balancing a fight, montar um combate, balancear o encontro, quantos inimigos, what monsters for my party. Tone inherited from the campaign, default dark-leaning.
+description: Builds balanced Pathfinder 2e encounters from the GM Core math — the mechanical layer the worldbuilding skills deliberately skip. Given party level and size plus a scene or threat brief, it picks a threat tier, assembles creatures referenced to Archives of Nethys category pages (never an external app's compendium), shows the XP-budget arithmetic against the total, and suggests hazards and treasure by level. It wraps every fight as a situation — objective, terrain feature, the reason for the fight, and how it escalates or ends — so the encounter points to play, not just a balanced bag of monsters. Persists the encounter through the rpg-preserve write gate as an encontro entity. Use for building an encounter, balancing a fight, montar um combate, balancear o encontro, quantos inimigos, what monsters for my party. Tone inherited from the campaign, default dark-leaning.
 ---
 
 # RPG Encounter Builder (Pathfinder 2e kit — the mechanical layer)
@@ -9,7 +9,7 @@ description: Builds balanced Pathfinder 2e encounters from the GM Core math — 
 
 Turn a fight into **balanced PF2e numbers, wrapped as a situation**. This is the mechanical layer the loremaster skills deliberately skip — worldbuilding produces factions, threats, and tension; this skill converts that material into a creature roster you can actually run, with the budget math shown.
 
-No VTT, no MCP. Creatures are referenced to **Archives of Nethys category pages** only (e.g., https://2e.aonprd.com/Monsters.aspx) — never a `?ID=` deep link, never a VTT compendium import. The math comes from `references/pf2e-encounter-math.md`.
+Creatures are referenced to **Archives of Nethys category pages** only (e.g., https://2e.aonprd.com/Monsters.aspx) — never a `?ID=` deep link, never an external app's compendium import. The math comes from `references/pf2e-encounter-math.md`.
 
 ## The core idea — balanced numbers AND a situation
 
@@ -32,14 +32,14 @@ The framework for the situation layer is in `references/encounter-as-situation.m
 
 **Do not use this skill for:**
 - **Building the world** — factions, NPCs, locations, the campaign spine. That is the loremaster kit.
-- **Running the encounter live** — initiative, dice, tokens. The table or VTT owns that.
+- **Running the encounter live** — initiative, dice, tokens. The table owns that.
 - **Advancing the front between sessions** — that is `rpg-front-tracker`.
 
 ## Inputs — what to read
 
 | Source | What you need | How to find it |
 |---|---|---|
-| Party level + size | REQUIRED — refuse to balance without both. The math is meaningless without them. | Ask the GM; never assume. |
+| Party level + size | REQUIRED — never assume silently; confirm both, or state your assumption aloud and flag the math as approximate. | Ask the GM, or name the assumption. |
 | Scene or threat brief | What the fight is about, who the enemies are, what the location is | Told directly or read from a `sessao` / `frente` handoff |
 | Vault `inimigo` notes | Existing statblocks, exact vault names | Glob `inimigos/` → Read by exact name |
 | `references/pf2e-encounter-math.md` | XP budget tables, per-creature XP, hazard XP, treasure by level, honesty rules | Load before computing any budget |
@@ -47,7 +47,7 @@ The framework for the situation layer is in `references/encounter-as-situation.m
 
 ## The workflow
 
-1. **Co-create the brief** — run the intake in `references/co-creation.md`. Two inputs are non-negotiable: party level and party size. Without them, the math is a guess and the budget is meaningless. Elicit the scene brief and the desired threat tier (or pick and name your assumption).
+1. **Co-create the brief** — run the intake in `references/co-creation.md`. Two inputs are non-negotiable: party level and party size. Without them, the math is a guess and the budget is meaningless. Elicit the scene brief and the desired threat tier (or pick and name your assumption). **Match the user's language** in all output, including headings; keep PF2e canon names and AoN category URLs in English.
 2. **Choose the threat tier** — trivial / low / moderate / severe / extreme. Name the choice and the reason. Derive the XP budget (party-of-4 base plus size adjustment).
 3. **Select creatures** — AoN category refs, not `?ID=` links. For each creature: description or vault name, creature level relative to party, XP from the table, role (lackey / standard / boss). Mix roles for texture; a bag of identical creatures is always less interesting than a combination.
 4. **Show the budget arithmetic** — always. Every creature listed, its XP, the running total, and the comparison against the budget. State the assumed party level and size on the same line. If the budget is over or under, say so and show the adjustment options. Never silently round.
