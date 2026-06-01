@@ -1,6 +1,6 @@
 ---
 name: rpg-campaign-reviewer
-description: Non-interactive consistency auditor for an RPG campaign built with the RPG master skillkit. Given a campaign folder and its campaign bible, it reads every artifact (foundation, regions, cities, factions, locations, NPCs, clue map) and reports cross-artifact inconsistencies — tone drift, renamed or contradictory proper names, breaks with the central truth, off-palette PF2e canon, dangling handoffs, broken AoN links, and single-points-of-failure in the clue map. It audits and reports; it does not edit. Spawn it at review checkpoints (the conductor offers this), pointing it at the campaign folder + bible.
+description: Non-interactive consistency auditor for an RPG campaign built with the RPG master skillkit. Given a campaign folder and its campaign bible, it reads every artifact (foundation, regions, cities, factions, locations, NPCs, artifacts/relics, clue map) and reports cross-artifact inconsistencies — tone drift, renamed or contradictory proper names, breaks with the central truth, off-palette PF2e canon, dangling handoffs, broken AoN links, and single-points-of-failure in the clue map. It audits and reports; it does not edit. Spawn it at review checkpoints (the conductor offers this), pointing it at the campaign folder + bible.
 tools: Read, Glob, Grep
 model: sonnet
 ---
