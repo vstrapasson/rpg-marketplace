@@ -18,7 +18,7 @@ These skills are a **creative partner, not a vending machine.** Their job is to 
 | **rpg-faction-creator** | an organization as a *dynamic agent* with a plan in motion | a guild/cult/house/syndicate |
 | **rpg-location-creator** | a dungeon/lair/site (always answers "why hasn't it been cleared?") | the place the party enters |
 | **rpg-npc-creator** | a deep, *system-agnostic* NPC — contradiction, motivation, a performable voice, hooks | a named character needs depth (villain, patron, ally) |
-| **rpg-artifact-creator** | a deep, *system-agnostic* artifact as a narrative node — provenance, will, who wants it, an evocative gift + a staged price | a relic/cursed item/McGuffin the plot turns on |
+| **rpg-artifact-creator** | a deep, *system-agnostic* artifact as a narrative node — provenance, will, who wants it, an evocative gift + a staged price, and a visual description + art prompt | a relic/cursed item/McGuffin the plot turns on |
 | **rpg-clue-mapper** | the clue map (Three Clue Rule) so the mystery can't dead-end | wiring an investigation |
 | **rpg-campaign-conductor** | the **orchestrator** — runs the whole chain, keeps a campaign bible | building/continuing a campaign as a system |
 

@@ -52,9 +52,16 @@ the corruption clock below. The price escalates toward the will.]
 > **The tell — Read-aloud / Para ler à mesa:** *[~40–70 words: the sensory cue when the
 > artifact stirs and the price climbs a stage. Sensory; no PC actions narrated.]*
 
-## Look & Tell
-[What it looks like at rest, and the sensory cue when it wakes or acts. (May fold into
-At a Glance for Compact.)]
+## Appearance / Visage
+[A rich visual description that **shows the story** (`artifact-frameworks.md` §9): the
+material (provenance made visible), form and scale in the hand, ornament, the wear that
+carries the price, how light and shadow behave on it, and the **one sinister detail** the
+eye snags on. Then the **tell** — how the look changes as the price climbs (Full: describe
+both an early stage and a corrupted stage).]
+
+> **Art prompt** *(optional GM tool — paste into an image generator; customize freely):*
+> *[subject + material + the sinister detail] · [medium/style, generic] · [composition/
+> framing] · [lighting] · [palette, 2–3 colors] · [atmosphere / what to keep out]*
 
 ## Exit / Destruction
 [How it leaves play. At this tier, often a quest: a specific rite, place, or cost — and
@@ -94,6 +101,9 @@ This is what makes the artifact feel like it existed and mattered before the PCs
 ### The Gift & The Price
 The triad's load-bearing pair (`artifact-frameworks.md` §3–4). The gift must be **genuinely good** or the price tempts no one; the price comes in **stages with tells**, and **escalates toward the will**. A gift with no answering cost fails the price test.
 
+### Appearance / Visage
+The visual must **show the node, not decorate it** (`artifact-frameworks.md` §9): a stranger should be able to guess from the look that it was *made from* something terrible or that it *costs* its bearer. Encode provenance in the material, the price in the wear, and the **tell** as the live cue of the current corruption stage. The **art prompt** is an optional tool — render it by default in Full, offer it in Compact; keep it system-agnostic (object + mood, never stat blocks) and bake the sinister detail in so the art shows the story, not a clean prop.
+
 ### Exit / Destruction
 At this tier the exit is part of the design (`artifact-frameworks.md` §5). Give a concrete, in-fiction way to unmake it — and a reason it resists.
 
@@ -113,11 +123,11 @@ Guidance, not limits. Provenance/Will and Gift/Price carry the weight.
 | What It Unlocks | 30–60 words | 80–140 words |
 | **The Gift** | **40–80 words** | **100–180 words** |
 | **The Price** | **80–140 words** | **220–360 words (+ clock)** |
-| Look & Tell | 30–60 words | 70–130 words |
+| Appearance / Visage (+ art prompt) | 60–110 words | 140–260 words |
 | Exit / Destruction | 40–80 words | 140–260 words (+ quest) |
 | Hooks | 140–240 words | 360–600 words |
 | Off-stage | 40–80 words | 60–120 words |
-| **Total** | **~650–950 words** | **~1500–2400 words** |
+| **Total** | **~700–1000 words** | **~1600–2500 words** |
 
 ## Full-only structures (optional GM tools)
 
@@ -142,4 +152,11 @@ Stage 3 — [trigger] · Tell: [...] · Effect: [...]
 To unmake it: [the rite / place / cost].
 Why it resists: [the will thwarted — what the artifact does to stop it].
 What it costs the party: [the price of the exit].
+```
+
+### Art prompt — corrupted-stage variant (the visual of the price)
+Full dossiers can render two prompts: the **dormant** look (in Appearance / Visage) and a **corrupted** look at a late §4 stage. Swap the sinister detail and palette to the advanced stage; keep the same subject and style so it reads as the *same object, further gone*.
+```
+Dormant:   [subject + material + faint sinister detail] · [style] · [framing] · [lighting] · [palette] · [atmosphere]
+Corrupted: [same subject, the price now visible] · [same style] · [framing] · [darker lighting] · [palette shifted to the late stage] · [atmosphere]
 ```

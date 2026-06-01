@@ -30,7 +30,7 @@ Do **not** trigger for: mundane gear, shop inventory, or minor magic items the p
 1. **Co-create the brief** (interview, not a form) — draw the user's vision out, sharpen it, fill gaps; see `references/co-creation.md`. Capture the node (provenance + will) + object kind + tone + density, and any handoff.
 2. **Build the node** — provenance, the will, desire-lines, what it unlocks. Lead the elicitation here; everything hangs off it.
 3. **Set the gift and the price** — the evocative boon (the bait) and the staged, told cost that escalates toward the will.
-4. **Make it playable** — its look and tell, how it enters play, how it can leave; hooks that grow from the node.
+4. **Make it playable** — its appearance and visual tell (plus an optional art prompt), how it enters play, how it can leave; hooks that grow from the node.
 5. **Present and hand off** — save the file, offer the next move, leave off-stage notes for downstream skills.
 
 Read references by context (Step 2). Don't load all of them.
@@ -55,7 +55,7 @@ If the user pastes a handoff line (e.g., "→ Ready for `rpg-artifact-creator`: 
 Four reference files. Load by context:
 
 - **`references/co-creation.md`** — the interview/elicitation front-end and the read-aloud rules. **Load before intake on every artifact.**
-- **`references/artifact-frameworks.md`** — the design engine: the narrative-node model, the "what does it want?" probe, the function/story/cost triad, corruption stages + tell, the tier/exit note, failure modes, and the node/price coherence tests. **Load for every artifact** — it's the heart of this skill.
+- **`references/artifact-frameworks.md`** — the design engine: the narrative-node model, the "what does it want?" probe, the function/story/cost triad, corruption stages + tell, the tier/exit note, failure modes, the node/price coherence tests, and designing the visual + the art-prompt recipe (§9). **Load for every artifact** — it's the heart of this skill.
 - **`references/output-template.md`** — the dossier skeleton (Compact and Full) plus the Full-only structures (corruption clock, desire-lines table, destruction quest). **Load when ready to write.**
 - **`references/tone-spectrum.md`** — the 1–5 scale applied to an object. **Load if generating tone ≠ 3, or unsure how much shadow to add.**
 
@@ -77,8 +77,8 @@ What it does, rendered as fiction, **never a "+X"** — one strange, evocative e
 ### 3c. The price (the dark-leaning core)
 The cost/corruption in **3–5 stages**, each with a sensory **tell**, each triggered by using the gift or feeding the will, and **escalating toward the will** (the object getting its way). The bearer chooses each step deeper — that choice is the drama (`references/artifact-frameworks.md` §4). Avoid the curse-that's-just-a-debuff and punishment-without-agency.
 
-### 3d. Look, entrance & exit (read-aloud)
-- **Look & tell** — what it looks like at rest, and the cue when it wakes.
+### 3d. Appearance, entrance & exit
+- **Appearance / visage** — a rich visual description that **shows the story**: provenance in the material, the price in the wear, the **tell** as the live cue of the current corruption stage. A stranger should be able to guess from the look that it was *made from* something terrible or that it *costs* its bearer (`references/artifact-frameworks.md` §9). Then render an optional, system-agnostic **art prompt** (image-generator ready) — by default in Full, offered in Compact; bake the sinister detail in so the art shows the story, not a clean prop.
 - **Entrance** — the dramatic beat of acquisition (read-aloud).
 - **Exit / destruction** — how it can leave play, often a quest, and why it resists being unmade (`references/artifact-frameworks.md` §5).
 
@@ -96,14 +96,14 @@ End with a structured list grouping un-expanded elements by downstream skill. Be
 
 ## Step 4: Present and offer to deepen
 
-Save the dossier as Markdown in the working folder, filename `artifact-<slug>.md`. Tell the user the path. For Full dossiers, summarize in chat and link — don't paste the whole thing. Offer the two most interesting next moves: "Want me to build [its maker] as a full NPC, or detail [the vault that holds it] as a location?"
+Save the dossier as Markdown in the working folder, filename `artifact-<slug>.md`. Tell the user the path. For Full dossiers, summarize in chat and link — don't paste the whole thing. If you didn't render the **art prompt** (Compact), offer it. Offer the two most interesting next moves: "Want me to build [its maker] as a full NPC, or detail [the vault that holds it] as a location?"
 
 ## Compact vs Completo (Full)
 
 Both cover every section in the same order; they differ in depth, and in how the **price** is rendered (see `references/output-template.md`):
 
-- **Compact (~1–2 pages):** the price, desire-lines, and destruction are **narrative** prose. Provenance + will · desire-lines · what it unlocks · gift · staged price (narrated, with tells) · look & entrance · exit · 4 hooks · short off-stage.
-- **Completo / Full (3–4 pages):** adds the explicit structure — a **corruption clock** (the stages as a 4–6 segment clock with per-stage tells), a **desire-lines table** ("who wants it → what they'd do" for 3–5 actors), and an explicit **destruction quest** — plus richer provenance and 6 hooks. Presented as optional GM tools.
+- **Compact (~1–2 pages):** the price, desire-lines, and destruction are **narrative** prose. Provenance + will · desire-lines · what it unlocks · gift · staged price (narrated, with tells) · appearance/visage (+ art prompt offered) · entrance · exit · 4 hooks · short off-stage.
+- **Completo / Full (3–4 pages):** adds the explicit structure — a **corruption clock** (the stages as a 4–6 segment clock with per-stage tells), a **desire-lines table** ("who wants it → what they'd do" for 3–5 actors), an explicit **destruction quest**, and a rendered **art prompt** (with an optional corrupted-stage variant) — plus richer provenance and 6 hooks. Presented as optional GM tools.
 
 ## Coherence — the thing that matters most
 

@@ -11,6 +11,7 @@ The toolkit for building an artifact as a *narrative node*, not a powerful objec
 6. Common failure modes
 7. Coherence — the node test and the price test
 8. (Optional) PF2e bridge — one line
+9. Designing the visual — show the story (+ the art-prompt recipe)
 
 ---
 
@@ -90,6 +91,29 @@ An element that serves *neither* the node nor the price does not belong in the d
 
 If the table plays Pathfinder 2e, map the **gift** onto a relic (relic seed → aspects → gifts that grow with the bearer) or an artifact (which carries a destruction clause — your §5 exit) — but keep this skill's output system-agnostic and do **not** add stat blocks, item levels, or Archives of Nethys links here.
 
+## 9. Designing the visual — show the story
+
+A visual description should **show the node**, not decorate it. The rule that separates a memorable artifact's look from "a cool sword": the **provenance and the price must be legible in the appearance.** If you described the object and a stranger couldn't guess that it was *made from* something terrible or that it *costs* its bearer something, the visual is decoration.
+
+Three things the look must encode:
+- **Provenance in the material** — what it's made *of* tells where it came from (votive coins fused green, bone the church gilded and could not bleach white, a blade quenched in something that left it warm). The material is the origin made visible.
+- **The price in the wear** — corruption shows. The look should carry the mark of what it does to its bearer (hairline veins of black under the gloss, a shadow that falls wrong, fingerprints burned into the grip by every hand before this one).
+- **The tell as the live cue** — the §4 tell is the *visual* of the current corruption stage. At rest it is dormant; as the price climbs, the look changes (the dark veins spread, the whisper-script surfaces, the reflection lags). A Full dossier can describe the look at an early stage **and** a corrupted stage.
+
+Render the prose visual concretely and sensorily — material, form, scale in the hand, ornament, the wear, how light and shadow behave on it, and the **one sinister detail** the eye snags on. One vivid, story-bearing image beats a full inventory of features.
+
+### The art-prompt recipe (optional, system-agnostic)
+A ready-to-paste prompt for an image generator (Midjourney / DALL·E / Stable Diffusion). Build it from six slots, in this order, and **bake the sinister detail in** so the art shows the story, not a clean prop:
+
+1. **Subject** — the object, its material, and the one sinister detail (*"a small green-black bronze hand-bell cast from fused votive coins, faces half-melted in the metal"*).
+2. **Medium / style** — the rendering style, kept generic (*"dark-fantasy concept art, painterly, high detail"*) — avoid living-artist names by default.
+3. **Composition / framing** — how it sits (*"single object, centered, museum-plate study, plain dark background"* or *"held in a drowned hand"*).
+4. **Lighting** — mood-carrying (*"low key, cold rim light off wet metal, deep shadow"*).
+5. **Palette** — 2–3 colors tied to the tone/provenance (*"verdigris, bone-white, drowned-blue"*).
+6. **Atmosphere / negative space** — what to keep out as much as what to include (*"no text, no hands unless specified, oppressive stillness"*).
+
+Mark it as a **tool, not canon** — the GM customizes it. For a corrupted-stage variant, swap the sinister detail and palette to the later §4 stage. Keep it system-agnostic: describe the *object and mood*, never stat blocks or rules.
+
 ## Quick build checklist
 1. One-line concept stated (name + what it is + will + who wants it)?
 2. **Provenance** named — maker, original purpose, and the price paid to make it?
@@ -99,6 +123,7 @@ If the table plays Pathfinder 2e, map the **gift** onto a relic (relic seed → 
 6. **Gift** rendered evocatively (not a "+X"), and genuinely good (the bait)?
 7. **Price** in 3–5 stages, each with a **tell**, escalating toward the will?
 8. An **exit** — how it leaves play (possibly a quest)?
-9. Node test and price test passed (no element serving neither)?
-10. 4–6 hooks growing from the node (≥1–2 moral-cost at tone 3)?
-11. Off-stage handoffs named (maker/guardian/hunter → npc; who hunts it → faction; where it's kept → a location-creator; clues → clue-mapper)?
+9. A **visual** that shows the story — provenance in the material, price in the wear, the tell as the live cue (§9)? Art prompt offered/rendered if Full?
+10. Node test and price test passed (no element serving neither)?
+11. 4–6 hooks growing from the node (≥1–2 moral-cost at tone 3)?
+12. Off-stage handoffs named (maker/guardian/hunter → npc; who hunts it → faction; where it's kept → a location-creator; clues → clue-mapper)?
