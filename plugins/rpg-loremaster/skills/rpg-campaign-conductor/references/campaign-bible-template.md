@@ -35,6 +35,7 @@ Match the user's language in the filled-in content (headings may stay as-is or b
 | Antagonist (NPC) | rpg-npc-creator | pending | — |
 | Antagonist's faction | rpg-faction-creator | pending | — |
 | First key location | rpg-location-creator | pending | — |
+| Central artifact/relic | rpg-artifact-creator | pending (if the truth turns on an object) | — |
 | Clue map | rpg-clue-mapper | pending (needs nodes) | — |
 
 ## 4. Handoff Queue (future moves, from off-stage notes)
