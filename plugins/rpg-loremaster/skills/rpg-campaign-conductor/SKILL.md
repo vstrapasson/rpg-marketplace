@@ -1,6 +1,6 @@
 ---
 name: rpg-campaign-conductor
-description: Orchestrates the RPG master skillkit — the interactive "showrunner" that runs a whole campaign build across the kit's skills (rpg-campaign-foundation, rpg-region-creator, rpg-city-creator, rpg-faction-creator, rpg-location-creator, rpg-npc-creator, rpg-clue-mapper) in the right order, passes handoffs between them, and keeps one campaign consistent — its central truth, tone, and proper names — via a running "campaign bible". Use whenever the user wants to build or continue a whole campaign end-to-end, asks "where do I start / what should I build next", wants the skills tied together, or wants to run the kit as a system instead of one skill at a time. Phrasings like "conduzir minha campanha", "rodar o kit", "montar a campanha do zero", "amarrar as skills", "orchestrate my campaign", "tie the skills together", "what next". It is interactive and co-creation-first — it defers each layer's interview to that layer's skill and maintains continuity between them. Default tone dark-leaning (level 3 of 5).
+description: Orchestrates the RPG master skillkit — the interactive "showrunner" that runs a whole campaign build across the kit's skills (rpg-campaign-foundation, rpg-region-creator, rpg-city-creator, rpg-faction-creator, rpg-location-creator, rpg-npc-creator, rpg-artifact-creator, rpg-clue-mapper) in the right order, passes handoffs between them, and keeps one campaign consistent — its central truth, tone, and proper names — via a running "campaign bible". Use whenever the user wants to build or continue a whole campaign end-to-end, asks "where do I start / what should I build next", wants the skills tied together, or wants to run the kit as a system instead of one skill at a time. Phrasings like "conduzir minha campanha", "rodar o kit", "montar a campanha do zero", "amarrar as skills", "orchestrate my campaign", "tie the skills together", "what next". It is interactive and co-creation-first — it defers each layer's interview to that layer's skill and maintains continuity between them. Default tone dark-leaning (level 3 of 5).
 ---
 
 # RPG Campaign Conductor — the kit's showrunner
@@ -29,7 +29,7 @@ Do **not** trigger when the user clearly wants just *one* artifact and names it 
 
 ## Required: the creator skills
 
-The conductor invokes these (install them if missing): `rpg-campaign-foundation`, `rpg-region-creator`, `rpg-city-creator`, `rpg-faction-creator`, `rpg-location-creator`, `rpg-npc-creator`, `rpg-clue-mapper`. It never duplicates their work — it calls them. The full sequencing logic, handoff protocol, and consistency rules are in **`references/orchestration-playbook.md`** — read it before conducting.
+The conductor invokes these (install them if missing): `rpg-campaign-foundation`, `rpg-region-creator`, `rpg-city-creator`, `rpg-faction-creator`, `rpg-location-creator`, `rpg-npc-creator`, `rpg-artifact-creator`, `rpg-clue-mapper`. It never duplicates their work — it calls them. The full sequencing logic, handoff protocol, and consistency rules are in **`references/orchestration-playbook.md`** — read it before conducting.
 
 ## The workflow at a glance
 

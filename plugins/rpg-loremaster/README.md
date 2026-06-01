@@ -1,6 +1,6 @@
 # RPG Loremaster
 
-A game master's toolkit for building **dark-leaning Pathfinder 2e campaigns** end to end — from the first spark of an idea down to the room the players walk into, and the clues that let them solve the mystery. Seven creator skills that hand off to each other, plus an interactive **conductor** that ties them into one consistent campaign, and a **reviewer** subagent that audits it for consistency.
+A game master's toolkit for building **dark-leaning Pathfinder 2e campaigns** end to end — from the first spark of an idea down to the room the players walk into, and the clues that let them solve the mystery. Eight creator skills that hand off to each other, plus an interactive **conductor** that ties them into one consistent campaign, and a **reviewer** subagent that audits it for consistency.
 
 Default tone is **"dark-leaning" (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. Every skill honors an explicit tone override.
 
@@ -18,6 +18,7 @@ These skills are a **creative partner, not a vending machine.** Their job is to 
 | **rpg-faction-creator** | an organization as a *dynamic agent* with a plan in motion | a guild/cult/house/syndicate |
 | **rpg-location-creator** | a dungeon/lair/site (always answers "why hasn't it been cleared?") | the place the party enters |
 | **rpg-npc-creator** | a deep, *system-agnostic* NPC — contradiction, motivation, a performable voice, hooks | a named character needs depth (villain, patron, ally) |
+| **rpg-artifact-creator** | a deep, *system-agnostic* artifact as a narrative node — provenance, will, who wants it, an evocative gift + a staged price, and a visual description + art prompt | a relic/cursed item/McGuffin the plot turns on |
 | **rpg-clue-mapper** | the clue map (Three Clue Rule) so the mystery can't dead-end | wiring an investigation |
 | **rpg-campaign-conductor** | the **orchestrator** — runs the whole chain, keeps a campaign bible | building/continuing a campaign as a system |
 
@@ -25,7 +26,7 @@ Plus the **rpg-campaign-reviewer** subagent — a non-interactive consistency au
 
 ## The NPC creator (system-agnostic)
 
-The kit hands off named characters to **`rpg-npc-creator`** (deep, layered NPCs). It is **bundled here** — no separate install. It is the one **system-agnostic** skill in the kit: it focuses on personality, backstory, contradiction, voice, and narrative hooks rather than PF2e stat blocks, so it works for any system while the rest of the kit speaks Pathfinder 2e. The conductor and several skills route their named-character handoffs to it.
+The kit hands off named characters to **`rpg-npc-creator`** (deep, layered NPCs). It is **bundled here** — no separate install. It is one of two **system-agnostic** skills in the kit (with **`rpg-artifact-creator`**): it focuses on personality, backstory, contradiction, voice, and narrative hooks rather than PF2e stat blocks, so it works for any system while the rest of the kit speaks Pathfinder 2e. The conductor and several skills route their named-character handoffs to it; named objects route to the artifact creator the same way.
 
 ## Install (local)
 
@@ -35,7 +36,7 @@ The kit hands off named characters to **`rpg-npc-creator`** (deep, layered NPCs)
 /reload-plugins
 ```
 
-Confirm with `/skills` (you should see the eight `rpg-*` skills).
+Confirm with `/skills` (you should see the nine `rpg-*` skills).
 
 New here? Run `/rpg-loremaster-help` for a guided tour of the kit's workflows.
 
@@ -63,7 +64,7 @@ The default tone explores dark themes (institutional rot, moral cost, dread). Th
 
 - **Original worlds, PF2e toolkit.** Settings are your own; mechanics/lore (deities, planes, bestiary) are Pathfinder 2e (post-Remaster). Links point to the [Archives of Nethys](https://2e.aonprd.com/) category pages.
 - **Your language.** Skills generate in the language you write in (PT-BR in, PT-BR out), keeping PF2e proper names in English as canon anchors.
-- **Handoffs are the glue.** Every output ends with structured notes for the next skill — that's what makes this a kit, not seven separate tools.
+- **Handoffs are the glue.** Every output ends with structured notes for the next skill — that's what makes this a kit, not eight separate tools.
 
 ---
 
