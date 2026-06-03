@@ -27,6 +27,13 @@
       "version": "0.1.0",
       "source": "./plugins/rpg-gamemaster",
       "category": "creativity"
+    },
+    {
+      "name": "rpg-foundry-forge",
+      "description": "Compile a validated RPG vault into a playable Foundry VTT session via the foundry-vtt-mcp server — scenes and lighting, creature actors with token placement, quest/lore/dashboard journals, player ownership, and encounters; idempotent and resumable via an on-disk build manifest.",
+      "version": "0.1.0",
+      "source": "./plugins/rpg-foundry-forge",
+      "category": "productivity"
     }
   ]
 }
