@@ -7,6 +7,7 @@ npcs:
   - "[[Malareph]]"
 locations:
   - "[[Cripta dos Ossos]]"
+  - "[[Capela Submersa]]"
 items:
   - "[[Amuleto Sussurrante]]"
 factions:

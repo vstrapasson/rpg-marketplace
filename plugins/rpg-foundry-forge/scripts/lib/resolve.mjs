@@ -110,25 +110,34 @@ function collect(index, rootName, opts = {}) {
 function bucketize(byName) {
   const byType = {};
   const concerns = { scenes: [], actors: [], journals: [], ownership: [], encounters: [], items: [] };
+  // A `local` is TACTICAL if some encontro lists it as its location (needs a
+  // battlemap + grid + placed tokens); otherwise it's NARRATIVE (a story beat —
+  // realized as a journal handout / a linked gridless backdrop, never a generated battlemap).
+  const tacticalNames = new Set();
+  for (const note of byName.values()) {
+    if (note.type === 'encontro') {
+      for (const loc of extractWikilinks(note.frontmatter?.location)) tacticalNames.add(loc);
+    }
+  }
   for (const note of byName.values()) {
     (byType[note.type] ||= []).push(note);
     const buckets = [...(CONCERNS[note.type] || [])];
     if (note.type === 'npc' && extractWikilinks(note.frontmatter?.statblock).length) buckets.push('actors');
     for (const b of buckets) concerns[b].push(note);
   }
-  return { byType, concerns };
+  const tacticalLocals = concerns.scenes.filter((l) => tacticalNames.has(l.name));
+  const narrativeLocals = concerns.scenes.filter((l) => !tacticalNames.has(l.name));
+  return { byType, concerns, tacticalLocals, narrativeLocals };
 }
 
 export function resolveEncontro(index, name) {
   const { root, byName, missing } = collect(index, name);
-  const { byType, concerns } = bucketize(byName);
-  return { unit: { type: 'encontro', name }, root, byType, concerns, missing };
+  return { unit: { type: 'encontro', name }, root, ...bucketize(byName), missing };
 }
 
 export function resolveSessao(index, name) {
   const { root, byName, missing } = collect(index, name);
-  const { byType, concerns } = bucketize(byName);
-  return { unit: { type: 'sessao', name }, root, byType, concerns, missing };
+  return { unit: { type: 'sessao', name }, root, ...bucketize(byName), missing };
 }
 
 // Dispatch by the unit note's type (sessao | encontro). Other types are future.

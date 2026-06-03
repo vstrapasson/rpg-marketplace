@@ -13,7 +13,9 @@ Realize the vault's narrative entities as Foundry journals. Content comes from t
 2. **Quests** → `create-quest-journal(...)` from `foundry-args.questFieldsFromVault` (title, description from body, giver, rewards from items; enrich description/type/difficulty as judgment). Then `link-quest-to-npc(journalId, npcName, relationship)` — `giver` → `quest_giver`, listed `npcs` → `target`/`contact`/`enemy` as the lore implies. Link only after the NPC exists (the conductor orders NPC actors/journals first when possible).
 3. **Lore / faction / front** → there is NO plain "create journal" MCP tool, so use `create-quest-journal` as a GENERIC journal (a titled HTML entry); see `references/journal-mapping.md`. A `frente` becomes a threat-tracker journal; its `relogio` clocks become pages/sections (segments/filled/status).
 4. **Dashboard** → one `create-campaign-dashboard` from the acts (`foundry-args.dashboardTemplateForActs`): `template: "custom"` with a chapter part per `ato`, or `five-part-adventure` if no acts. Supply campaign title/description (judgment, from the campaign-bible if present).
-5. Return `{ journalId | dashboardId, linkedNpcs }` per entity to the conductor.
+5. **Narrative locations** → for a `narrativeLocals` `local` (a story place with no encounter), make a journal **handout** (folder `Locations`): the location body as read-aloud + an `<img>` for an image the user generated separately; remind the GM to **Show Players**. (See `references/journal-mapping.md`.)
+6. **Folders** → set `folderName` on every create per the hybrid convention (`foundry-args.journalFolder`): quests by act, the rest by type. Record the folder in the manifest.
+7. Return `{ journalId | dashboardId, folder, linkedNpcs }` per entity to the conductor.
 
 No scene-write race here (journals aren't scene-embedded) — but still idempotent via the manifest.
 

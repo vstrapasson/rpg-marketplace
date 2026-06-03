@@ -73,6 +73,24 @@ export function placementGrid(sceneDims = {}, count = 1) {
   return { type: 'coordinates', coordinates: coords };
 }
 
+// Journal folder for a note, per the HYBRID convention (one flat level, the
+// only thing the MCP's create-quest-journal `folderName` supports): quests group
+// by their act (runtime/chapter view); everything else groups by type (codex).
+// Returns undefined for the dashboard (lives at the root).
+export function journalFolder(note) {
+  switch (note?.type) {
+    case 'quest': return extractWikilinks(note.frontmatter?.act)[0] || 'Quests';
+    case 'evento': return extractWikilinks(note.frontmatter?.act)[0] || 'Events';
+    case 'sessao': return 'Sessions';
+    case 'faccao': return 'Factions';
+    case 'lore': return 'Lore';
+    case 'frente': return 'Fronts';
+    case 'npc': return 'NPCs';
+    case 'local': return 'Locations'; // narrative-location handout
+    default: return undefined; // dashboard → root
+  }
+}
+
 // Build the deterministic shell of a quest journal from a `quest` note + graph.
 // Description/type/difficulty are enrichable by the skill (judgment).
 export function questFieldsFromVault(quest, index) {
@@ -90,6 +108,7 @@ export function questFieldsFromVault(quest, index) {
     questGiver: giver,
     npcName: npcs[0] || giver || undefined,
     rewards: items.length ? items.join(', ') : undefined,
+    folderName: journalFolder(quest),
     _refs: { giver, npcs, locations, factions, items },
   };
 }

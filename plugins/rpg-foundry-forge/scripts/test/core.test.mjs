@@ -4,13 +4,13 @@ import { fileURLToPath } from 'node:url';
 import { loadVault } from '../lib/vault-read.mjs';
 import { resolveSessao, resolveEncontro, resolveUnit } from '../lib/resolve.mjs';
 import { planBuild } from '../lib/build-plan.mjs';
-import { dispositionFor, wallEnumDefaults, placementGrid, lightingForMood, suggestMood } from '../lib/foundry-args.mjs';
+import { dispositionFor, wallEnumDefaults, placementGrid, lightingForMood, suggestMood, journalFolder } from '../lib/foundry-args.mjs';
 
 const VAULT = fileURLToPath(new URL('./fixtures/vault', import.meta.url));
 
 test('loadVault indexes notes and keeps body', async () => {
   const { index } = await loadVault(VAULT);
-  assert.equal(index.size, 12);
+  assert.equal(index.size, 13);
   const cripta = index.get('Cripta dos Ossos');
   assert.equal(cripta.type, 'local');
   assert.match(cripta.body, /cripta inundada/i);
@@ -39,6 +39,24 @@ test('resolveSessao pulls quest, players, encounter creatures + scene', async ()
   assert.ok(g.concerns.actors.some((n) => n.name === 'Malareph'));
   assert.ok(g.concerns.journals.some((n) => n.name === 'Rendara'));
   assert.ok(!g.concerns.actors.some((n) => n.name === 'Rendara'));
+  // tactical (encounter location) vs narrative (story-only) locals
+  assert.ok(g.tacticalLocals.some((n) => n.name === 'Cripta dos Ossos'));
+  assert.ok(g.narrativeLocals.some((n) => n.name === 'Capela Submersa'));
+  assert.ok(!g.tacticalLocals.some((n) => n.name === 'Capela Submersa'));
+});
+
+test('planBuild routes tactical→scene, narrative→journal handout, folders by convention', async () => {
+  const { index } = await loadVault(VAULT);
+  const g = resolveSessao(index, 'Sessão 1');
+  const plan = planBuild(g, { entities: {} });
+  assert.ok(plan.steps.some((s) => s.id === 'scene:Cripta dos Ossos'), 'tactical local → scene');
+  const handout = plan.steps.find((s) => s.id === 'journal:local:Capela Submersa');
+  assert.ok(handout && handout.concern === 'journal', 'narrative local → journal handout');
+  assert.equal(handout.args.folderName, 'Locations');
+  assert.ok(!plan.steps.some((s) => s.id === 'scene:Capela Submersa'), 'narrative local is not a generated scene');
+  // hybrid folder convention: quest by act, faction by type
+  assert.equal(plan.steps.find((s) => s.id === 'journal:quest:O Porto Sussurrante').args.folderName, 'Ato I');
+  assert.equal(plan.steps.find((s) => s.id === 'journal:faccao:Tidewardens').args.folderName, 'Factions');
 });
 
 test('resolveUnit dispatches and flags missing for unknown', async () => {
@@ -79,4 +97,9 @@ test('foundry-args: disposition, enums, placement offset, lighting', () => {
   assert.equal(lightingForMood('dark').globalLight, false);
   assert.equal(lightingForMood('bright').globalLight, true);
   assert.equal(suggestMood(5, 'cripta'), 'pitch');
+  // journal folder convention (hybrid: quest by act, rest by type)
+  assert.equal(journalFolder({ type: 'faccao' }), 'Factions');
+  assert.equal(journalFolder({ type: 'quest', frontmatter: { act: '[[Ato II]]' } }), 'Ato II');
+  assert.equal(journalFolder({ type: 'local' }), 'Locations');
+  assert.equal(journalFolder({ type: 'ato' }), undefined);
 });

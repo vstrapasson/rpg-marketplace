@@ -6,7 +6,7 @@ description: Realizes vault `local` (locations) as Foundry VTT scenes with mood 
 # RPG Scene Forge — locations → Foundry scenes + lighting
 
 ## What this skill is for
-Turn each `local` (and the location of an `encontro`/`evento`) into a Foundry scene that's lit for play. You do **not** author the place — its description is the vault note's body. You realize it: find or make the scene, light it, record the id.
+Turn each **tactical** `local` — one that is an `encontro.location` (the resolver lists these as `tacticalLocals`) — into a Foundry scene that's lit for play. You do **not** author the place — its description is the vault note's body. You realize it: find or make the scene, light it, record the id. **Narrative** locals (no encounter — `narrativeLocals`) are NOT your job: rpg-journal-forge turns them into image handouts; only link a pre-existing gridless backdrop if the user made one (see `references/scene-policy.md`). Never `generate-map` a narrative local.
 
 ## Workflow
 1. **Prefer existing.** `list-scenes` and match by the local's name (and aliases). If a scene matches, link it (record `source: linked`) — do not regenerate.

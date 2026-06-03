@@ -1,5 +1,8 @@
 # Scene policy — link vs generate, and prompt craft
 
+## Tactical vs narrative locals (build only tactical scenes here)
+This skill only builds scenes for **tactical** locals — a `local` that is an `encontro.location` (resolver: `tacticalLocals`). A **narrative** local (referenced only in quests/events, no encounter — resolver: `narrativeLocals`) is NOT a battlemap: rpg-journal-forge turns it into an image **handout** the GM shows to players. So: don't `generate-map` a narrative local. If the user has imported a gridless backdrop scene (an illustration, not a top-down map) for a narrative place, you MAY link it (prefer-existing) and light it globally (`darkness:0, globalLight:true, tokenVision:false` — just show the picture); never generate one (generate-map is battlemap-only / wrong art).
+
 ## Prefer existing (default)
 Always `list-scenes` first and match the `local` by name + aliases (case-insensitive, ignore punctuation). A match → **link** it: record `{ sceneId, source: "linked" }`. Never regenerate a scene that already exists — generation is slow and discards the GM's prior setup.
 

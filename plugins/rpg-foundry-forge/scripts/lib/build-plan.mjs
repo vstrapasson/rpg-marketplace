@@ -6,7 +6,7 @@
 // It does NOT call MCP or fill judgment args.
 
 import { extractWikilinks } from './vault-read.mjs';
-import { dispositionFor, questFieldsFromVault, dashboardTemplateForActs } from './foundry-args.mjs';
+import { dispositionFor, questFieldsFromVault, dashboardTemplateForActs, journalFolder } from './foundry-args.mjs';
 import { getBuilt } from './manifest.mjs';
 
 const CONCERN_RANK = { scene: 0, actor: 1, item: 2, journal: 3, dashboard: 3, ownership: 5 };
@@ -31,8 +31,9 @@ export function planBuild(graph, manifest) {
     else steps.push(s);
   };
 
-  // 1. Scenes (from `local`)
-  for (const local of graph.concerns?.scenes || []) {
+  // 1. TACTICAL scenes (locais that are an encontro location) → battlemap + lighting.
+  const tacticalLocals = graph.tacticalLocals || graph.concerns?.scenes || [];
+  for (const local of tacticalLocals) {
     push({
       id: `scene:${local.name}`,
       concern: 'scene',
@@ -43,6 +44,23 @@ export function planBuild(graph, manifest) {
       judgment: ['prefer-existing match', 'map prompt', 'lighting mood'],
       dependsOn: [],
       serializeGroup: `scene:${local.name}`,
+    });
+  }
+
+  // 1b. NARRATIVE locations (no encounter) → a journal HANDOUT (image shown to
+  //     players), NOT a generated battlemap. A gridless backdrop scene, if any,
+  //     is linked by the skill (prefer-existing); the plugin never auto-generates it.
+  for (const local of graph.narrativeLocals || []) {
+    push({
+      id: `journal:local:${local.name}`,
+      concern: 'journal',
+      op: 'create',
+      entity: { type: 'local', name: local.name },
+      tool: 'create-quest-journal (handout) [+ link-existing gridless scene]',
+      args: { title: local.name, body: local.body, image: null, folderName: journalFolder(local) },
+      judgment: ['read-aloud from body', 'attach user-provided image', 'GM: Show to Players'],
+      dependsOn: [],
+      serializeGroup: null,
     });
   }
 
@@ -105,7 +123,7 @@ export function planBuild(graph, manifest) {
         op: 'create',
         entity: { type, name: note.name },
         tool: 'create-quest-journal (generic)',
-        args: { title: note.name, body: note.body },
+        args: { title: note.name, body: note.body, folderName: journalFolder(note) },
         judgment: ['content from body + relations'],
         dependsOn: [],
         serializeGroup: null,
@@ -188,16 +206,17 @@ export function orderSteps(steps) {
 export function diffManifest(graph, manifest) {
   const alreadyBuilt = [];
   const toBuild = [];
-  const buckets = { scene: graph.concerns?.scenes, actor: graph.concerns?.actors, item: graph.concerns?.items, ownership: graph.concerns?.ownership };
+  const buckets = { scene: graph.tacticalLocals || graph.concerns?.scenes, actor: graph.concerns?.actors, item: graph.concerns?.items, ownership: graph.concerns?.ownership };
   for (const [concern, notes] of Object.entries(buckets)) {
     for (const n of notes || []) {
       const target = isBuilt(manifest, { concern, entity: { type: n.type, name: n.name } });
       (target ? alreadyBuilt : toBuild).push({ concern, type: n.type, name: n.name });
     }
   }
-  for (const q of graph.byType?.quest || []) {
-    const target = isBuilt(manifest, { concern: 'journal', entity: { type: 'quest', name: q.name } });
-    (target ? alreadyBuilt : toBuild).push({ concern: 'journal', type: 'quest', name: q.name });
+  const journaled = [...(graph.byType?.quest || []), ...(graph.narrativeLocals || [])];
+  for (const n of journaled) {
+    const target = isBuilt(manifest, { concern: 'journal', entity: { type: n.type, name: n.name } });
+    (target ? alreadyBuilt : toBuild).push({ concern: 'journal', type: n.type, name: n.name });
   }
   return { alreadyBuilt, toBuild, missing: graph.missing || [] };
 }
