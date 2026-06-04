@@ -10,7 +10,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join, relative, basename, sep } from 'node:path';
 
-// The 15 gameable entity folders (Portuguese, the vault schema) + transcripts.
+// The 16 gameable entity folders (Portuguese, the vault schema) + transcripts.
 export const FOLDER_TYPES = {
   regioes: 'regiao',
   locais: 'local',
@@ -27,6 +27,7 @@ export const FOLDER_TYPES = {
   frentes: 'frente',
   relogios: 'relogio',
   encontros: 'encontro',
+  desafios: 'desafio',
 };
 
 const IGNORED_TOP = ['_indices', '.obsidian', '.claude', '.git'];

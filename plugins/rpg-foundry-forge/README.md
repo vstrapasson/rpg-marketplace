@@ -29,13 +29,15 @@ It compiles; it does not author. It reads the vault as the contract and writes t
 | skill | `rpg-journal-forge` | `quest`/`lore`/`faccao`/`frente`/`ato` → quest & lore journals + campaign dashboard |
 | skill | `rpg-ownership-forge` | `jogador` → Foundry actor ownership (last, approval-gated) |
 | skill | `rpg-encounter-forge` | `encontro` → assembled combat (scene + creatures-by-threat + treasure) |
+| skill | `rpg-embate-forge` | `desafio` → non-combat challenge (challenge journal + DCs + live `request-player-rolls` + a VP progress clock; scene only if it has a `local`) |
 | agent | `rpg-foundry-reviewer` | non-interactive auditor: diffs vault graph vs built session |
 | commands | `/forge-compile`, `/forge-preflight`, `/forge-status`, `/forge-verify`, `/rpg-foundry-forge-help` | the build lifecycle |
 | scripts | `scripts/lib/*.mjs` | `vault-read`, `resolve`, `build-plan`, `manifest`, `foundry-args`, `preflight` (zero-dep, `node:*` only) |
 
-## Compile units (v0.1)
-- **`sessao`** — a whole game night (its quests, encounters, players, locations).
+## Compile units
+- **`sessao`** — a whole game night (its quests, encounters, challenges, players, locations).
 - **`encontro`** — one combat (scene + creatures + treasure).
+- **`desafio`** — one non-combat challenge (challenge journal + DCs + live rolls + a VP clock; scene only if it has a `local`).
 
 Acts and whole-campaign exports are planned but not exposed yet.
 

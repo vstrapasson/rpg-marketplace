@@ -1,8 +1,8 @@
 # RPG Gamemaster
 
-The **session prep and run layer** for a Pathfinder 2e campaign — the bridge from a built world to a runnable session. Four skills that advance the living world between sessions, assemble a one-page session plan, balance encounter math, and produce the GM overlay for the table. Tool-agnostic: no specific VTT, no external compendium; creature data comes from the [Archives of Nethys](https://2e.aonprd.com/) category pages only.
+The **session prep and run layer** for a Pathfinder 2e campaign — the bridge from a built world to a runnable session. Five skills that advance the living world between sessions, assemble a one-page session plan, balance encounter math, structure non-combat challenges, and produce the GM overlay for the table. Tool-agnostic: no specific VTT, no external compendium; creature data and rules come from the [Archives of Nethys](https://2e.aonprd.com/) category pages only.
 
-Default tone is **dark-leaning (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. All four skills inherit tone from the campaign bible; they do not reset it.
+Default tone is **dark-leaning (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. All five skills inherit tone from the campaign bible; they do not reset it.
 
 ## Philosophy
 
@@ -17,9 +17,10 @@ The kit is grounded in working TTRPG methodology: Sly Flourish's *Return of the 
 | **rpg-front-tracker** | a front sheet — impulse, grim portents, clocks, impending doom, and the "what the world did since last session" beat | between sessions, before prep |
 | **rpg-session-prep** | a one-page runnable session plan (Lazy DM 8 steps, secrets as the spine) | preparing the upcoming game |
 | **rpg-encounter-builder** | a balanced PF2e encounter (XP budget shown, wrapped as a situation) | when session-prep flags a fight that needs math |
+| **rpg-embate-builder** | a non-combat challenge — single check or a Victory Points subsystem (social/chase/research/infiltration), DCs shown, wrapped as a situation | when a scene is resolved by skills, not swords |
 | **rpg-gm-run-sheet** | a compact printable table overlay — checklist, clocks, NPC quick-refs, backstops | sitting down to run |
 
-## The four skills
+## The five skills
 
 ### rpg-front-tracker — the living-world engine
 
@@ -32,6 +33,10 @@ Turns a built world into a one-page runnable session using the Return of the Laz
 ### rpg-encounter-builder — the mechanical layer
 
 The encounter math the loremaster skills deliberately skip. Given party level and size plus a scene or threat brief, it selects a threat tier (trivial / low / moderate / severe / extreme), assembles creatures referenced to Archives of Nethys category pages (never a `?ID=` deep link), and shows the XP-budget arithmetic line by line against the total — always stating the assumed party level and size. It adds hazards (if any) and treasure by level, then wraps the whole encounter as a situation: an objective beyond "kill everything", a terrain feature, the reason the fight exists in the campaign, and how it escalates or ends. The math and the situation are inseparable — a correct budget with no situation points nowhere, and a vivid scene with no math is unrunnable. Persists an `encontro` entity through `rpg-preserve`.
+
+### rpg-embate-builder — the non-combat mechanical layer
+
+The sibling of `rpg-encounter-builder` for everything the dice resolve without a sword: swaying a council, losing a pursuer, researching a forbidden truth, breaching a keep unseen, a single white-knuckle Acrobatics leap. It is **scalable** — it handles a single dramatic check (DC + the four degrees of success + a fail-forward consequence) and a full structured **Victory Points challenge** alike, and it ships the four official PF2e subsystem presets (Influence, Chase, Research, Infiltration) plus a generic VP model. Given party level and size, it sizes the VP target and thresholds against the official scale (quick 3–5, long 7–10, most-of-a-session 15–25, adventure 25–50), anchors every DC to the Level-Based and Simple DC tables, and shows the VP arithmetic. Then it wraps the challenge as a situation grounded in the design lessons of skill challenges: it **measures a world-state** (the council's favor, the pursuer's distance) rather than abstract successes, describes the **situation not a fixed skill list** (problem, not puzzle), and makes every failure **fail forward** — a complication or a new path, never a dead end. Persists a `desafio` entity through `rpg-preserve` (optionally with a `relogio` clock for the VP track).
 
 ### rpg-gm-run-sheet — the table overlay
 
@@ -50,20 +55,22 @@ The gamemaster kit communicates with the rest of the ecosystem **via the Obsidia
   region/city/loc/npc ─────────▶ npc/local/faccao entities ──read──▶ all skills
                                  frente/relogio (ENTITY) ◀──write── front-tracker (via rpg-preserve)
                                  sessao/encontro (ENTITY) ◀──write── prep + encounter (via rpg-preserve)
+                                 desafio (ENTITY) ◀──────write────── embate-builder (via rpg-preserve)
                                  run-sheet (loose printable) ◀───────────────────── gm-run-sheet
 ```
 
-## Three new vault entity types
+## Four new vault entity types
 
-Installing `rpg-gamemaster` and running `rpg-front-tracker` or `rpg-encounter-builder` will write entities of three new types. These are defined in the `rpg-vault-guardian` schema (`scripts/schema.mjs`) and live in their own folders:
+Installing `rpg-gamemaster` and running `rpg-front-tracker`, `rpg-encounter-builder`, or `rpg-embate-builder` will write entities of four new types. These are defined in the `rpg-vault-guardian` schema (`scripts/schema.mjs`) and live in their own folders:
 
 | Entity type | Folder | Written by | What it holds |
 |---|---|---|---|
 | `frente` | `frentes/` | rpg-front-tracker | impulse, impending doom, status (`active`/`dormant`/`resolved`), linked faction and antagonist |
 | `relogio` | `relogios/` | rpg-front-tracker | segments (4/6/8), filled count, status (`ticking`/`filled`/`paused`), linked front |
 | `encontro` | `encontros/` | rpg-encounter-builder | threat tier, party level/size, creature refs, location, session link |
+| `desafio` | `desafios/` | rpg-embate-builder | subsystem (influence/chase/research/infiltration/generic), VP format, scale, VP target, party level; linked location/npcs/faction/clock |
 
-If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-init` again to add the `frentes/`, `relogios/`, and `encontros/` folders.
+If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-init` again to add the `frentes/`, `relogios/`, `encontros/`, and `desafios/` folders.
 
 ## Install
 
@@ -73,7 +80,7 @@ If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-in
 /reload-plugins
 ```
 
-Confirm with `/skills` (you should see the four `rpg-*` skills: `rpg-front-tracker`, `rpg-session-prep`, `rpg-encounter-builder`, `rpg-gm-run-sheet`).
+Confirm with `/skills` (you should see the five `rpg-*` skills: `rpg-front-tracker`, `rpg-session-prep`, `rpg-encounter-builder`, `rpg-embate-builder`, `rpg-gm-run-sheet`).
 
 For persistence, also install `rpg-vault-guardian` — the gamemaster skills write all vault entities through its `rpg-preserve` write gate. Without it, the skills produce output but will not persist to disk.
 
@@ -84,8 +91,9 @@ New here? Run `/rpg-gamemaster-help` for a guided tour of the kit's workflows.
 1. **Between sessions:** `rpg-front-tracker` — advance the clocks based on last session; update `frente` + `relogio` entities.
 2. **Prep day:** `rpg-session-prep` — read the updated world state, assemble the one-pager; write the `sessao` entity.
 3. **Encounter math (if needed):** `rpg-encounter-builder` — balance the flagged fights; write `encontro` entities.
-4. **Sitting down to run:** `rpg-gm-run-sheet` — compress everything to one printable page.
-5. **After the session:** `rpg-front-tracker` again — advance the clocks to reflect what the players did.
+4. **Non-combat challenges (if needed):** `rpg-embate-builder` — structure the social/chase/research/infiltration scenes and dramatic checks; write `desafio` entities.
+5. **Sitting down to run:** `rpg-gm-run-sheet` — compress everything to one printable page.
+6. **After the session:** `rpg-front-tracker` again — advance the clocks to reflect what the players did.
 
 ## Conventions
 

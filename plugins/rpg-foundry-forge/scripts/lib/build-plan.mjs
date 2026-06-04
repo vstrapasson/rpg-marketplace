@@ -130,6 +130,24 @@ export function planBuild(graph, manifest) {
       });
     }
   }
+  // 4b-bis. Challenge (desafio) journals — challenge structure + DC table +
+  //         degrees/fail-forward + read-aloud, plus a VP progress-clock page
+  //         (segments = vp_target). Realized via create-quest-journal (generic).
+  for (const note of (graph.byType?.desafio || [])) {
+    const vpTarget = Number(note.frontmatter?.vp_target) || null;
+    const singleCheck = note.frontmatter?.scale === 'single-check';
+    push({
+      id: `journal:desafio:${note.name}`,
+      concern: 'journal',
+      op: 'create',
+      entity: { type: 'desafio', name: note.name },
+      tool: 'create-quest-journal (challenge: structure + DCs + VP clock page) [+ request-player-rolls live]',
+      args: { title: note.name, body: note.body, folderName: journalFolder(note), vpTarget, singleCheck },
+      judgment: ['DC table + degrees of success', 'VP target→clock segments', 'read-aloud', 'skill→rollType map'],
+      dependsOn: [],
+      serializeGroup: null,
+    });
+  }
   // 4c. Campaign dashboard from acts (one)
   const atos = graph.byType?.ato || [];
   if (atos.length) {
@@ -213,7 +231,7 @@ export function diffManifest(graph, manifest) {
       (target ? alreadyBuilt : toBuild).push({ concern, type: n.type, name: n.name });
     }
   }
-  const journaled = [...(graph.byType?.quest || []), ...(graph.narrativeLocals || [])];
+  const journaled = [...(graph.byType?.quest || []), ...(graph.byType?.desafio || []), ...(graph.narrativeLocals || [])];
   for (const n of journaled) {
     const target = isBuilt(manifest, { concern: 'journal', entity: { type: n.type, name: n.name } });
     (target ? alreadyBuilt : toBuild).push({ concern: 'journal', type: n.type, name: n.name });

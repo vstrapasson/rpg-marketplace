@@ -42,14 +42,14 @@ export async function checkVault(vaultDir, unitName) {
     return { checks: out, graph: null };
   }
   if (!unitName) {
-    out.push({ check: 'unit', status: 'warn', critical: false, detail: 'no compile unit given (pass a sessao/encontro note name)' });
+    out.push({ check: 'unit', status: 'warn', critical: false, detail: 'no compile unit given (pass a sessao/encontro/desafio note name)' });
     return { checks: out, graph: null };
   }
   const graph = resolveUnit(index, unitName);
   if (!graph.root) {
     out.push({ check: 'unit', status: 'fail', critical: true, detail: `unit "${unitName}" not found in vault` });
   } else if (graph.unsupported) {
-    out.push({ check: 'unit', status: 'fail', critical: true, detail: `unit "${unitName}" is type "${graph.unit.type}" — only sessao/encontro are supported in v0.1` });
+    out.push({ check: 'unit', status: 'fail', critical: true, detail: `unit "${unitName}" is type "${graph.unit.type}" — only sessao/encontro/desafio are supported` });
   } else if ((graph.missing || []).length) {
     const list = graph.missing.map((m) => `${m.from}.${m.field} → [[${m.name}]]`).join('; ');
     out.push({ check: 'unit-links', status: 'fail', critical: true, detail: `${graph.missing.length} broken link(s) — fix in the vault first: ${list}` });

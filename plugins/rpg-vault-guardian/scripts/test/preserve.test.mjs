@@ -51,6 +51,32 @@ test('validateCandidate rejects npc without role (required field)', async () => 
   assert.ok(report.issues.some((i) => i.code === 'missing-required' && i.field === 'role'));
 });
 
+test('validateCandidate approves a valid desafio (VP challenge)', async () => {
+  const fm = buildFrontmatter('desafio', {
+    subsystem: 'influence', vp_format: 'accumulating', scale: 'long',
+    vp_target: 7, party_level: 3, faction: '[[Culto do Inverno]]', status: 'draft',
+  });
+  const content = buildNoteContent(fm, 'Audiência no Conselho');
+  const report = await validateCandidate('Audiência no Conselho', content, 'desafio', VAULT);
+  assert.equal(report.summary.errors, 0);
+});
+
+test('validateCandidate rejects a desafio with a bad subsystem enum', async () => {
+  const fm = buildFrontmatter('desafio', { subsystem: 'persuasion', scale: 'long', status: 'draft' });
+  const content = buildNoteContent(fm, 'Enum Errado');
+  const report = await validateCandidate('Enum Errado', content, 'desafio', VAULT);
+  assert.ok(report.summary.errors > 0);
+  assert.ok(report.issues.some((i) => i.code === 'bad-enum' && i.field === 'subsystem'));
+});
+
+test('validateCandidate flags a desafio whose faction points at the wrong type', async () => {
+  // Lich is an inimigo, not a faccao
+  const fm = buildFrontmatter('desafio', { subsystem: 'influence', faction: '[[Lich]]', status: 'draft' });
+  const content = buildNoteContent(fm, 'Alvo Errado Desafio');
+  const report = await validateCandidate('Alvo Errado Desafio', content, 'desafio', VAULT);
+  assert.ok(report.issues.some((i) => i.code === 'wrong-target-type' && i.field === 'faction'));
+});
+
 test('writeEntityFile creates file at the correct path', async () => {
   const tmpVault = join(tmpdir(), 'rpg-preserve-test-' + Date.now());
   const fm = buildFrontmatter('regiao', { status: 'stub' });

@@ -41,3 +41,17 @@ test('gamemaster types map to folders and keep the registry valid', () => {
   assert.equal(relationsFor('encontro').creatures.target, 'inimigo');
   assert.deepEqual(checkSchemaIntegrity(), []); // targets known, enums have values
 });
+
+test('desafio (non-combat challenge) maps to its folder, fields, and relations', () => {
+  assert.equal(folderForType('desafio'), 'desafios');
+  assert.equal(typeForFolder('desafios'), 'desafio');
+  assert.deepEqual(requiredFields('desafio'), ['type']);
+  assert.deepEqual(fieldDef('desafio', 'subsystem').values,
+    ['influence', 'chase', 'research', 'infiltration', 'generic']);
+  assert.deepEqual(fieldDef('desafio', 'vp_format').values,
+    ['accumulating', 'diminishing', 'multiple']);
+  assert.equal(relationsFor('desafio').location.target, 'local');
+  assert.equal(relationsFor('desafio').npcs.many, true);
+  assert.equal(relationsFor('desafio').clock.target, 'relogio');
+  assert.deepEqual(checkSchemaIntegrity(), []); // still valid after adding desafio
+});

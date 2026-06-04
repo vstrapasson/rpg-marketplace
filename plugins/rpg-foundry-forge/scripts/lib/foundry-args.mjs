@@ -87,6 +87,7 @@ export function journalFolder(note) {
     case 'frente': return 'Fronts';
     case 'npc': return 'NPCs';
     case 'local': return 'Locations'; // narrative-location handout
+    case 'desafio': return 'Challenges'; // non-combat challenge (skill/social/chase/etc.)
     default: return undefined; // dashboard → root
   }
 }
