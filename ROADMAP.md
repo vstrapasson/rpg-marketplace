@@ -43,12 +43,8 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 3. **Speaker → `jogador` mapping.** Craig gives Discord usernames; map once to PCs + GM, stored in the campaign bible/config. Ties to **A2** (party-forge supplies the roster).
 4. **Retention + consent.** Recording requires consent. Keep the raw transcript in the vault (gitignored, like `local/`?) or only the distilled recap + an audio link.
 
-### A2. `rpg-party-forge` / session-zero — the players' side 🔬
-- **Home:** loremaster (or gamemaster) · **Size:** M
-- The kit is 100% GM-facing. `jogador` is consumed by `ownership-forge` but **no skill authors it**. PCs float disconnected from the clue map and fronts.
-- **Does:** runs a session-zero intake to build each PC — concept, belief/bond/flaw, and the hook tying them to a faction/front/clue/region — and captures party composition. Persists `jogador` entities.
-- **Bonus (mechanical):** party **level and size** become canonical instead of re-asked every time — `encounter-builder` and `embate-builder` both require them. A party entity removes that friction.
-- **Persists / feeds:** `jogador`; feeds `ownership-forge`, and the level/size of both builders.
+### A2. `rpg-party-forge` / session-zero — the players' side ✅ SHIPPED (gamemaster 0.3.0)
+- **Shipped:** `rpg-party-forge` in `rpg-gamemaster` — runs a session zero, builds each PC (belief + active wound, want/need, contradiction, table voice) **anchored to the world** by a hook, with a GM-secret convergence layer, and persists `jogador` via `rpg-preserve`. The `jogador` schema gained a `region` relation (guardian 1.2.0). Party **level/size** are captured in a loose `party-<slug>.md` overview the encounter/embate builders now read instead of re-asking. See the `rpg-gamemaster` README. *(Built; chose gamemaster home, no new party entity — composition lives in the loose overview. The player-handout is offered, secrets stripped.)*
 
 ### A3. `rpg-creature-builder` — custom statblocks 🔬
 - **Home:** gamemaster · **Size:** M–L

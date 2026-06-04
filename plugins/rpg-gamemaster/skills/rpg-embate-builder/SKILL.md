@@ -47,7 +47,7 @@ The two layers are inseparable. The framework for the situation layer is in `ref
 
 | Source | What you need | How to find it |
 |---|---|---|
-| Party level + size | REQUIRED for honest DCs — never assume silently; confirm both, or state your assumption aloud and flag the math as approximate. | Ask the GM, or name the assumption. |
+| Party level + size | REQUIRED for honest DCs — never assume silently; confirm both, or state your assumption aloud and flag the math as approximate. | Read the **party overview** (`party-*.md`, written by `rpg-party-forge`) and confirm; else ask the GM, or name the assumption. |
 | Scene or threat brief | What the challenge is about, who opposes it, what the stakes are | Told directly or read from a `sessao` / `frente` handoff |
 | Subsystem + scale | Influence / Chase / Research / Infiltration / generic; and single-check vs. quick/long/session/adventure | Elicit in co-creation, or pick and name the assumption |
 | Vault `npc` / `faccao` notes | The influence targets, the opposing faction, exact vault names | Glob `npcs/` / `faccoes/` → Read by exact name |

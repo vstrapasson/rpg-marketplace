@@ -10,7 +10,7 @@
 
 This skill needs **three things** it should *draw out*, not assume:
 
-1. **Party level and size** — REQUIRED. The math is meaningless without both. Never assume *silently* — confirm, or (on "just run with it") state your assumption aloud and flag the math as approximate.
+1. **Party level and size** — REQUIRED. The math is meaningless without both. **Check the party overview first** — Glob the vault root for `party-*.md` (or the campaign bible's Party section, written by `rpg-party-forge`); if present, read `Nível`/`Tamanho` and *confirm* rather than asking cold. Otherwise never assume *silently* — confirm, or (on "just run with it") state your assumption aloud and flag the math as approximate.
 2. **The threat tier** — how hard should this fight be? (trivial / low / moderate / severe / extreme). If the GM isn't sure, offer the options and the stakes for each.
 3. **The fight's purpose** — what is this encounter *for* in the campaign? What happens if the players skip it, win it, or lose it differently than expected?
 

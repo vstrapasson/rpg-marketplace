@@ -10,7 +10,7 @@
 
 This skill needs **four things** it should *draw out*, not assume:
 
-1. **Party level and size** — REQUIRED for honest DCs. Never assume *silently* — confirm, or (on "just run with it") state your assumption aloud and flag the math as approximate.
+1. **Party level and size** — REQUIRED for honest DCs. **Check the party overview first** — Glob the vault root for `party-*.md` (or the campaign bible's Party section, written by `rpg-party-forge`); if present, read `Nível`/`Tamanho` and *confirm* rather than asking cold. Otherwise never assume *silently* — confirm, or (on "just run with it") state your assumption aloud and flag the math as approximate.
 2. **The shape: single check or VP challenge** — one dramatic beat, or a scene resolved over many rolls? If the GM isn't sure, read it from the stakes and offer your read.
 3. **The subsystem** — Influence / Chase / Research / Infiltration / generic. This picks the preset structure.
 4. **The challenge's purpose** — what is this *for* in the campaign? What changes if the players ace it, scrape through, or fail?

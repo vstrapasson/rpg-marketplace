@@ -1,8 +1,8 @@
 # RPG Gamemaster
 
-The **session prep and run layer** for a Pathfinder 2e campaign — the bridge from a built world to a runnable session. Five skills that advance the living world between sessions, assemble a one-page session plan, balance encounter math, structure non-combat challenges, and produce the GM overlay for the table. Tool-agnostic: no specific VTT, no external compendium; creature data and rules come from the [Archives of Nethys](https://2e.aonprd.com/) category pages only.
+The **session prep and run layer** for a Pathfinder 2e campaign — the bridge from a built world to a runnable session, plus the session zero that brings the players into it. Six skills: a **session zero** that builds the player characters and captures the party, then the GM-side loop that advances the living world between sessions, assembles a one-page session plan, balances encounter math, structures non-combat challenges, and produces the GM overlay for the table. Tool-agnostic: no specific VTT, no external compendium; creature data and rules come from the [Archives of Nethys](https://2e.aonprd.com/) category pages only.
 
-Default tone is **dark-leaning (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. All five skills inherit tone from the campaign bible; they do not reset it.
+Default tone is **dark-leaning (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. All six skills inherit tone from the campaign bible; they do not reset it.
 
 ## Philosophy
 
@@ -14,13 +14,18 @@ The kit is grounded in working TTRPG methodology: Sly Flourish's *Return of the 
 
 | Skill | What it makes | When to reach for it |
 |---|---|---|
+| **rpg-party-forge** | the player characters (`jogador` entities) and the party overview — each PC anchored to the world by a hook, with a GM-secret convergence layer | session zero, before the campaign runs |
 | **rpg-front-tracker** | a front sheet — impulse, grim portents, clocks, impending doom, and the "what the world did since last session" beat | between sessions, before prep |
 | **rpg-session-prep** | a one-page runnable session plan (Lazy DM 8 steps, secrets as the spine) | preparing the upcoming game |
 | **rpg-encounter-builder** | a balanced PF2e encounter (XP budget shown, wrapped as a situation) | when session-prep flags a fight that needs math |
 | **rpg-embate-builder** | a non-combat challenge — single check or a Victory Points subsystem (social/chase/research/infiltration), DCs shown, wrapped as a situation | when a scene is resolved by skills, not swords |
 | **rpg-gm-run-sheet** | a compact printable table overlay — checklist, clocks, NPC quick-refs, backstops | sitting down to run |
 
-## The five skills
+## The six skills
+
+### rpg-party-forge — session zero / the players' side
+
+The one player-facing skill in an otherwise GM-facing kit. It runs a session zero and builds each player character: concept, a core belief and an active wound, a want pulling against a need, a contradiction, and a performable table voice — the same inside-out engine the loremaster's NPC creator uses, tuned for a character the *player* co-owns. What makes it a party-builder and not just a character-builder is the second layer: every PC is **anchored to the world** by a hook (a faction, region, location, front, or clue named by exact vault name), and carries a **GM-secret layer** — a planted seed, a hidden tie to the antagonist, and a convergence that crosses another PC's thread — so five backstories become one party with a shared spine the players don't see yet. It captures party **level and size** in a loose party overview so `rpg-encounter-builder` and `rpg-embate-builder` stop re-asking. Persists each PC as a `jogador` entity through `rpg-preserve` (the first kit skill to author that type); offers a player-safe handout with the secrets stripped. Hands the roster off to `rpg-ownership-forge` (Foundry actor ownership) and each PC's secret to `rpg-clue-mapper`.
 
 ### rpg-front-tracker — the living-world engine
 
@@ -56,6 +61,8 @@ The gamemaster kit communicates with the rest of the ecosystem **via the Obsidia
                                  frente/relogio (ENTITY) ◀──write── front-tracker (via rpg-preserve)
                                  sessao/encontro (ENTITY) ◀──write── prep + encounter (via rpg-preserve)
                                  desafio (ENTITY) ◀──────write────── embate-builder (via rpg-preserve)
+                                 jogador (ENTITY) ◀──────write────── party-forge (via rpg-preserve)
+                                 party-<slug> (loose) ◀───────────── party-forge (composition)
                                  run-sheet (loose printable) ◀───────────────────── gm-run-sheet
 ```
 
@@ -72,6 +79,8 @@ Installing `rpg-gamemaster` and running `rpg-front-tracker`, `rpg-encounter-buil
 
 If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-init` again to add the `frentes/`, `relogios/`, `encontros/`, and `desafios/` folders.
 
+`rpg-party-forge` also writes entities — `jogador` (player characters) — but that type is **not new**: `jogador` predates the gamemaster kit (it's consumed by the Foundry ownership skill), so its `jogadores/` folder already exists in every scaffolded vault. Party-forge is simply the first skill to *author* it. As of guardian 1.2.0 the `jogador` schema gained a `region` relation (a PC's home region, now a validated link), so re-validate older PC notes if you have them.
+
 ## Install
 
 ```
@@ -80,13 +89,15 @@ If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-in
 /reload-plugins
 ```
 
-Confirm with `/skills` (you should see the five `rpg-*` skills: `rpg-front-tracker`, `rpg-session-prep`, `rpg-encounter-builder`, `rpg-embate-builder`, `rpg-gm-run-sheet`).
+Confirm with `/skills` (you should see the six `rpg-*` skills: `rpg-party-forge`, `rpg-front-tracker`, `rpg-session-prep`, `rpg-encounter-builder`, `rpg-embate-builder`, `rpg-gm-run-sheet`).
 
 For persistence, also install `rpg-vault-guardian` — the gamemaster skills write all vault entities through its `rpg-preserve` write gate. Without it, the skills produce output but will not persist to disk.
 
 New here? Run `/rpg-gamemaster-help` for a guided tour of the kit's workflows.
 
 ## Typical session cycle
+
+**Before the campaign (once):** `rpg-party-forge` — run session zero; build the PCs (`jogador` entities) anchored to the world, and capture the party level/size the cycle below reads.
 
 1. **Between sessions:** `rpg-front-tracker` — advance the clocks based on last session; update `frente` + `relogio` entities.
 2. **Prep day:** `rpg-session-prep` — read the updated world state, assemble the one-pager; write the `sessao` entity.
