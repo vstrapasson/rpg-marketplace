@@ -18,6 +18,7 @@ Match the user's language in the filled-in content (headings may stay as-is or b
 - **PF2e stance:** deity/deities [..] · plane(s) [..] · threat family [..]
 - **Act turns:** I → [..] · II → [..] · III → [..]
 - **Foundation file:** [path]
+- **Visual style file:** [path to `campaign-visual-style-<slug>.md`, from rpg-art-director — the campaign's visual identity, inherited downward like tone] · [— if none yet]
 
 ## 2. Names Registry (reuse verbatim — never rename)
 | Name | What/who | First appeared in | Notes |
@@ -36,6 +37,7 @@ Match the user's language in the filled-in content (headings may stay as-is or b
 | Antagonist's faction | rpg-faction-creator | pending | — |
 | First key location | rpg-location-creator | pending | — |
 | Central artifact/relic | rpg-artifact-creator | pending (if the truth turns on an object) | — |
+| Visual style bible | rpg-art-director | pending (cross-cutting; run early to seed the look) | — |
 | Clue map | rpg-clue-mapper | pending (needs nodes) | — |
 
 ## 4. Handoff Queue (future moves, from off-stage notes)
