@@ -74,13 +74,8 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 - **Persists / feeds:** a soundtrack manifest (loose) or `local`-linked metadata; feeds the Foundry scene's Ambience once the MCP gap is closed.
 - **Dependency to track:** an MCP audio tool (upstream feature request to `foundry-vtt-mcp`, or a local patch like the existing scene-geometry / `imagePath` patches).
 
-### B2. `rpg-art-director` — art prompts for NPCs, items, scenes, locations 🔬 · ✅ high viability
-- **Home:** loremaster (cross-cutting) · **Size:** S–M
-- Almost pure prompt engineering — **no MCP needed to produce the prompt** — and there's precedent: `artifact-creator` already emits "visual description + art prompt", and `actor-forge` already does token art via ComfyUI (:8000, SDXL). This generalizes that into one skill across entity types.
-- **Does:** reads a vault entity (`npc`, `local`, `regiao`, `item`, or a scene brief), extracts its visual DNA from the existing description, and emits a **structured image prompt** — subject + attributes, composition, style anchor, lighting, palette, negative prompt, aspect ratio — targetable at ComfyUI/SDXL (already wired), Midjourney, DALL·E, etc.
-- **Consistency layer:** a per-campaign **style bible** (medium, palette, rendering, era, recurring motifs) so every portrait/scene shares a coherent look — the visual analogue of the campaign bible's tone spectrum.
-- **Persists / feeds:** art prompts (in the entity body or a loose `art-prompts-<slug>.md`); the image gen reuses the existing ComfyUI token-art pipeline, or the GM runs the prompt anywhere and imports the PNG (narrative-handout pattern).
-- **Why easy:** lowest dependency footprint of any item here; ships value immediately and deepens the two places art already lives (artifacts, tokens).
+### B2. `rpg-art-director` — art prompts + campaign visual style bible ✅ SHIPPED (loremaster 0.3.0)
+- **Shipped:** `rpg-art-director` in `rpg-loremaster` — the third system-agnostic creator. Two modes: (A) a campaign **visual style bible** (`campaign-visual-style-<slug>.md`, the visual analogue of the tone spectrum, injected downward like tone); (B) extracts an entity's **visual DNA** from its existing description and renders **multi-target, SDXL-first** prompts (Stable Diffusion/ComfyUI primary + Midjourney `--ar/--style/--cref` + Flux/DALL·E on request), with framing/aspect ratio per use. Covers npc/local/regiao/city/faccao/item/scene; defers relics to `artifact-creator`. **Prompt-only** — image generation stays a documented manual step (reuses `local/comfyui-gen-token.py` + the `journal-forge` handout pattern + `actor-forge` `update-token imagePath`); the skill never calls ComfyUI. See the `rpg-loremaster` README. *(Built; chose loremaster prompt-only, companion style-bible file, multi-target SDXL-first, full coverage.)*
 
 ---
 

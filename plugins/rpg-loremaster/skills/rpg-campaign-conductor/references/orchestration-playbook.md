@@ -23,6 +23,7 @@ The conductor's operating manual: the kit map, the sequence logic, the per-skill
 | `rpg-location-creator` | a bounded site (dungeon, lair, ruin) | premise + ecology ("why not cleared?") | world layer (bottom) |
 | `rpg-npc-creator` | a single character | personality, backstory, hooks | cross-cutting (bundled) |
 | `rpg-artifact-creator` | a single legendary object (artifact/relic) | narrative node + price | cross-cutting (system-agnostic) |
+| `rpg-art-director` | image-gen prompts + a campaign visual style bible | visual identity (the look) | cross-cutting (system-agnostic) |
 | `rpg-clue-mapper` | the clue map / revelation list | information flow (Three Clue Rule) | **investigation layer** — consumes the rest |
 
 The conductor invokes these; it never reproduces their work.
@@ -38,7 +39,7 @@ Soft order (the default spiral, adapt to need):
 
 Nodes can be built in any order the campaign needs; the only firm constraints are *foundation first* and *clue-mapper after its inputs exist*.
 
-**Cross-cutting skills (`rpg-npc-creator`, `rpg-artifact-creator`)** are not fixed steps — build them when their owner/site/truth exists. A named character or object is deepened once something in the world points at it. The exception: if the campaign's **central truth turns on an object** (a McGuffin), the artifact can be built right after the foundation, since it *is* part of the spine.
+**Cross-cutting skills (`rpg-npc-creator`, `rpg-artifact-creator`, `rpg-art-director`)** are not fixed steps — build them when their owner/site/truth exists. A named character or object is deepened once something in the world points at it. The exception: if the campaign's **central truth turns on an object** (a McGuffin), the artifact can be built right after the foundation, since it *is* part of the spine. **`rpg-art-director` is cross-cutting too, but its *style bible* mode is best run early** (right after the foundation, so it inherits tone and central truth) — it establishes the campaign's visual identity, which then injects downward like tone; its *per-entity prompt* mode runs on demand whenever a node needs art.
 
 **Session zero is the bridge to the gamemaster kit.** Once the foundation and the starting world nodes (a region, a settlement, the antagonist's faction) exist, `rpg-party-forge` (gamemaster) runs session zero: it builds the PCs as `jogador` entities and **anchors each one's hook to a real node** — a `faccao`/`regiao`/`local`/front/clue — so the players enter a world that already has a place for them. It emits handoffs back up (a hook target that doesn't exist yet → its creator) and forward to `rpg-clue-mapper` (a PC's GM-secret becomes a revelation). After session zero, control passes to the gamemaster prep cycle (front-tracker → session-prep → …). Party-forge is *cross-cutting like the NPC creator* — run it once there's enough world for the PCs to grab onto, not on a fixed step.
 
@@ -53,6 +54,7 @@ Each creator skill ends with **off-stage notes** grouped by downstream skill. Th
 - **`rpg-location-creator`** emits → "rpg-npc-creator" (a named inhabitant), "rpg-faction-creator" (if it reveals an org), "rpg-artifact-creator" (the prize at its heart). Consumes → a "seat of power"/site handoff from faction/city/region + party level.
 - **`rpg-npc-creator`** emits → relationships/sites that may need building. Consumes → a named character from any handoff + the campaign's truth and tone.
 - **`rpg-artifact-creator`** emits → "rpg-npc-creator" (its maker, guardian, or hunter), "rpg-faction-creator" (who hunts or guards it), "a location-creator" (where it's kept or was made), "rpg-clue-mapper" (clues that lead to it). Consumes → a relic/object named by faction/location/foundation + the central truth and tone.
+- **`rpg-art-director`** emits → the **visual style bible** (`campaign-visual-style-<slug>.md`, registered in the bible's spine and injected downward like tone), per-entity **art prompts**, and Foundry-realization handoffs ("rpg-actor-forge" for a token image, "rpg-journal-forge" for a narrative handout `<img>`); plus handoffs to a creator if the prompt's subject names a node that doesn't exist yet. Consumes → any node's **visual seed** (npc appearance, location feature, faction markers, item material) + the central truth and tone (for the style bible). Emits prompts only — image generation is a documented manual step.
 - **`rpg-clue-mapper`** emits → handoffs back up for any node it needs that doesn't exist yet. Consumes → the foundation's "GM knows, players discover" truths (revelations) + the existing nodes (everything above) + **PC hooks and GM-secrets from `rpg-party-forge`** (each PC's seed is a revelation to wire in).
 
 **Routing rule:** when an off-stage note names a downstream skill, add it to the bible's handoff queue. When the user (or the spiral) picks it up, feed that exact note — plus the campaign identity — into the named skill.

@@ -44,12 +44,12 @@ node scripts/gen-mocs.mjs --vault <dir>        # regenerate _indices/ MOCs
 
 ## rpg-loremaster architecture
 
-Seven stateless creator skills (`skills/rpg-*/SKILL.md` + `references/`) plus one orchestrator and one reviewer:
+Nine stateless creator skills (`skills/rpg-*/SKILL.md` + `references/`) plus one orchestrator and one reviewer:
 
 - **The conductor (`rpg-campaign-conductor`) is the memory between skills.** Each creator skill makes one artifact and ends; the conductor sequences them, injects the campaign's identity downward, carries handoffs forward, and prevents drift. **All campaign state lives in a `campaign-bible-<slug>.md` file, never in chat** — that's what lets a fresh session resume. The orchestration contract is in `references/orchestration-playbook.md`.
 - **`agents/rpg-campaign-reviewer.md`** is a non-interactive subagent (`tools: Read, Glob, Grep`, `model: sonnet`) — it audits a campaign folder against its bible and reports; it never edits.
 - Shared reference files (`co-creation.md`, `output-template.md`, `tone-spectrum.md`) are **duplicated per skill** by design (skills must be self-contained) — edit the copy in each skill, not a shared one.
-- **`rpg-npc-creator` is the one *system-agnostic* creator** — it builds NPCs from personality/backstory (belief, wound, contradiction, voice), not PF2e stat blocks, and uses no Archives of Nethys links, so the PF2e-links rule below doesn't apply to it. Its `references/` omit a canon quickref: `co-creation.md`, `tone-spectrum.md`, `output-template.md`, `npc-frameworks.md`.
+- **The *system-agnostic* creators are `rpg-npc-creator`, `rpg-artifact-creator`, and `rpg-art-director`** — they build from personality/story/image (belief, wound, contradiction, voice; provenance, will, price; subject, mood, palette), not PF2e stat blocks, and use no Archives of Nethys links, so the PF2e-links rule below doesn't apply to them. `rpg-art-director` is **prompt-only**: it emits image-gen prompts + a `campaign-visual-style-<slug>.md` style bible and hands off; it never generates or places images (that's the manual ComfyUI pipeline in `local/`, and the forge skills `rpg-actor-forge`/`rpg-journal-forge`). The npc-creator's `references/` omit a canon quickref: `co-creation.md`, `tone-spectrum.md`, `output-template.md`, `npc-frameworks.md`.
 
 ## Conventions
 
