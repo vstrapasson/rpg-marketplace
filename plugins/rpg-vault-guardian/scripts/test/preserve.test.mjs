@@ -77,6 +77,32 @@ test('validateCandidate flags a desafio whose faction points at the wrong type',
   assert.ok(report.issues.some((i) => i.code === 'wrong-target-type' && i.field === 'faction'));
 });
 
+test('validateCandidate approves a valid jogador (PC with faction, location, region)', async () => {
+  const fm = buildFrontmatter('jogador', {
+    player: 'Ana', faction: '[[Culto do Inverno]]',
+    location: '[[Cidade de Pedra]]', region: '[[Norte Gelado]]', status: 'active',
+  });
+  const content = buildNoteContent(fm, 'Thessaly');
+  const report = await validateCandidate('Thessaly', content, 'jogador', VAULT);
+  assert.equal(report.summary.errors, 0);
+});
+
+test('validateCandidate rejects a jogador missing the required player field', async () => {
+  const fm = buildFrontmatter('jogador', { location: '[[Cidade de Pedra]]', status: 'stub' });
+  const content = buildNoteContent(fm, 'Sem Player');
+  const report = await validateCandidate('Sem Player', content, 'jogador', VAULT);
+  assert.ok(report.summary.errors > 0);
+  assert.ok(report.issues.some((i) => i.code === 'missing-required' && i.field === 'player'));
+});
+
+test('validateCandidate flags a jogador whose region points at the wrong type', async () => {
+  // Lich is an inimigo, not a regiao — only catchable now that region is a declared relation
+  const fm = buildFrontmatter('jogador', { player: 'Bea', region: '[[Lich]]', status: 'draft' });
+  const content = buildNoteContent(fm, 'Regiao Errada');
+  const report = await validateCandidate('Regiao Errada', content, 'jogador', VAULT);
+  assert.ok(report.issues.some((i) => i.code === 'wrong-target-type' && i.field === 'region'));
+});
+
 test('writeEntityFile creates file at the correct path', async () => {
   const tmpVault = join(tmpdir(), 'rpg-preserve-test-' + Date.now());
   const fm = buildFrontmatter('regiao', { status: 'stub' });

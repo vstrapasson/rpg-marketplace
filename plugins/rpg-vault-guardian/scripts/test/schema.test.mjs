@@ -18,6 +18,14 @@ test('required fields and relations', () => {
   assert.equal(relationsFor('sessao').transcript.linkOnly, true);
 });
 
+test('jogador relations include region (PC home region is a validated link)', () => {
+  assert.deepEqual(requiredFields('jogador'), ['type', 'player']);
+  assert.equal(relationsFor('jogador').faction.target, 'faccao');
+  assert.equal(relationsFor('jogador').location.target, 'local');
+  assert.equal(relationsFor('jogador').region.target, 'regiao');
+  assert.deepEqual(checkSchemaIntegrity(), []); // still valid after adding region
+});
+
 test('fieldDef covers entity field and common field', () => {
   assert.deepEqual(fieldDef('npc', 'role').values, ['ally', 'neutral', 'antagonist', 'patron']);
   assert.equal(fieldDef('npc', 'status').type, 'enum');

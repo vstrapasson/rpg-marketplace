@@ -10,7 +10,7 @@
     {
       "name": "rpg-vault-guardian",
       "description": "Obsidian vault integrity guardian for RPG campaigns.",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "source": "./plugins/rpg-vault-guardian",
       "category": "productivity"
     },
@@ -23,8 +23,8 @@
     },
     {
       "name": "rpg-gamemaster",
-      "description": "Session prep and run layer for PF2e campaigns — runnable sessions, fronts and clocks, balanced encounters, non-combat challenges (Victory Points), and a GM run sheet.",
-      "version": "0.2.0",
+      "description": "Session prep and run layer for PF2e campaigns — session zero / party builder, runnable sessions, fronts and clocks, balanced encounters, non-combat challenges (Victory Points), and a GM run sheet.",
+      "version": "0.3.0",
       "source": "./plugins/rpg-gamemaster",
       "category": "creativity"
     },

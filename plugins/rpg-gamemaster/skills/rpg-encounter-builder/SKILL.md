@@ -39,7 +39,7 @@ The framework for the situation layer is in `references/encounter-as-situation.m
 
 | Source | What you need | How to find it |
 |---|---|---|
-| Party level + size | REQUIRED — never assume silently; confirm both, or state your assumption aloud and flag the math as approximate. | Ask the GM, or name the assumption. |
+| Party level + size | REQUIRED — never assume silently; confirm both, or state your assumption aloud and flag the math as approximate. | Read the **party overview** (`party-*.md`, written by `rpg-party-forge`) and confirm; else ask the GM, or name the assumption. |
 | Scene or threat brief | What the fight is about, who the enemies are, what the location is | Told directly or read from a `sessao` / `frente` handoff |
 | Vault `inimigo` notes | Existing statblocks, exact vault names | Glob `inimigos/` → Read by exact name |
 | `references/pf2e-encounter-math.md` | XP budget tables, per-creature XP, hazard XP, treasure by level, honesty rules | Load before computing any budget |
