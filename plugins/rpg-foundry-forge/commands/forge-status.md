@@ -16,7 +16,7 @@ import { loadManifest, pendingMapJobs } from "${PLUGIN}/scripts/lib/manifest.mjs
 import { diffManifest } from "${PLUGIN}/scripts/lib/build-plan.mjs";
 const vaultDir = process.cwd();
 const world = "<world>";          // fill in
-const unit = process.argv[1] || ""; // optional: scope to one sessao/encontro
+const unit = process.argv[1] || ""; // optional: scope to one sessao/encontro/desafio
 const manifest = await loadManifest(vaultDir, world);
 let diff = null;
 if (unit) {

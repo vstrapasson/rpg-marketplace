@@ -16,10 +16,10 @@ test('foldersFromSchema covers all schema types', () => {
     assert.ok(folders.includes(def.folder), `missing NON_ENTITY folder: ${def.folder}`);
   }
   assert.ok(folders.includes('_indices'), 'missing _indices');
-  assert.strictEqual(folders.length, 17, `expected 17 folders, found ${folders.length}`);
+  assert.strictEqual(folders.length, 18, `expected 18 folders, found ${folders.length}`);
 });
 
-test('initVault creates the 17 folders with .gitkeep', async () => {
+test('initVault creates the 18 folders with .gitkeep', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'rpg-init-'));
   try {
     const results = await initVault(dir);

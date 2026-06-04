@@ -26,6 +26,7 @@ You are a **non-interactive auditor** for a Foundry VTT session compiled from an
 - **C. Wrong dispositions** — `inimigo`/antagonist tokens hostile (-1); `ally`/`patron`/`jogador` friendly (1); `neutral` neutral (0). Flag mismatches.
 - **D. Unlinked quests** — every `quest` has a `journalId`; every `quest.giver` produced a `link-quest-to-npc`. Flag quests with no journal or givers not linked.
 - **E. Missing journals/dashboard** — `faccao`/`lore`/`frente` in the graph have journals; the acts produced a dashboard.
+- **E2. Missing challenge journals** — every `desafio` in the graph has a `journalId` (folder `Challenges`); a VP challenge (`scale` ≠ `single-check`) has its VP clock page (segments = `vp_target`). Flag challenges with no journal, or a VP challenge with no clock page.
 - **F. Ownership gaps** — every `jogador` maps to a Foundry user with their PC owned. Flag unowned PCs / unmapped players.
 - **G. Dangling manifest rows** — manifest ids with no matching vault entity (stale/renamed); vault entities in the graph with no manifest row (unbuilt).
 - **H. Unresolved vault links** — any `missing[]` from the resolver (a vault problem blocking a clean build).

@@ -28,7 +28,7 @@ For each pending job → `check-map-status(jobId)`; if complete, record the scen
 
 ## 1. Read → Resolve
 
-`loadVault(cwd)` → `resolveUnit(index, unitName)`. The unit must be a `sessao` or `encontro` (else tell the user it's unsupported in v0.1). If `graph.missing[]` is non-empty, **stop and report** the broken links — they are a vault problem; route the user back to the loremaster/gamemaster + guardian. Never invent the target.
+`loadVault(cwd)` → `resolveUnit(index, unitName)`. The unit must be a `sessao`, `encontro`, or `desafio` (else tell the user it's unsupported). If `graph.missing[]` is non-empty, **stop and report** the broken links — they are a vault problem; route the user back to the loremaster/gamemaster + guardian. Never invent the target.
 
 ## 2. Plan (dry-run) — approval gate
 
@@ -41,7 +41,8 @@ Execute steps **one MCP call at a time** (never parallel — serialize-writes ru
 2. **actor** → `rpg-actor-forge`: match the creature (judgment), `create-actor-from-compendium` (with `placement` on the scene from step 1), then `update-token` (disposition; optional `imagePath`) — serialized on that scene.
 3. **journal / dashboard** → `rpg-journal-forge`: quest journals + `link-quest-to-npc` (after the NPC exists), generic lore/faction/front journals, one campaign dashboard from acts.
 4. **encounter** (when the unit is an `encontro`, or for the session's encounters) → `rpg-encounter-forge`: ensures scene+lighting, places creatures by `party_level`/`threat`, stages treasure via `manage-world-items`. Serialize token placement on the encounter scene.
-5. **ownership** → `rpg-ownership-forge`: LAST, **approval-gated** (`assign-actor-ownership` with `confirmBulkOperation`).
+5. **challenge** (when the unit is a `desafio`, or for the session's challenges) → `rpg-embate-forge`: writes the challenge journal (structure, DCs, degrees/fail-forward, read-aloud) in folder `Challenges`, ensures the scene only if it has a `local`, renders the VP track as a clock page, and fires the skill checks via `request-player-rolls` (visibility-confirmed). Orders with the journal concern.
+6. **ownership** → `rpg-ownership-forge`: LAST, **approval-gated** (`assign-actor-ownership` with `confirmBulkOperation`).
 
 After **each** successful step, commit the returned ids:
 ```bash

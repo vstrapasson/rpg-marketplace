@@ -22,6 +22,7 @@ export const RELATIONS = {
   frente: { faction: { target: 'faccao' }, antagonist: { target: 'npc' }, clocks: { target: 'relogio', many: true }, act: { target: 'ato' } },
   relogio: { front: { target: 'frente' }, faction: { target: 'faccao' }, quest: { target: 'quest' } },
   encontro: { creatures: { target: 'inimigo', many: true }, location: { target: 'local' }, session: { target: 'sessao' }, treasure: { target: 'item', many: true }, act: { target: 'ato' } },
+  desafio: { location: { target: 'local' }, npcs: { target: 'npc', many: true }, session: { target: 'sessao' }, act: { target: 'ato' }, faction: { target: 'faccao' }, items: { target: 'item', many: true }, clock: { target: 'relogio' } },
 };
 
 // Which relation fields to FOLLOW when compiling downward (toward play).
@@ -32,6 +33,7 @@ const FOLLOW = {
   evento: ['location', 'participants', 'act'],
   quest: ['act', 'giver', 'npcs', 'locations', 'items', 'factions'],
   encontro: ['location', 'creatures', 'treasure', 'act'],
+  desafio: ['location', 'npcs', 'faction', 'items', 'act'],
   npc: ['location', 'faction', 'statblock'],
   jogador: ['faction', 'location'],
   faccao: ['headquarters'],
@@ -60,6 +62,7 @@ const CONCERNS = {
   evento: ['journals'],
   item: ['items'],
   encontro: ['encounters'],
+  desafio: ['journals'], // a challenge is realized as a journal (structure + DCs + VP clock page)
   regiao: [],
 };
 
@@ -76,7 +79,7 @@ function resolveField(index, note, field) {
 }
 
 // BFS over FOLLOW edges from a root note. For `sessao`, also pulls encounters
-// whose `session` points back to it (reverse edge).
+// and desafios whose `session` points back to it (reverse edge).
 function collect(index, rootName, opts = {}) {
   const root = index.get(rootName);
   if (!root) return { root: null, byName: new Map(), missing: [{ from: '(input)', field: 'unit', name: rootName }] };
@@ -87,7 +90,7 @@ function collect(index, rootName, opts = {}) {
 
   if (root.type === 'sessao') {
     for (const n of index.values()) {
-      if (n.type === 'encontro' && extractWikilinks(n.frontmatter?.session).includes(root.name)) {
+      if ((n.type === 'encontro' || n.type === 'desafio') && extractWikilinks(n.frontmatter?.session).includes(root.name)) {
         if (!byName.has(n.name)) { byName.set(n.name, n); queue.push(n); }
       }
     }
@@ -135,16 +138,22 @@ export function resolveEncontro(index, name) {
   return { unit: { type: 'encontro', name }, root, ...bucketize(byName), missing };
 }
 
+export function resolveDesafio(index, name) {
+  const { root, byName, missing } = collect(index, name);
+  return { unit: { type: 'desafio', name }, root, ...bucketize(byName), missing };
+}
+
 export function resolveSessao(index, name) {
   const { root, byName, missing } = collect(index, name);
   return { unit: { type: 'sessao', name }, root, ...bucketize(byName), missing };
 }
 
-// Dispatch by the unit note's type (sessao | encontro). Other types are future.
+// Dispatch by the unit note's type (sessao | encontro | desafio). Other types are future.
 export function resolveUnit(index, name) {
   const note = index.get(name);
   if (!note) return { unit: { type: null, name }, root: null, byType: {}, concerns: {}, missing: [{ from: '(input)', field: 'unit', name }] };
   if (note.type === 'sessao') return resolveSessao(index, name);
   if (note.type === 'encontro') return resolveEncontro(index, name);
+  if (note.type === 'desafio') return resolveDesafio(index, name);
   return { unit: { type: note.type, name }, root: note, byType: {}, concerns: {}, missing: [], unsupported: true };
 }

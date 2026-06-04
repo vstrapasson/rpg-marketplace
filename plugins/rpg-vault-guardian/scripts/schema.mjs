@@ -57,6 +57,14 @@ export const ENTITIES = {
       party_level: { type: 'number' }, party_size: { type: 'number' } },
     relations: { creatures: { target: 'inimigo', many: true }, location: { target: 'local' },
       session: { target: 'sessao' }, treasure: { target: 'item', many: true }, act: { target: 'ato' } } },
+  desafio: { folder: 'desafios', required: ['type'],
+    fields: { subsystem: { type: 'enum', values: ['influence', 'chase', 'research', 'infiltration', 'generic'] },
+      vp_format: { type: 'enum', values: ['accumulating', 'diminishing', 'multiple'] },
+      scale: { type: 'enum', values: ['single-check', 'quick', 'long', 'session', 'background', 'forefront'] },
+      vp_target: { type: 'number' }, party_level: { type: 'number' } },
+    relations: { location: { target: 'local' }, npcs: { target: 'npc', many: true },
+      session: { target: 'sessao' }, act: { target: 'ato' }, faction: { target: 'faccao' },
+      items: { target: 'item', many: true }, clock: { target: 'relogio' } } },
 };
 
 export const NON_ENTITY = {

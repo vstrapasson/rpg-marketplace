@@ -1,6 +1,6 @@
 ---
 name: rpg-forge-conductor
-description: Orchestrates compiling a validated RPG vault (built by rpg-vault-guardian / rpg-gamemaster) into a playable Foundry VTT session by driving the foundry-vtt-mcp server. Resolves a compile unit — a `sessao` or an `encontro` — into an entity graph, runs a dependency preflight, shows a dry-run plan for approval, then sequences the compiler skills (scenes+lighting, actors+tokens, journals, encounters, ownership) idempotently, holding state in an on-disk build manifest. Reads the vault as the contract; writes to Foundry only via MCP; never invents missing data. Use whenever the user wants to build, assemble, set up, compile, realize, or "montar/compilar/preparar/levar pro Foundry" a session or encounter from the vault. Triggers: "compila a sessão no Foundry", "monta o encontro no Foundry", "prepara a Sessão 1 no Foundry", "build/forge this session", "set up this encounter in Foundry", or the `/forge-compile` command.
+description: Orchestrates compiling a validated RPG vault (built by rpg-vault-guardian / rpg-gamemaster) into a playable Foundry VTT session by driving the foundry-vtt-mcp server. Resolves a compile unit — a `sessao`, an `encontro`, or a `desafio` — into an entity graph, runs a dependency preflight, shows a dry-run plan for approval, then sequences the compiler skills (scenes+lighting, actors+tokens, journals, encounters, challenges, ownership) idempotently, holding state in an on-disk build manifest. Reads the vault as the contract; writes to Foundry only via MCP; never invents missing data. Use whenever the user wants to build, assemble, set up, compile, realize, or "montar/compilar/preparar/levar pro Foundry" a session, encounter, or challenge from the vault. Triggers: "compila a sessão no Foundry", "monta o encontro no Foundry", "monta o desafio no Foundry", "prepara a Sessão 1 no Foundry", "build/forge this session", "set up this encounter in Foundry", or the `/forge-compile` command.
 ---
 
 # RPG Forge Conductor — compile the vault into a Foundry session
@@ -22,7 +22,7 @@ Two rules are load-bearing (hard-won — see references):
 
 ## When to use this skill
 
-Trigger on requests to build/compile/assemble a **session or encounter** into Foundry ("compila a Sessão 1", "monta a Emboscada na Cripta no Foundry", "forge this session"). Compile units in v0.1 are **`sessao`** and **`encontro`** only (ato/campaign are future — tell the user if they ask). Do **not** use this to author vault content (that's loremaster/gamemaster) or to validate the vault (that's the guardian).
+Trigger on requests to build/compile/assemble a **session, encounter, or challenge** into Foundry ("compila a Sessão 1", "monta a Emboscada na Cripta no Foundry", "monta o desafio do conselho no Foundry", "forge this session"). Compile units are **`sessao`**, **`encontro`**, and **`desafio`** (ato/campaign are future — tell the user if they ask). Do **not** use this to author vault content (that's loremaster/gamemaster) or to validate the vault (that's the guardian).
 
 ## The workflow at a glance
 
@@ -61,7 +61,10 @@ Build order and the skill for each concern:
 2. **Actors + tokens** → `rpg-actor-forge`
 3. **Journals (quests/lore/dashboard)** → `rpg-journal-forge`
 4. **Encounters** → `rpg-encounter-forge` (fuses a scene + creatures + treasure)
-5. **Ownership** → `rpg-ownership-forge` (last; approval-gated)
+5. **Challenges** → `rpg-embate-forge` (a `desafio` → challenge journal + optional scene + live rolls + VP clock)
+6. **Ownership** → `rpg-ownership-forge` (last; approval-gated)
+
+Challenges order alongside the other journals (concern rank `journal`), after scenes/actors/items and before ownership.
 
 Each compiler consumes its sub-graph + the manifest, returns the Foundry ids it created; **you** commit them to the manifest (single-writer).
 
