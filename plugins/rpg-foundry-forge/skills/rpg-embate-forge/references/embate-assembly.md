@@ -28,7 +28,10 @@ For each beat, request the roll. Arguments:
 
 After the roll, map the degree (crit success / success / failure / crit failure) to the VP award (default +2 / +1 / 0 / −1), advance the clock page, and narrate the **fail-forward** consequence the `desafio` body defines. Loop until a threshold/target resolves the challenge or the time limit (beats/rounds) runs out — and when it runs out, the bad outcome itself fails forward at the campaign level (the harbor closes *for now*, the quarry escapes *with a trail*).
 
-## 5. Hard rules (lessons)
+## 5. Runner macro (the one-click layer)
+Optionally install a hotbar macro that runs the whole challenge, via the **`create-macro`** MCP tool (foundry-mcp ≥ 0.10.0). It is **hybrid**: on run it asks *who rolls* — GM rolls for the selected party, or the checks are sent to the players (`@Check` button + a `createChatMessage` hook that aggregates each player's degree) — then maps every degree of success to VP via the award map (crit success +2 / success +1 / failure 0 / crit failure −1 by default) and advances the VP clock page (the page's `flags.foundry-mcp-bridge.vp`), firing threshold / fail-forward notes as VP crosses them. Bake the `desafio`'s `vp_target`, awards, beats (skill + DC), thresholds, and the clock `journalId`/`pageId` into the template in `references/embate-macro.md`; offer a `hotbarSlot`; record the returned `macroId`. For `scale: single-check`, set `clock: null` — the macro is one roll, no track. The macro runs **GM-owned**, so it can roll for any actor and write the clock with no per-actor ownership setup.
+
+## 6. Hard rules (lessons)
 - **Visibility before every `request-player-rolls`** — it's a required confirmation; ask if unsure.
 - **HTML, not Markdown, in journals** — `readaloud` / `gmnote` / `spaced` classes; Markdown is silently stripped.
 - **Prefer existing** journals/scenes by name — `update-quest-journal` over a duplicate.
