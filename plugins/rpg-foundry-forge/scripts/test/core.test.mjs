@@ -75,7 +75,7 @@ test('planBuild routes tactical→scene, narrative→journal handout, folders by
   // desafio → a Challenges journal carrying the VP target (for the clock page)
   const desafio = plan.steps.find((s) => s.id === 'journal:desafio:Audiência no Conselho');
   assert.ok(desafio && desafio.concern === 'journal');
-  assert.equal(desafio.args.folderName, 'Challenges');
+  assert.equal(desafio.args.folderName, 'Challenges/Influence');
   assert.equal(desafio.args.vpTarget, 7);
 });
 
@@ -134,6 +134,9 @@ test('foundry-args: disposition, enums, placement offset, lighting', () => {
   assert.equal(journalFolder({ type: 'quest', frontmatter: { act: '[[Ato II]]' } }), 'Ato II');
   assert.equal(journalFolder({ type: 'local' }), 'Locations');
   assert.equal(journalFolder({ type: 'desafio' }), 'Challenges');
+  assert.equal(journalFolder({ type: 'desafio', frontmatter: { subsystem: 'influence' } }), 'Challenges/Influence');
+  assert.equal(journalFolder({ type: 'npc' }), 'NPCs');
+  assert.equal(journalFolder({ type: 'npc', frontmatter: { region: '[[Whisperport]]' } }), 'NPCs/Whisperport');
   assert.equal(journalFolder({ type: 'ato' }), undefined);
   // item.category → Foundry item type (treasure-forge push)
   assert.equal(foundryItemType('consumable'), 'consumable');

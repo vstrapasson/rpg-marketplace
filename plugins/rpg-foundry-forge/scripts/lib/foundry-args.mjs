@@ -73,10 +73,10 @@ export function placementGrid(sceneDims = {}, count = 1) {
   return { type: 'coordinates', coordinates: coords };
 }
 
-// Journal folder for a note, per the HYBRID convention (one flat level, the
-// only thing the MCP's create-quest-journal `folderName` supports): quests group
-// by their act (runtime/chapter view); everything else groups by type (codex).
-// Returns undefined for the dashboard (lives at the root).
+// Journal folder for a note, per the HYBRID convention: quests group by their act
+// (runtime/chapter view); everything else groups by type (codex). May return a
+// nested `Parent/Child` PATH — create-quest-journal's `folderName` now creates the
+// hierarchy (foundry-mcp >= 0.12.0). Returns undefined for the dashboard (root).
 export function journalFolder(note) {
   switch (note?.type) {
     case 'quest': return extractWikilinks(note.frontmatter?.act)[0] || 'Quests';
@@ -85,9 +85,18 @@ export function journalFolder(note) {
     case 'faccao': return 'Factions';
     case 'lore': return 'Lore';
     case 'frente': return 'Fronts';
-    case 'npc': return 'NPCs';
+    case 'npc': {
+      // Sub-group by region when the note carries one (forward-looking: npcs aren't
+      // journals yet, and region usually comes via location→regiao); else flat.
+      const region = extractWikilinks(note.frontmatter?.region)[0];
+      return region ? `NPCs/${region}` : 'NPCs';
+    }
     case 'local': return 'Locations'; // narrative-location handout
-    case 'desafio': return 'Challenges'; // non-combat challenge (skill/social/chase/etc.)
+    case 'desafio': {
+      // Sub-group challenges by PF2e subsystem (influence/chase/research/...).
+      const sub = note.frontmatter?.subsystem;
+      return sub ? `Challenges/${sub.charAt(0).toUpperCase()}${sub.slice(1)}` : 'Challenges';
+    }
     default: return undefined; // dashboard → root
   }
 }
