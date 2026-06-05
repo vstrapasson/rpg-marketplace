@@ -12,7 +12,7 @@ import { runLocalPreflight } from "${PLUGIN}/scripts/lib/preflight.mjs";
 console.log(JSON.stringify(await runLocalPreflight(process.cwd(), "<unit name>"), null, 2));
 EOF
 ```
-- **MCP-side** (you call the tools): `get-world-info` (errors with "Foundry VTT module not connected" → STOP; tell the user to reload the world in Foundry (F5) or toggle *Game Settings → Foundry MCP Bridge → Enable*, then `/mcp` reconnect). `list-compendium-packs` (the canonical creature pack present, e.g. `pf2e.pathfinder-monster-core` → critical for actors). Inspect `update-token` for the `imagePath` field and presence of `get-scene-geometry`/`set-scene-lighting` → optional (degrade: skip token art / lighting+walls, warn).
+- **MCP-side** (you call the tools): `get-world-info` (errors with "Foundry VTT module not connected" → STOP; tell the user to reload the world in Foundry (F5) or toggle *Game Settings → Foundry MCP Bridge → Enable*, then `/mcp` reconnect). `list-compendium-packs` (the canonical creature pack present, e.g. `pf2e.pathfinder-monster-core` → critical for actors). Inspect `update-token` for the `imagePath` field and presence of `get-scene-geometry`/`set-scene-lighting` → optional (degrade: skip token art / lighting+walls, warn). Probe the **audio tools** (`list-playlists` / `create-playlist`) → optional (degrade: skip soundtrack binding, warn).
 
 If any **critical** check fails, do not build. If optional features are unavailable, announce exactly what will be skipped.
 
@@ -38,6 +38,7 @@ For each pending job → `check-map-status(jobId)`; if complete, record the scen
 
 Execute steps **one MCP call at a time** (never parallel — serialize-writes rule). Delegate by concern:
 1. **scene** → `rpg-scene-forge`: prefer an existing scene by name (`list-scenes`); else, **with the user's confirmation**, `generate-map` → record `jobId` → poll `check-map-status`. Then `set-scene-lighting`. All writes to one scene in a single sequential batch.
+   1.5. **soundtrack** (optional) → `rpg-soundscape-forge`: right after the scene is built/lit, if a `soundtrack-manifest-<slug>.md` exists AND the audio tools passed preflight. Reads the manifest row for this scene, `create-playlist` (looping bed) → `set-scene-playlist(sceneId from step 1)`, or `create-ambient-sound` for one-shots. Serialize on the same scene. Degrade silently (skip, warn) if the audio tools are absent — never blocks the build.
 2. **actor** → `rpg-actor-forge`: match the creature (judgment), `create-actor-from-compendium` (with `placement` on the scene from step 1), then `update-token` (disposition; optional `imagePath`) — serialized on that scene.
 3. **journal / dashboard** → `rpg-journal-forge`: quest journals + `link-quest-to-npc` (after the NPC exists), generic lore/faction/front journals, one campaign dashboard from acts.
 4. **encounter** (when the unit is an `encontro`, or for the session's encounters) → `rpg-encounter-forge`: ensures scene+lighting, places creatures by `party_level`/`threat`, stages treasure via `manage-world-items`. Serialize token placement on the encounter scene.
@@ -69,7 +70,8 @@ Every `create` is guarded by a manifest lookup; an existing live id → update o
 
 ## Per-concern handoff (what flows between compilers)
 
-- scene ids (from scene-forge) → actor-forge + encounter-forge (placement target).
+- scene ids (from scene-forge) → actor-forge + encounter-forge (placement target) **and soundscape-forge** (the scene to bind the playlist to).
+- playlist/sound ids (from soundscape-forge) → the conductor records them in the manifest's `soundtrack` array.
 - actor ids (from actor-forge) → ownership-forge (which actor a player owns) and reviewer (disposition check).
 - NPC names (vault) → journal-forge's `link-quest-to-npc`.
 - The conductor owns the manifest writes; compilers return data, they don't write the manifest.
@@ -79,4 +81,4 @@ Every `create` is guarded by a manifest lookup; an existing live id → update o
 - generate-map is async + local ComfyUI → poll `check-map-status`, record `jobId` for resume.
 - Prefer existing scenes/journals by name before creating (steps 3.1/3.3).
 - "Module not connected" precheck is critical (step 0).
-- Degrade gracefully when imagePath/geometry tools/ComfyUI are absent (step 0).
+- Degrade gracefully when imagePath/geometry tools/ComfyUI/audio tools are absent (step 0) — soundtrack (step 1.5) is optional and never blocks the build.

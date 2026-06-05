@@ -1,6 +1,6 @@
 # RPG Loremaster
 
-A game master's toolkit for building **dark-leaning Pathfinder 2e campaigns** end to end — from the first spark of an idea down to the room the players walk into, the clues that let them solve the mystery, and the art that shows it. Nine creator skills that hand off to each other, plus an interactive **conductor** that ties them into one consistent campaign, and a **reviewer** subagent that audits it for consistency.
+A game master's toolkit for building **dark-leaning Pathfinder 2e campaigns** end to end — from the first spark of an idea down to the room the players walk into, the clues that let them solve the mystery, the art that shows it, and the music that scores it. Ten creator skills that hand off to each other, plus an interactive **conductor** that ties them into one consistent campaign, and a **reviewer** subagent that audits it for consistency.
 
 Default tone is **"dark-leaning" (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. Every skill honors an explicit tone override.
 
@@ -20,20 +20,22 @@ These skills are a **creative partner, not a vending machine.** Their job is to 
 | **rpg-npc-creator** | a deep, *system-agnostic* NPC — contradiction, motivation, a performable voice, hooks | a named character needs depth (villain, patron, ally) |
 | **rpg-artifact-creator** | a deep, *system-agnostic* artifact as a narrative node — provenance, will, who wants it, an evocative gift + a staged price, and a visual description + art prompt | a relic/cursed item/McGuffin the plot turns on |
 | **rpg-art-director** | *system-agnostic* image-gen prompts (multi-target, SDXL-first) + a campaign visual style bible so every portrait, scene, and token shares a look | art for an NPC/place/faction/scene, or a campaign visual identity |
+| **rpg-sound-director** | *system-agnostic* music-gen prompts (Stable Audio Open–first, Suno for sung scenes) + a campaign audio style bible so every scene shares a sound; instrumental by default | a soundtrack for a scene/place/encounter, or a campaign audio identity |
 | **rpg-clue-mapper** | the clue map (Three Clue Rule) so the mystery can't dead-end | wiring an investigation |
 | **rpg-campaign-conductor** | the **orchestrator** — runs the whole chain, keeps a campaign bible | building/continuing a campaign as a system |
 
 Plus the **rpg-campaign-reviewer** subagent — a non-interactive consistency auditor you (or the conductor) can run over a campaign folder to catch tone drift, renamed NPCs, broken canon links, dangling handoffs, and single-points-of-failure in the clue map.
 
-## The system-agnostic trio (npc · artifact · art-director)
+## The system-agnostic creators (npc · artifact · art-director · sound-director)
 
-Three skills in the kit are **system-agnostic** — they deal in story and image, not PF2e stat blocks, so they work for any system while the rest of the kit speaks Pathfinder 2e:
+Four skills in the kit are **system-agnostic** — they deal in story, image, and sound, not PF2e stat blocks, so they work for any system while the rest of the kit speaks Pathfinder 2e:
 
 - **`rpg-npc-creator`** — deep, layered NPCs (personality, backstory, contradiction, voice, hooks). Named characters route here.
 - **`rpg-artifact-creator`** — legendary objects as narrative nodes (provenance, will, gift + staged price). Named objects route here.
 - **`rpg-art-director`** — image-generation prompts and the campaign's visual style bible. Any node's visual seed routes here when it needs art.
+- **`rpg-sound-director`** — music-generation prompts and the campaign's audio style bible. Any scene's sonic seed routes here when it needs a soundtrack (instrumental by default; sung scenes go to Suno).
 
-All three are bundled (no separate install) and use no Archives of Nethys links. The conductor and several skills route their named-character / named-object / art handoffs to them.
+All four are bundled (no separate install) and use no Archives of Nethys links. The conductor and several skills route their named-character / named-object / art / audio handoffs to them.
 
 ## Install (local)
 
@@ -43,7 +45,7 @@ All three are bundled (no separate install) and use no Archives of Nethys links.
 /reload-plugins
 ```
 
-Confirm with `/skills` (you should see the ten `rpg-*` skills).
+Confirm with `/skills` (you should see the eleven `rpg-*` skills).
 
 New here? Run `/rpg-loremaster-help` for a guided tour of the kit's workflows.
 

@@ -20,10 +20,11 @@ The machine-read part is a fenced ```json block (JSON nests cleanly; the flat-YA
     "jogador": { "Kael": { "userId": "User.u1", "ownedActorIds": ["Actor.pc1"], "permission": "OWNER" } }
   },
   "mapJobs": [ { "local": "Cripta dos Ossos", "jobId": "job_123", "status": "complete|pending|cancelled" } ],
+  "soundtrack": [ { "scene": "Cripta dos Ossos", "playlistId": "Playlist.p1", "soundIds": ["PlaylistSound.s1"], "boundToScene": true } ],
   "openDecisions": [ "inimigo \"Aberração\" — no compendium match; awaiting user choice." ]
 }
 ```
 
-**Idempotency keys** (what counts as "built" per concern): scene→`sceneId`, actor→`actorId`, journal→`journalId`, dashboard→`dashboardId`, item→`itemId`, ownership→`userId`. `build-plan.mjs` checks exactly these.
+**Idempotency keys** (what counts as "built" per concern): scene→`sceneId`, actor→`actorId`, journal→`journalId`, dashboard→`dashboardId`, item→`itemId`, ownership→`userId`, soundtrack→`playlistId` (per scene, in the `soundtrack` array). `build-plan.mjs` checks exactly these.
 
 `writeManifest` also regenerates human-readable status tables below the JSON block (build counts, in-flight map jobs, open decisions) — those are derived; the JSON block is the source of truth.

@@ -1,8 +1,8 @@
 {
   "name": "rpg-foundry-forge",
-  "description": "Compiles a validated Obsidian RPG vault (built by rpg-vault-guardian / rpg-gamemaster) into a playable Foundry VTT session by orchestrating the foundry-vtt-mcp server — builds scenes and mood lighting, places creature actors as tokens with correct disposition (and optional AI token art), writes quest/lore/dashboard journals, assigns player ownership, assembles encounters, stages non-combat challenges (challenge journal + DCs + live request-player-rolls + a VP progress clock), and syncs party wealth (reads the PCs' inventories back, reconciles the party overview, and pushes awarded loot to sheets). Reads the vault as the contract (never imports other plugins) and writes to Foundry only via MCP. Idempotent and resumable through an on-disk build manifest. Compile units: encontro, desafio, and sessao.",
-  "version": "0.3.0",
+  "description": "Compiles a validated Obsidian RPG vault (built by rpg-vault-guardian / rpg-gamemaster) into a playable Foundry VTT session by orchestrating the foundry-vtt-mcp server — builds scenes and mood lighting, binds scene soundtracks (playlists + scene Ambience + ambient sound), places creature actors as tokens with correct disposition (and optional AI token art), writes quest/lore/dashboard journals, assigns player ownership, assembles encounters, stages non-combat challenges (challenge journal + DCs + live request-player-rolls + a VP progress clock), and syncs party wealth (reads the PCs' inventories back, reconciles the party overview, and pushes awarded loot to sheets). Reads the vault as the contract (never imports other plugins) and writes to Foundry only via MCP. Idempotent and resumable through an on-disk build manifest. Compile units: encontro, desafio, and sessao.",
+  "version": "0.4.0",
   "author": { "name": "Vagner Strapasson", "email": "vagnerstrapasson@gmail.com" },
   "license": "MIT",
-  "keywords": ["rpg", "ttrpg", "pathfinder", "pf2e", "foundry-vtt", "mcp", "gm-tools", "vtt-export", "obsidian"]
+  "keywords": ["rpg", "ttrpg", "pathfinder", "pf2e", "foundry-vtt", "mcp", "gm-tools", "vtt-export", "obsidian", "audio", "soundtrack"]
 }

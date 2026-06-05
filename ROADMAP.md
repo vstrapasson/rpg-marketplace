@@ -63,16 +63,11 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 
 ## B. Media & atmosphere (your two ideas)
 
-### B1. `rpg-soundscape` — generate & manage scene soundtrack 🔬 · 🚧 (Foundry write blocked)
-- **Home:** foundry-forge (+ a vault-side curation layer) · **Size:** M, phased
-- **Foundry supports this natively:** `Playlist` documents, `AmbientSound` (scene-embedded placeables), and **scene-linked playlists** (the scene's *Ambience* tab auto-plays a playlist/track on activation). See [Playlists](https://foundryvtt.com/article/playlists/), [Ambient Sound](https://foundryvtt.com/article/ambient-sound/), [Audio API](https://foundryvtt.wiki/en/development/api/audio).
-- **But the current foundry-mcp exposes NO audio tool** (no playlist / ambient-sound / audio create or assign). So the write-to-Foundry side is blocked until the MCP server adds e.g. `create-playlist`, `set-scene-playlist`, `create-ambient-sound`. This is the same shape as other documented MCP gaps (no clock widget; the `update-token imagePath` patch).
-- **Generation is external and mature** — local open models (MusicGen / AudioCraft Plus for loopable stereo; Stable Audio Open for ambient/cinematic), runnable on a local server like the existing ComfyUI (:8000) used for maps; or curation from libraries (Tabletop Audio). [Stable Audio Open](https://www.mindstudio.ai/blog/stable-audio-3-open-weight-music-generation) · [MusicGPT (local)](https://github.com/gabotechs/MusicGPT) · [Tabletop Audio](https://tabletopaudio.com/).
-- **Phasing:**
-  - **Phase 1 (doable now, no MCP change):** a vault-side skill that, per `local`/scene mood, **recommends or generates** tracks — emitting an audio *prompt* for a local music model and/or a **soundtrack manifest** (which track/mood per scene) the GM imports by hand. Mirrors the narrative-handout pattern (the plugin never auto-imports the asset).
-  - **Phase 2 (needs an MCP audio extension):** create the `Playlist`, set the scene's Ambience playlist, and place `AmbientSound` regions automatically — slotting into the forge build, after `scene-forge` lights the scene.
-- **Persists / feeds:** a soundtrack manifest (loose) or `local`-linked metadata; feeds the Foundry scene's Ambience once the MCP gap is closed.
-- **Dependency to track:** an MCP audio tool (upstream feature request to `foundry-vtt-mcp`, or a local patch like the existing scene-geometry / `imagePath` patches).
+### B1. `rpg-sound-director` + `rpg-soundscape-forge` — scene soundtrack ✅ SHIPPED (loremaster 0.4.0 · foundry-forge 0.4.0 · foundry-mcp 0.9.0)
+- **Shipped as a director/forge split** (mirroring the art-director/forge precedent — **B2**; both phases built):
+  - **`rpg-sound-director`** (loremaster) — the **fourth system-agnostic creator**. Two modes: (A) a campaign **audio style bible** (`campaign-audio-style-<slug>.md`, the sonic analogue of the tone spectrum, injected downward like tone/visual); (B) extracts a scene/`local`/`encontro`'s **audio DNA** and renders a **provider-neutral** music prompt, primary-target **Stable Audio Open** (local ComfyUI) with **Suno** for the rare sung scene. Instrumental by default; vocals only for a diegetic bard/singer. Emits prompts + a **soundtrack manifest**; **prompt-only** — generation stays a documented manual step (`local/gen-music.py`, a provider dispatcher) and binding is the forge's job. The provider seam (registry + `PROVIDERS` adapters) makes adding a cloud provider — Mubert/Stability/Replicate — a one-row change.
+  - **`rpg-soundscape-forge`** (foundry-forge) — realizes the manifest: `create-playlist` → `set-scene-playlist` (scene Ambience) → optional `create-ambient-sound` one-shots. Slots into `rpg-forge-conductor` right after `scene-forge` (serialize per scene; approval-gated; **optional/degradable** — scenes still build if the audio tools are absent). Records `{playlistId, soundIds}` in the build manifest's `soundtrack` array.
+  - **foundry-mcp 0.9.0** — new audio tools (`create-playlist`, `set-scene-playlist`, `create-ambient-sound`, `list-playlists`) in a new `tools/audio.ts` (`AudioTools`) + Foundry-module handlers (`Playlist.create`, `scene.update({playlist})`, `scene.createEmbeddedDocuments('AmbientSound')`). GM-gated; Data-relative paths only. *(Built; chose the 2-skill split, Stable Audio Open default + Suno-paste vocals, provider-pluggable generation, both phases, loose manifest — no guardian schema change.)*
 
 ### B2. `rpg-art-director` — art prompts + campaign visual style bible ✅ SHIPPED (loremaster 0.3.0)
 - **Shipped:** `rpg-art-director` in `rpg-loremaster` — the third system-agnostic creator. Two modes: (A) a campaign **visual style bible** (`campaign-visual-style-<slug>.md`, the visual analogue of the tone spectrum, injected downward like tone); (B) extracts an entity's **visual DNA** from its existing description and renders **multi-target, SDXL-first** prompts (Stable Diffusion/ComfyUI primary + Midjourney `--ar/--style/--cref` + Flux/DALL·E on request), with framing/aspect ratio per use. Covers npc/local/regiao/city/faccao/item/scene; defers relics to `artifact-creator`. **Prompt-only** — image generation stays a documented manual step (reuses `local/comfyui-gen-token.py` + the `journal-forge` handout pattern + `actor-forge` `update-token imagePath`); the skill never calls ComfyUI. See the `rpg-loremaster` README. *(Built; chose loremaster prompt-only, companion style-bible file, multi-target SDXL-first, full coverage.)*
@@ -93,9 +88,9 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 
 | Need | Unblocks | Status |
 |---|---|---|
-| MCP audio tools (`create-playlist`, `set-scene-playlist`, `create-ambient-sound`) | B1 Phase 2 | not in current foundry-mcp |
+| MCP audio tools (`create-playlist`, `set-scene-playlist`, `create-ambient-sound`) | B1 Phase 2 | ✅ delivered (foundry-mcp 0.9.0) |
 | MCP "create actor from custom statblock" | A3 realization in Foundry | not in current foundry-mcp |
-| Local music model server (MusicGen / Stable Audio Open), à la ComfyUI | B1 generation | external, mature |
+| Local music model server (Stable Audio Open), à la ComfyUI | B1 generation | ✅ delivered (`local/gen-music.py`, provider-pluggable) |
 
 ---
 
