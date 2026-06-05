@@ -14,7 +14,7 @@ Turn each **tactical** `local` — one that is an `encontro.location` (the resol
 3. **Light it.** Pick a mood (bright/dim/dark/pitch) from tone + place kind; `foundry-args.suggestMood` gives a default, `lightingForMood` gives the numbers; apply with `set-scene-lighting(darkness, globalLight, tokenVision)`. See `references/lighting-and-geometry.md`.
 4. **Walls = human's job.** Do NOT auto-trace walls on painted/organic maps (they float and look wrong — hard-won verdict). Only `create-walls` for simple, known, grid-aligned geometry the user explicitly asks for. Record `walls: skipped`.
 5. **Serialize.** All writes to ONE scene happen as a single sequential batch — never parallel (the 2nd write silently no-ops).
-6. Return `{ sceneId, source, lit }` to the conductor for the manifest.
+6. Return `{ sceneId, source, lit }` to the conductor for the manifest. (Binding a soundtrack to this scene's Ambience is a downstream step owned by `rpg-soundscape-forge`, which consumes this `sceneId` — not your job here.)
 
 ## Judgment vs script
 - **Script** gives lighting numbers (`lightingForMood`), the placement offset dims, wall enum-safe defaults.

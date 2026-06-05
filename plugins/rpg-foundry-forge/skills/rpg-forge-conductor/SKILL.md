@@ -58,12 +58,13 @@ See `references/orchestration-playbook.md` for every exact heredoc — resolve, 
 
 Build order and the skill for each concern:
 1. **Scenes + lighting** → `rpg-scene-forge`
-2. **Actors + tokens** → `rpg-actor-forge`
-3. **Journals (quests/lore/dashboard)** → `rpg-journal-forge`
-4. **Encounters** → `rpg-encounter-forge` (fuses a scene + creatures + treasure)
-5. **Challenges** → `rpg-embate-forge` (a `desafio` → challenge journal + optional scene + live rolls + VP clock)
-6. **Ownership** → `rpg-ownership-forge` (last; approval-gated)
-7. **Wealth sync** → `rpg-treasure-forge` (**on demand, not a unit compile**): reads the PCs' Foundry inventories, reconciles the party overview's `## Wealth` section (the kit's only vault sync-back), and pushes awarded loot to sheets (approval-gated). Invoke when the GM asks to sync wealth or grant treasure — outside the normal session/encounter/challenge build.
+2. **Soundtrack** → `rpg-soundscape-forge` (right after scenes — audio binds to a scene's Ambience; **optional/degradable**: skip if the foundry-mcp audio tools are absent). Consumes a `soundtrack-manifest-<slug>.md` authored by `rpg-sound-director`.
+3. **Actors + tokens** → `rpg-actor-forge`
+4. **Journals (quests/lore/dashboard)** → `rpg-journal-forge`
+5. **Encounters** → `rpg-encounter-forge` (fuses a scene + creatures + treasure)
+6. **Challenges** → `rpg-embate-forge` (a `desafio` → challenge journal + optional scene + live rolls + VP clock)
+7. **Ownership** → `rpg-ownership-forge` (last; approval-gated)
+8. **Wealth sync** → `rpg-treasure-forge` (**on demand, not a unit compile**): reads the PCs' Foundry inventories, reconciles the party overview's `## Wealth` section (the kit's only vault sync-back), and pushes awarded loot to sheets (approval-gated). Invoke when the GM asks to sync wealth or grant treasure — outside the normal session/encounter/challenge build.
 
 Challenges order alongside the other journals (concern rank `journal`), after scenes/actors/items and before ownership.
 

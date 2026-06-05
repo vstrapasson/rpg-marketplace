@@ -25,11 +25,12 @@ It compiles; it does not author. It reads the vault as the contract and writes t
 |---|---|---|
 | skill | `rpg-forge-conductor` | orchestrator: resolve → preflight → plan → build → verify → review; owns the manifest |
 | skill | `rpg-scene-forge` | `local` → scenes + mood lighting (prefer existing; generate under confirmation) |
+| skill | `rpg-soundscape-forge` | `soundtrack-manifest` (from `rpg-sound-director`) → playlists + scene Ambience + ambient sound (right after scenes; optional/degradable) |
 | skill | `rpg-actor-forge` | `inimigo`/`npc` → compendium actors + token placement + disposition (+ optional AI art) |
 | skill | `rpg-journal-forge` | `quest`/`lore`/`faccao`/`frente`/`ato` → quest & lore journals + campaign dashboard |
 | skill | `rpg-ownership-forge` | `jogador` → Foundry actor ownership (last, approval-gated) |
 | skill | `rpg-encounter-forge` | `encontro` → assembled combat (scene + creatures-by-threat + treasure) |
-| skill | `rpg-embate-forge` | `desafio` → non-combat challenge (challenge journal + DCs + live `request-player-rolls` + a VP progress clock; scene only if it has a `local`) |
+| skill | `rpg-embate-forge` | `desafio` → non-combat challenge (challenge journal + DCs + live `request-player-rolls` + a VP progress clock + a one-click hybrid **runner macro** via `create-macro`; scene only if it has a `local`) |
 | skill | `rpg-treasure-forge` | reads the PCs' Foundry inventories → reconciles the party `## Wealth` (the kit's **first vault sync-back**) + pushes awarded loot to sheets (on demand, approval-gated) |
 | agent | `rpg-foundry-reviewer` | non-interactive auditor: diffs vault graph vs built session |
 | commands | `/forge-compile`, `/forge-preflight`, `/forge-status`, `/forge-verify`, `/rpg-foundry-forge-help` | the build lifecycle |
@@ -44,7 +45,7 @@ Acts and whole-campaign exports are planned but not exposed yet.
 
 ## Prerequisites
 - The `foundry-vtt-mcp` server registered with Claude Code, and the **Foundry MCP Bridge module connected** in the running world (reload / `/mcp` reconnect after a restart).
-- For the full feature set: the local MCP patches (`update-token imagePath`, the scene-geometry tools) and a local **ComfyUI** (`:8000`) for map and token-art generation. Missing optionals degrade gracefully — `/forge-preflight` reports exactly what will be skipped.
+- For the full feature set: the local MCP patches (`update-token imagePath`, the scene-geometry tools, the **audio tools** `create-playlist`/`set-scene-playlist`/`create-ambient-sound` — foundry-mcp 0.9.0+) and a local **ComfyUI** (`:8000`) for map, token-art, and music generation. Missing optionals degrade gracefully — `/forge-preflight` reports exactly what will be skipped.
 
 ## Quick start
 ```
