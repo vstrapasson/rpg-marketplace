@@ -1,8 +1,8 @@
 # RPG Gamemaster
 
-The **session prep and run layer** for a Pathfinder 2e campaign — the bridge from a built world to a runnable session, plus the session zero that brings the players into it. Six skills: a **session zero** that builds the player characters and captures the party, then the GM-side loop that advances the living world between sessions, assembles a one-page session plan, balances encounter math, structures non-combat challenges, and produces the GM overlay for the table. Tool-agnostic: no specific VTT, no external compendium; creature data and rules come from the [Archives of Nethys](https://2e.aonprd.com/) category pages only.
+The **session prep and run layer** for a Pathfinder 2e campaign — the bridge from a built world to a runnable session, plus the session zero that brings the players into it. Seven skills: a **session zero** that builds the player characters and captures the party, then the GM-side loop that advances the living world between sessions, assembles a one-page session plan, balances encounter math, structures non-combat challenges, itemizes treasure and tracks wealth, and produces the GM overlay for the table. Tool-agnostic: no specific VTT, no external compendium; creature data and rules come from the [Archives of Nethys](https://2e.aonprd.com/) category pages only.
 
-Default tone is **dark-leaning (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. All six skills inherit tone from the campaign bible; they do not reset it.
+Default tone is **dark-leaning (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. All seven skills inherit tone from the campaign bible; they do not reset it.
 
 ## Philosophy
 
@@ -19,9 +19,10 @@ The kit is grounded in working TTRPG methodology: Sly Flourish's *Return of the 
 | **rpg-session-prep** | a one-page runnable session plan (Lazy DM 8 steps, secrets as the spine) | preparing the upcoming game |
 | **rpg-encounter-builder** | a balanced PF2e encounter (XP budget shown, wrapped as a situation) | when session-prep flags a fight that needs math |
 | **rpg-embate-builder** | a non-combat challenge — single check or a Victory Points subsystem (social/chase/research/infiltration), DCs shown, wrapped as a situation | when a scene is resolved by skills, not swords |
+| **rpg-treasure-builder** | itemized loot from the official Treasure-by-Level budget (`item` entities) + a wealth-by-level tracker in the party overview | distributing a hoard or the level's loot |
 | **rpg-gm-run-sheet** | a compact printable table overlay — checklist, clocks, NPC quick-refs, backstops | sitting down to run |
 
-## The six skills
+## The seven skills
 
 ### rpg-party-forge — session zero / the players' side
 
@@ -43,6 +44,10 @@ The encounter math the loremaster skills deliberately skip. Given party level an
 
 The sibling of `rpg-encounter-builder` for everything the dice resolve without a sword: swaying a council, losing a pursuer, researching a forbidden truth, breaching a keep unseen, a single white-knuckle Acrobatics leap. It is **scalable** — it handles a single dramatic check (DC + the four degrees of success + a fail-forward consequence) and a full structured **Victory Points challenge** alike, and it ships the four official PF2e subsystem presets (Influence, Chase, Research, Infiltration) plus a generic VP model. Given party level and size, it sizes the VP target and thresholds against the official scale (quick 3–5, long 7–10, most-of-a-session 15–25, adventure 25–50), anchors every DC to the Level-Based and Simple DC tables, and shows the VP arithmetic. Then it wraps the challenge as a situation grounded in the design lessons of skill challenges: it **measures a world-state** (the council's favor, the pursuer's distance) rather than abstract successes, describes the **situation not a fixed skill list** (problem, not puzzle), and makes every failure **fail forward** — a complication or a new path, never a dead end. Persists a `desafio` entity through `rpg-preserve` (optionally with a `relogio` clock for the VP track).
 
+### rpg-treasure-builder — the loot layer
+
+The by-the-book counterpart to the encounter builder, for everything below the relic tier. The encounter builder outputs a gp *number*; this skill **itemizes** it. Given a budget (one encounter's allotment, a whole level, or a named value) plus party level and size, it converts the official PF2e Treasure-by-Level breakdown into concrete loot — permanent items, consumables, currency, gems, and art objects by item level — referenced to Archives of Nethys category pages, with the arithmetic shown against the budget and the party-size adjustment applied. Notable items become `item` entities (with value, item level, rarity, and category) through `rpg-preserve`; bulk currency stays aggregate. It maintains a `## Wealth` section in the party overview — expected vs. awarded by level — so the GM can see drift, and hands off to `rpg-treasure-forge` to reconcile against the players' actual Foundry sheets. Legendary relics stay with `rpg-artifact-creator`; this skill references them, it doesn't design them.
+
 ### rpg-gm-run-sheet — the table overlay
 
 The read-out of the other three skills. It does not generate new fiction — it reads the session-prep one-pager, the clue map, and the active fronts and clocks, and compresses them into one printable page the GM glances at mid-session. Six sections: the strong start (read-aloud block), the scene beats checklist, the secrets-and-clues checklist keyed to revelation IDs with tick boxes for each placed clue, NPC quick-refs (name, want, one voice line), the active clocks dashboard (segments/filled, next portent), and the "if they stall" backstops tied to grim portents. Tool-agnostic — usable next to any VTT or at a physical table. This is the one skill that writes nothing to the vault; the run sheet is ephemeral, saved as a loose `run-sheet-<slug>.md` in the working folder. The canonical session record is the `sessao` note from `rpg-session-prep`.
@@ -62,7 +67,8 @@ The gamemaster kit communicates with the rest of the ecosystem **via the Obsidia
                                  sessao/encontro (ENTITY) ◀──write── prep + encounter (via rpg-preserve)
                                  desafio (ENTITY) ◀──────write────── embate-builder (via rpg-preserve)
                                  jogador (ENTITY) ◀──────write────── party-forge (via rpg-preserve)
-                                 party-<slug> (loose) ◀───────────── party-forge (composition)
+                                 item (ENTITY) ◀─────────write────── treasure-builder (via rpg-preserve)
+                                 party-<slug> (loose) ◀───────────── party-forge (composition) + treasure-builder (## Wealth)
                                  run-sheet (loose printable) ◀───────────────────── gm-run-sheet
 ```
 
@@ -81,6 +87,8 @@ If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-in
 
 `rpg-party-forge` also writes entities — `jogador` (player characters) — but that type is **not new**: `jogador` predates the gamemaster kit (it's consumed by the Foundry ownership skill), so its `jogadores/` folder already exists in every scaffolded vault. Party-forge is simply the first skill to *author* it. As of guardian 1.2.0 the `jogador` schema gained a `region` relation (a PC's home region, now a validated link), so re-validate older PC notes if you have them.
 
+`rpg-treasure-builder` likewise authors the pre-existing `item` type (folder `itens/`). As of guardian 1.3.0 the `item` schema gained structured loot fields — `value` (gp), `item_level`, `rarity` (`common`/`uncommon`/`rare`/`unique`), and `category` (`permanent`/`consumable`/`currency`/`art`/`gear`) — so the wealth tracker can sum and the Foundry side can type loot correctly.
+
 ## Install
 
 ```
@@ -89,7 +97,7 @@ If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-in
 /reload-plugins
 ```
 
-Confirm with `/skills` (you should see the six `rpg-*` skills: `rpg-party-forge`, `rpg-front-tracker`, `rpg-session-prep`, `rpg-encounter-builder`, `rpg-embate-builder`, `rpg-gm-run-sheet`).
+Confirm with `/skills` (you should see the seven `rpg-*` skills: `rpg-party-forge`, `rpg-front-tracker`, `rpg-session-prep`, `rpg-encounter-builder`, `rpg-embate-builder`, `rpg-treasure-builder`, `rpg-gm-run-sheet`).
 
 For persistence, also install `rpg-vault-guardian` — the gamemaster skills write all vault entities through its `rpg-preserve` write gate. Without it, the skills produce output but will not persist to disk.
 

@@ -103,6 +103,29 @@ test('validateCandidate flags a jogador whose region points at the wrong type', 
   assert.ok(report.issues.some((i) => i.code === 'wrong-target-type' && i.field === 'region'));
 });
 
+test('validateCandidate approves a valid item with structured loot fields', async () => {
+  const fm = buildFrontmatter('item', {
+    value: 90, item_level: 4, rarity: 'uncommon', category: 'permanent', status: 'draft',
+  });
+  const content = buildNoteContent(fm, 'Cloak of Elvenkind');
+  const report = await validateCandidate('Cloak of Elvenkind', content, 'item', VAULT);
+  assert.equal(report.summary.errors, 0);
+});
+
+test('validateCandidate rejects an item with a bad rarity enum', async () => {
+  const fm = buildFrontmatter('item', { rarity: 'legendary', category: 'permanent' });
+  const content = buildNoteContent(fm, 'Rarity Errada');
+  const report = await validateCandidate('Rarity Errada', content, 'item', VAULT);
+  assert.ok(report.issues.some((i) => i.code === 'bad-enum' && i.field === 'rarity'));
+});
+
+test('validateCandidate rejects an item with a bad category enum', async () => {
+  const fm = buildFrontmatter('item', { category: 'weapon' }); // 'weapon' is not a loot category
+  const content = buildNoteContent(fm, 'Categoria Errada');
+  const report = await validateCandidate('Categoria Errada', content, 'item', VAULT);
+  assert.ok(report.issues.some((i) => i.code === 'bad-enum' && i.field === 'category'));
+});
+
 test('writeEntityFile creates file at the correct path', async () => {
   const tmpVault = join(tmpdir(), 'rpg-preserve-test-' + Date.now());
   const fm = buildFrontmatter('regiao', { status: 'stub' });

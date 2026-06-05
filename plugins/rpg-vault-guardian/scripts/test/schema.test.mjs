@@ -18,6 +18,16 @@ test('required fields and relations', () => {
   assert.equal(relationsFor('sessao').transcript.linkOnly, true);
 });
 
+test('item carries structured loot fields (value, level, rarity, category)', () => {
+  assert.equal(fieldDef('item', 'value').type, 'number');
+  assert.equal(fieldDef('item', 'item_level').type, 'number');
+  assert.deepEqual(fieldDef('item', 'rarity').values, ['common', 'uncommon', 'rare', 'unique']);
+  assert.deepEqual(fieldDef('item', 'category').values,
+    ['permanent', 'consumable', 'currency', 'art', 'gear']);
+  assert.equal(relationsFor('item').owner.target.includes('jogador'), true);
+  assert.deepEqual(checkSchemaIntegrity(), []); // still valid after adding item fields
+});
+
 test('jogador relations include region (PC home region is a validated link)', () => {
   assert.deepEqual(requiredFields('jogador'), ['type', 'player']);
   assert.equal(relationsFor('jogador').faction.target, 'faccao');

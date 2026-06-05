@@ -10,7 +10,7 @@
     {
       "name": "rpg-vault-guardian",
       "description": "Obsidian vault integrity guardian for RPG campaigns.",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "source": "./plugins/rpg-vault-guardian",
       "category": "productivity"
     },
@@ -23,15 +23,15 @@
     },
     {
       "name": "rpg-gamemaster",
-      "description": "Session prep and run layer for PF2e campaigns — session zero / party builder, runnable sessions, fronts and clocks, balanced encounters, non-combat challenges (Victory Points), and a GM run sheet.",
-      "version": "0.3.0",
+      "description": "Session prep and run layer for PF2e campaigns — session zero / party builder, runnable sessions, fronts and clocks, balanced encounters, non-combat challenges (Victory Points), itemized treasure + wealth-by-level tracking, and a GM run sheet.",
+      "version": "0.4.0",
       "source": "./plugins/rpg-gamemaster",
       "category": "creativity"
     },
     {
       "name": "rpg-foundry-forge",
-      "description": "Compile a validated RPG vault into a playable Foundry VTT session via the foundry-vtt-mcp server — scenes and lighting, creature actors with token placement, quest/lore/dashboard journals, player ownership, encounters, and non-combat challenges (challenge journal + live rolls + VP clock); idempotent and resumable via an on-disk build manifest.",
-      "version": "0.2.0",
+      "description": "Compile a validated RPG vault into a playable Foundry VTT session via the foundry-vtt-mcp server — scenes and lighting, creature actors with token placement, quest/lore/dashboard journals, player ownership, encounters, non-combat challenges (challenge journal + live rolls + VP clock), and party-wealth sync (read player inventories back, reconcile, push loot to sheets); idempotent and resumable via an on-disk build manifest.",
+      "version": "0.3.0",
       "source": "./plugins/rpg-foundry-forge",
       "category": "productivity"
     }
