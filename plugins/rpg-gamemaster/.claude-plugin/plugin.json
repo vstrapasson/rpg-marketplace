@@ -1,8 +1,8 @@
 {
   "name": "rpg-gamemaster",
-  "description": "Session prep and run layer for dark-leaning Pathfinder 2e campaigns — runs a session zero that builds the player characters and anchors them to the world, then turns built worlds into runnable sessions, advances the world between sessions with fronts and progress clocks, builds balanced PF2e encounters and non-combat challenges (social/chase/research/infiltration via the Victory Points subsystem), and produces a tool-agnostic GM run sheet. Reads the campaign vault and clue map; persists player characters, sessions, fronts, clocks, encounters, and challenges through the rpg-preserve write gate.",
-  "version": "0.3.0",
+  "description": "Session prep and run layer for dark-leaning Pathfinder 2e campaigns — runs a session zero that builds the player characters and anchors them to the world, then turns built worlds into runnable sessions, advances the world between sessions with fronts and progress clocks, builds balanced PF2e encounters and non-combat challenges (social/chase/research/infiltration via the Victory Points subsystem), itemizes treasure from the official Treasure-by-Level budget and tracks wealth, and produces a tool-agnostic GM run sheet. Reads the campaign vault and clue map; persists player characters, sessions, fronts, clocks, encounters, challenges, and items through the rpg-preserve write gate.",
+  "version": "0.4.0",
   "author": { "name": "Vagner Strapasson", "email": "vagnerstrapasson@gmail.com" },
   "license": "MIT",
-  "keywords": ["rpg", "ttrpg", "pathfinder", "pf2e", "gm-tools", "session-zero", "party", "session-prep", "encounters", "challenges", "victory-points", "fronts"]
+  "keywords": ["rpg", "ttrpg", "pathfinder", "pf2e", "gm-tools", "session-zero", "party", "session-prep", "encounters", "challenges", "victory-points", "fronts", "treasure", "wealth-by-level"]
 }

@@ -63,6 +63,7 @@ Build order and the skill for each concern:
 4. **Encounters** → `rpg-encounter-forge` (fuses a scene + creatures + treasure)
 5. **Challenges** → `rpg-embate-forge` (a `desafio` → challenge journal + optional scene + live rolls + VP clock)
 6. **Ownership** → `rpg-ownership-forge` (last; approval-gated)
+7. **Wealth sync** → `rpg-treasure-forge` (**on demand, not a unit compile**): reads the PCs' Foundry inventories, reconciles the party overview's `## Wealth` section (the kit's only vault sync-back), and pushes awarded loot to sheets (approval-gated). Invoke when the GM asks to sync wealth or grant treasure — outside the normal session/encounter/challenge build.
 
 Challenges order alongside the other journals (concern rank `journal`), after scenes/actors/items and before ownership.
 

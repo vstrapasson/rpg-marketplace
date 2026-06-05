@@ -53,11 +53,11 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 - **Persists / feeds:** `inimigo` (with stats in the body); feeds `encounter-builder` and `actor-forge`.
 - **Caveat:** `actor-forge` matches the Foundry **compendium** — a homebrew creature has no compendium entry, so realizing it needs either manual Foundry creation or an MCP "create actor from statblock" extension. Flag at design time.
 
-### A4. `rpg-treasure-forge` — itemized loot + wealth-by-level 🔬
-- **Home:** gamemaster (or loremaster) · **Size:** M
-- `encounter-builder` outputs a **gp value**; `artifact-creator` builds **story relics**. Neither turns the budget into an actual itemized hoard, nor tracks party wealth across a level.
-- **Does:** converts the per-encounter / per-level treasure budget into concrete loot (coins, art, consumables, permanent items by level), with AoN category refs; tracks running wealth-by-level. Persists `item` entities.
-- **Persists / feeds:** `item`; feeds `encounter-builder` treasure, `journal-forge`, `manage-world-items` in Foundry.
+### A4. treasure — itemized loot + wealth-by-level ✅ SHIPPED (gamemaster 0.4.0 · foundry-forge 0.3.0)
+- **Shipped as a builder/forge pair** (the user wanted vault + Foundry sides):
+  - **`rpg-treasure-builder`** (gamemaster) — itemizes the official Treasure-by-Level budget into concrete loot (permanent/consumable/currency/art by item level, AoN category refs), scalable hoard↔level, party-size adjusted. Notable items → `item` entities; bulk currency aggregate. Maintains a `## Wealth` section (expected vs awarded) in the party overview.
+  - **`rpg-treasure-forge`** (foundry-forge) — the kit's **first vault sync-back**: reads the PCs' live Foundry inventories (`get-character`/`search-character-items`), reconciles Actual vs Expected/Awarded in the Wealth section, and pushes awarded loot onto sheets (`add-to-actor`, approval-gated).
+  - **Schema:** `item` gained structured loot fields (`value`/`item_level`/`rarity`/`category`) in guardian 1.3.0. Foundry realization of `item` was already covered by the existing `manage-world-items` pipeline. New-character wealth (Character Wealth table) deferred. *(Built; chose structured schema, significant-items-as-entities + aggregate currency, Wealth-in-party-overview, read-back + push.)*
 
 ---
 

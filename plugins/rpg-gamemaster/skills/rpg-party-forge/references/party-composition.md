@@ -50,3 +50,12 @@ A single **loose campaign file** at the vault root: `party-<slug>.md` (the `<slu
 3. If not found, fall back to asking as they do today, and suggest running `rpg-party-forge` to capture it once.
 
 This is the friction the ROADMAP's party-forge "bonus" removes: the canonical answer lives in one place, the builders read it, and a level-up is a one-line edit rather than a value re-entered every session.
+
+## Other skills extend this file
+
+The party overview is the campaign's one party-state file, so other skills append to it rather than spawning new files:
+
+- **`rpg-treasure-builder`** appends a `## Wealth` section (expected vs. awarded gp by level).
+- **`rpg-treasure-forge`** (foundry-forge) fills that section's **Actual** row from the PCs' live Foundry inventories — the kit's first vault sync-back.
+
+Keep all party state here; don't fragment it across files.

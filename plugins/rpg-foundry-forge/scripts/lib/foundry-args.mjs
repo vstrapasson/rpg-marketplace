@@ -114,6 +114,22 @@ export function questFieldsFromVault(quest, index) {
   };
 }
 
+// Map a vault `item.category` (permanent/consumable/currency/art/gear, added in
+// guardian 1.3.0) to a default Foundry item `type` for manage-world-items, so a
+// skill pushing loot to a sheet has a deterministic floor. The skill may refine a
+// `permanent` to a more specific type (weapon/armor) by judgment.
+export function foundryItemType(item) {
+  const category = typeof item === 'string' ? item : item?.frontmatter?.category;
+  switch (category) {
+    case 'consumable': return 'consumable';
+    case 'currency': return 'treasure';
+    case 'art': return 'treasure';
+    case 'gear': return 'equipment';
+    case 'permanent': return 'equipment'; // judgment: skill may pick weapon/armor
+    default: return 'equipment';
+  }
+}
+
 // Choose a campaign-dashboard template from the acts present.
 export function dashboardTemplateForActs(atos = []) {
   if (!atos.length) return { template: 'five-part-adventure', customParts: undefined };

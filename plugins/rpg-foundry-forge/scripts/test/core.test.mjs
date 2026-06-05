@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { loadVault } from '../lib/vault-read.mjs';
 import { resolveSessao, resolveEncontro, resolveDesafio, resolveUnit } from '../lib/resolve.mjs';
 import { planBuild } from '../lib/build-plan.mjs';
-import { dispositionFor, wallEnumDefaults, placementGrid, lightingForMood, suggestMood, journalFolder } from '../lib/foundry-args.mjs';
+import { dispositionFor, wallEnumDefaults, placementGrid, lightingForMood, suggestMood, journalFolder, foundryItemType } from '../lib/foundry-args.mjs';
 
 const VAULT = fileURLToPath(new URL('./fixtures/vault', import.meta.url));
 
@@ -135,4 +135,11 @@ test('foundry-args: disposition, enums, placement offset, lighting', () => {
   assert.equal(journalFolder({ type: 'local' }), 'Locations');
   assert.equal(journalFolder({ type: 'desafio' }), 'Challenges');
   assert.equal(journalFolder({ type: 'ato' }), undefined);
+  // item.category → Foundry item type (treasure-forge push)
+  assert.equal(foundryItemType('consumable'), 'consumable');
+  assert.equal(foundryItemType('currency'), 'treasure');
+  assert.equal(foundryItemType('art'), 'treasure');
+  assert.equal(foundryItemType({ frontmatter: { category: 'gear' } }), 'equipment');
+  assert.equal(foundryItemType({ frontmatter: { category: 'permanent' } }), 'equipment');
+  assert.equal(foundryItemType({ frontmatter: {} }), 'equipment'); // default floor
 });

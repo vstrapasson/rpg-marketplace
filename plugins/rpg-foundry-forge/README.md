@@ -30,6 +30,7 @@ It compiles; it does not author. It reads the vault as the contract and writes t
 | skill | `rpg-ownership-forge` | `jogador` → Foundry actor ownership (last, approval-gated) |
 | skill | `rpg-encounter-forge` | `encontro` → assembled combat (scene + creatures-by-threat + treasure) |
 | skill | `rpg-embate-forge` | `desafio` → non-combat challenge (challenge journal + DCs + live `request-player-rolls` + a VP progress clock; scene only if it has a `local`) |
+| skill | `rpg-treasure-forge` | reads the PCs' Foundry inventories → reconciles the party `## Wealth` (the kit's **first vault sync-back**) + pushes awarded loot to sheets (on demand, approval-gated) |
 | agent | `rpg-foundry-reviewer` | non-interactive auditor: diffs vault graph vs built session |
 | commands | `/forge-compile`, `/forge-preflight`, `/forge-status`, `/forge-verify`, `/rpg-foundry-forge-help` | the build lifecycle |
 | scripts | `scripts/lib/*.mjs` | `vault-read`, `resolve`, `build-plan`, `manifest`, `foundry-args`, `preflight` (zero-dep, `node:*` only) |

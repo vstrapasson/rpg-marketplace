@@ -12,6 +12,8 @@ Present this conversationally.
 
 **What it builds:** scenes + mood lighting · creature actors placed as tokens with correct disposition (+ optional AI token art) · quest/lore journals + a campaign dashboard · player ownership · assembled encounters · non-combat challenges (challenge journal + DCs + live `request-player-rolls` + a VP progress clock).
 
+**Also (on demand, not a compile unit):** `rpg-treasure-forge` **syncs party wealth** — it reads each PC's actual Foundry inventory + currency (`get-character`/`search-character-items`), reconciles the **`## Wealth`** section of the party overview (the kit's **first vault sync-back**), and pushes awarded loot onto the PCs' sheets (`add-to-actor`, approval-gated). Ask for it with "sync the party's wealth" / "push the loot to the sheets".
+
 **Prerequisites:**
 - `foundry-vtt-mcp` registered, and the **Foundry MCP Bridge module connected** (reload the world / `/mcp` reconnect after a restart).
 - For full features: the local MCP patches (`update-token imagePath`, the scene-geometry tools) and ComfyUI (`:8000`) for map/token-art generation. Missing optionals degrade gracefully — preflight tells you what will be skipped.
