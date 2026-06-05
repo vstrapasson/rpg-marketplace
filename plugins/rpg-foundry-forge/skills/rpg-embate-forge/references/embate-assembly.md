@@ -3,7 +3,7 @@
 Build a `desafio` into a runnable non-combat challenge. The journal is the spine; the scene is optional; the rolls and the VP clock are the live layer. Serialize any scene writes.
 
 ## 1. Journal (the spine)
-The challenge journal is what the GM runs the scene from. Use `create-quest-journal` as a generic journal-maker (`folderName: "Challenges"`), or `update-quest-journal` if one already exists (prefer-existing: `search-journals`/`list-journals` by title first).
+The challenge journal is what the GM runs the scene from. Use `create-quest-journal` as a generic journal-maker (`folderName: "Challenges/<subsystem>"` — e.g. `Challenges/Influence`; the nested path groups challenges by subsystem, foundry-mcp ≥ 0.12.0), or `update-quest-journal` if one already exists (prefer-existing: `search-journals`/`list-journals` by title first).
 
 Pages to build from the `desafio` note body (content is **HTML** — the MCP strips Markdown):
 - **Structure** (`<h2 class="spaced">`): subsystem, `vp_format`, `vp_target`, thresholds and what each does, the per-roll award table. For `scale: single-check`, this is just the single DC and the four degrees.
