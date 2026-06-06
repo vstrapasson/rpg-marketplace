@@ -20,22 +20,24 @@ These skills are a **creative partner, not a vending machine.** Their job is to 
 | **rpg-npc-creator** | a deep, *system-agnostic* NPC — contradiction, motivation, a performable voice, hooks | a named character needs depth (villain, patron, ally) |
 | **rpg-artifact-creator** | a deep, *system-agnostic* artifact as a narrative node — provenance, will, who wants it, an evocative gift + a staged price, and a visual description + art prompt | a relic/cursed item/McGuffin the plot turns on |
 | **rpg-art-director** | *system-agnostic* image-gen prompts (multi-target, SDXL-first) + a campaign visual style bible so every portrait, scene, and token shares a look | art for an NPC/place/faction/scene, or a campaign visual identity |
+| **rpg-map-architect** | *system-agnostic* spatially-assertive top-down **battlemap** prompts — a functional program per archetype (a tavern needs a bar/kitchen/cellar/stairs; a den needs a watched entrance/bunks/contraband store) placed where it makes sense; nano-banana-first, prompt-only | a battlemap/floorplan that should actually make sense |
 | **rpg-sound-director** | *system-agnostic* music-gen prompts (Stable Audio Open–first, Suno for sung scenes) + a campaign audio style bible so every scene shares a sound; instrumental by default | a soundtrack for a scene/place/encounter, or a campaign audio identity |
 | **rpg-clue-mapper** | the clue map (Three Clue Rule) so the mystery can't dead-end | wiring an investigation |
 | **rpg-campaign-conductor** | the **orchestrator** — runs the whole chain, keeps a campaign bible | building/continuing a campaign as a system |
 
 Plus the **rpg-campaign-reviewer** subagent — a non-interactive consistency auditor you (or the conductor) can run over a campaign folder to catch tone drift, renamed NPCs, broken canon links, dangling handoffs, and single-points-of-failure in the clue map.
 
-## The system-agnostic creators (npc · artifact · art-director · sound-director)
+## The system-agnostic creators (npc · artifact · art-director · map-architect · sound-director)
 
-Four skills in the kit are **system-agnostic** — they deal in story, image, and sound, not PF2e stat blocks, so they work for any system while the rest of the kit speaks Pathfinder 2e:
+Five skills in the kit are **system-agnostic** — they deal in story, image, space, and sound, not PF2e stat blocks, so they work for any system while the rest of the kit speaks Pathfinder 2e:
 
 - **`rpg-npc-creator`** — deep, layered NPCs (personality, backstory, contradiction, voice, hooks). Named characters route here.
 - **`rpg-artifact-creator`** — legendary objects as narrative nodes (provenance, will, gift + staged price). Named objects route here.
 - **`rpg-art-director`** — image-generation prompts and the campaign's visual style bible. Any node's visual seed routes here when it needs art.
+- **`rpg-map-architect`** — spatially-assertive top-down battlemap prompts (a functional program per archetype, placed so the layout makes sense). A `local` that needs a tactical map routes here; it inherits the same visual style bible and hands the PNG to `rpg-scene-forge`.
 - **`rpg-sound-director`** — music-generation prompts and the campaign's audio style bible. Any scene's sonic seed routes here when it needs a soundtrack (instrumental by default; sung scenes go to Suno).
 
-All four are bundled (no separate install) and use no Archives of Nethys links. The conductor and several skills route their named-character / named-object / art / audio handoffs to them.
+All five are bundled (no separate install) and use no Archives of Nethys links. The conductor and several skills route their named-character / named-object / art / map / audio handoffs to them.
 
 ## Install (local)
 
