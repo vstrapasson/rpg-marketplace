@@ -1,0 +1,61 @@
+{
+  "skill_name": "dungeondraft-battlemap",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "taverna-dois-andares",
+      "prompt": "Gera um battlemap no Dungeondraft da taverna \"A Vela Acesa\": salão principal com balcão e lareira, cozinha nos fundos, despensa, e um segundo andar com 3 quartos e corredor. Portas e janelas onde fizer sentido, luz de lareira acesa. Mapa 25x18 células.",
+      "expected_output": "Arquivo .dungeondraft_map válido (scaffold com mod/editor_state), 2 níveis, paredes com portas e janelas penduradas, luzes, pisos de madeira, texturas todas existentes no pck.",
+      "files": [],
+      "assertions": [
+        "Existe um arquivo .dungeondraft_map no outputs e ele parseia como JSON",
+        "Top-level contém header, world e mod (scaffold íntegro — sem isso o DD abre vazio)",
+        "editor_state contém color_palettes e as memórias de ferramenta (cabeçalho completo)",
+        "Toda textura res:// (fora packs/) existe no índice do pck",
+        "world.levels tem 2 ou mais níveis (térreo + andar)",
+        "Existe pelo menos uma porta (portal door_*) pendurada em parede com wall_id válido",
+        "Existe pelo menos uma janela (portal window_*)",
+        "Existe pelo menos uma luz",
+        "Toda parede tem a chave portals (mesmo vazia)",
+        "Arrays do nível batem com 25x18 (cave bitmap e tiles.cells)"
+      ]
+    },
+    {
+      "id": 1,
+      "eval_name": "travessia-rio-ponte",
+      "prompt": "Preciso de um battlemap pro Dungeondraft de uma travessia na estrada: uma ponte de pedra cruza um rio no meio de uma clareira na floresta, com um acampamento abandonado perto da margem (fogueira, barraca, carroça). 28x16 células.",
+      "expected_output": "Mapa exterior com rio (water tree), estrada/ponte (paths), terreno pintado (grama/terra), objetos de acampamento, texturas válidas.",
+      "files": [],
+      "assertions": [
+        "Existe um arquivo .dungeondraft_map no outputs e ele parseia como JSON",
+        "Top-level contém header, world e mod (scaffold íntegro — sem isso o DD abre vazio)",
+        "editor_state contém color_palettes e as memórias de ferramenta (cabeçalho completo)",
+        "Toda textura res:// (fora packs/) existe no índice do pck",
+        "Existe água (water.tree com pelo menos um child) OU justificativa de teste experimental",
+        "Existe pelo menos um path (estrada/ponte)",
+        "O splat de terreno não é uniforme (mais de um canal usado)",
+        "Existem objetos de acampamento (fogueira/barraca/carroça — ≥3 objetos)",
+        "Arrays do nível batem com 28x16 (cave bitmap e tiles.cells)"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "cripta-com-caverna",
+      "prompt": "Battlemap no Dungeondraft de uma cripta pequena: escadaria descendo na entrada, antecâmara com colunas, câmara funerária com sarcófagos, e um túnel de caverna desabado que liga os fundos da cripta a uma gruta natural. 22x16 células.",
+      "expected_output": "Híbrido construído+caverna: salas com paredes de pedra, escada (path stairs), colunas e sarcófagos como objetos, caverna com bitmap não-vazio e paredes traçadas.",
+      "files": [],
+      "assertions": [
+        "Existe um arquivo .dungeondraft_map no outputs e ele parseia como JSON",
+        "Top-level contém header, world e mod (scaffold íntegro — sem isso o DD abre vazio)",
+        "editor_state contém color_palettes e as memórias de ferramenta (cabeçalho completo)",
+        "Toda textura res:// (fora packs/) existe no índice do pck",
+        "O bitmap da caverna tem bits ligados (gruta presente)",
+        "Existem paredes (salas da cripta e/ou contorno da caverna)",
+        "Existe uma escada (path stairs_*)",
+        "Existem ≥5 objetos (colunas, sarcófagos, entulho)",
+        "Toda parede tem a chave portals (mesmo vazia)",
+        "Arrays do nível batem com 22x16 (cave bitmap e tiles.cells)"
+      ]
+    }
+  ]
+}

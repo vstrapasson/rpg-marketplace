@@ -16,8 +16,8 @@
     },
     {
       "name": "rpg-loremaster",
-      "description": "Build dark-leaning PF2e campaigns end to end: campaign spine, regions/nations, cities, factions, locations, NPCs, artifacts/relics, image-gen prompts + a campaign visual style bible, music-gen prompts + a campaign audio style bible, clue maps, and an interactive conductor + a consistency-reviewer subagent.",
-      "version": "0.4.0",
+      "description": "Build dark-leaning PF2e campaigns end to end: campaign spine, regions/nations, cities, factions, locations, NPCs, artifacts/relics, image-gen prompts + a campaign visual style bible, battlemap prompts + an executable Dungeondraft battlemap-file generator, music-gen prompts + a campaign audio style bible, clue maps, and an interactive conductor + a consistency-reviewer subagent.",
+      "version": "0.5.0",
       "source": "./plugins/rpg-loremaster",
       "category": "creativity"
     },
@@ -30,8 +30,8 @@
     },
     {
       "name": "rpg-foundry-forge",
-      "description": "Compile a validated RPG vault into a playable Foundry VTT session via the foundry-vtt-mcp server — scenes and lighting, scene soundtracks (playlists + ambience + ambient sound), creature actors with token placement, quest/lore/dashboard journals, player ownership, encounters, non-combat challenges (challenge journal + live rolls + VP clock), and party-wealth sync (read player inventories back, reconcile, push loot to sheets); idempotent and resumable via an on-disk build manifest.",
-      "version": "0.4.0",
+      "description": "Compile a validated RPG vault into a playable Foundry VTT session via the foundry-vtt-mcp server — scenes and lighting, scene soundtracks (playlists + ambience + ambient sound), creature actors with token placement, quest/lore/dashboard journals (optional Paizo theme), player ownership, encounters, non-combat challenges (challenge journal + live rolls + VP clock), and party-wealth sync (read player inventories back, reconcile, push loot to sheets); per-artifact QA via a pre-write scene stress-tester and a post-write journal verifier; idempotent and resumable via an on-disk build manifest.",
+      "version": "0.5.0",
       "source": "./plugins/rpg-foundry-forge",
       "category": "productivity"
     }

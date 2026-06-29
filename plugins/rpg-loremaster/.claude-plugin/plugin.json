@@ -1,6 +1,6 @@
 {
   "name": "rpg-loremaster",
-  "description": "A game master's toolkit for building dark-leaning Pathfinder 2e campaigns end to end — the campaign spine, regions and nations, cities, factions, locations, NPCs, artifacts and relics, image-generation prompts with a campaign visual style bible, spatially-assertive top-down battlemap prompts, music-generation prompts with a campaign audio style bible, and a Three-Clue-Rule clue map, plus an interactive conductor that ties them into one consistent campaign via a running campaign bible.",
+  "description": "A game master's toolkit for building dark-leaning Pathfinder 2e campaigns end to end — the campaign spine, regions and nations, cities, factions, locations, NPCs, artifacts and relics, image-generation prompts with a campaign visual style bible, spatially-assertive top-down battlemap prompts plus an executable Dungeondraft battlemap-file generator, music-generation prompts with a campaign audio style bible, and a Three-Clue-Rule clue map, plus an interactive conductor that ties them into one consistent campaign via a running campaign bible.",
   "version": "0.5.0",
   "author": { "name": "Vagner Strapasson", "email": "vagnerstrapasson@gmail.com" },
   "license": "MIT",

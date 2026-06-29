@@ -35,6 +35,7 @@ Trigger when the user wants a **map / battlemap prompt** or a **floorplan that m
 
 Do **not** trigger for:
 - **Illustration / handouts / portraits / establishing shots** — that's `rpg-art-director` (an establishing shot of a city skyline is illustration, not a tactical floorplan).
+- **An editable map FILE** — a `.dungeondraft_map` the GM opens in Dungeondraft, hand-tunes, and exports to `.dd2vtt` (carrying vision walls + lights into the VTT) — that's the **executable sibling** `rpg-dungeondraft-battlemap`. This skill emits a painted-image *prompt*; that one builds a *vector map file*. Pick by the artifact the user wants: a PNG to paint, or a file to edit.
 - **Actually generating the image** — that's the manual nano-banana step (see the honest boundary).
 - **Building the Foundry scene** — `rpg-scene-forge` links an existing scene by name or generates its own; it does **not** ingest this prompt or a loose PNG. This skill produces the map *artifact* the GM realizes (and never places files or calls MCP tools); the GM creates the scene from the PNG, then scene-forge lights and populates it by name.
 - **Designing the location's fiction** (ecology, why-not-cleared, secrets) — that's `rpg-location-creator`. This skill consumes that dossier and lays out the tactical space.
