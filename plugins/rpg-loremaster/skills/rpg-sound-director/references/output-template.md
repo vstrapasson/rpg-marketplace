@@ -96,18 +96,19 @@ The audio DNA is shown first (the reasoning), then the rendered prompt(s). **Com
 
 > Authored by `rpg-sound-director`; realized by `rpg-soundscape-forge`. Paths are **Foundry Data-relative** (no remote URLs). Files are dropped into `worlds/<world>/audio/` by the GM after generation.
 
-| Scene / local | Function | Prompt file | Provider | Expected filename | Data-relative path | Loop | Volume | Bind-as |
-|---|---|---|---|---|---|---|---|---|
-| Cripta dos Ossos | tension / dread | audio-local-cripta-dos-ossos.md | stable-audio-open | cripta-bed.ogg | worlds/<world>/audio/cripta-bed.ogg | yes | 0.5 | scene playlist |
-| Taverna do Caldeirão | social / hub | audio-local-taverna.md | stable-audio-open | taverna-bed.ogg | worlds/<world>/audio/taverna-bed.ogg | yes | 0.4 | scene playlist |
-| Bardo canta (Taverna) | diegetic song | audio-scene-bardo.md | suno | bardo-lament.ogg | worlds/<world>/audio/bardo-lament.ogg | no | 0.7 | AmbientSound (one-shot) |
-| Porta se abre (revelação) | stinger / reveal | audio-scene-porta.md | stable-audio-open | porta-stinger.ogg | worlds/<world>/audio/porta-stinger.ogg | no | 0.8 | AmbientSound (one-shot) |
+| Scene / local | Function | Prompt file | Provider | Expected filename | Data-relative path | Loop | Volume | Channel | Bind-as |
+|---|---|---|---|---|---|---|---|---|---|
+| Cripta dos Ossos | tension / dread | audio-local-cripta-dos-ossos.md | stable-audio-open | cripta-bed.ogg | worlds/<world>/audio/cripta-bed.ogg | yes | 0.5 | environment | scene playlist |
+| Taverna do Caldeirão | social / hub | audio-local-taverna.md | stable-audio-open | taverna-bed.ogg | worlds/<world>/audio/taverna-bed.ogg | yes | 0.4 | music | scene playlist |
+| Bardo canta (Taverna) | diegetic song | audio-scene-bardo.md | suno | bardo-lament.ogg | worlds/<world>/audio/bardo-lament.ogg | no | 0.7 | — | AmbientSound (one-shot) |
+| Porta se abre (revelação) | stinger / reveal | audio-scene-porta.md | stable-audio-open | porta-stinger.ogg | worlds/<world>/audio/porta-stinger.ogg | no | 0.8 | — | AmbientSound (one-shot) |
 ```
 
 **Column notes for the forge skill:**
 - **Bind-as `scene playlist`** → `create-playlist` (a looping bed) + `set-scene-playlist` (the scene's Ambience auto-plays on activation).
 - **Bind-as `AmbientSound (one-shot)`** → `create-ambient-sound` (a placeable / triggered cue), `loop: no`.
 - **Loop** → the PlaylistSound `repeat` flag. **Volume** → 0–1.
+- **Channel** → the Foundry mixer channel each track routes to, so it gets an **independent live master fader** in the Playlists sidebar. Values: `music` (melodic bed/theme), `environment` (ambience/drone you fade on its own), `interface` (soundboard/UI clicks). Blank → `music`. **Auto by role** when you don't override: a path under `music/` or `motifs/` → `music`; under `ambience/` (or any drone/texture loop) → `environment`; a soundboard/`sfx/` click → `interface`. For a **layered `simultaneous` bed** (music + ambience as separate tracks in one playlist — list them as sibling rows sharing the Scene/local), split the tracks across `music`/`environment` so the GM can pull the ambience down without touching the music. AmbientSound one-shots aren't channel-routed — leave `—`.
 - The **Scene / local** name is matched to the Foundry scene `rpg-scene-forge` created (the forge resolves it to a `sceneId`).
 - The **Prompt file** column is **provenance only** — the GM's trace back to the `audio-<type>-<slug>.md` that produced the track. `rpg-soundscape-forge` ignores it; it binds the generated file, not the prompt.
 
