@@ -17,6 +17,13 @@ Realize the vault's narrative entities as Foundry journals. Content comes from t
 6. **Folders** → set `folderName` on every create per the hybrid convention (`foundry-args.journalFolder`): quests by act, the rest by type. Record the folder in the manifest.
 7. Return `{ journalId | dashboardId, folder, linkedNpcs }` per entity to the conductor.
 
+## Theme (optional)
+When the campaign opts into the Paizo (Abomination Vaults) theme, write the journal HTML with the box classes (`box-text` + `narrative-block` / `encounter` / `investigation` / `treasure` / `instruction`) and the PF2e enrichers (`@Check`, `@Damage`, `@Template`, `@UUID`, `[[/r …]]`) per `references/paizo-theme.md`, and create it inside the theme folder (default `Campanha`). When the theme modules are absent, write the same content without the box classes. Write content **verbatim** via `additionalPages[].content` — never rely on the AI-generated main page (it comes back in generic English and the wrong theme; treat it as a throwaway shell).
+
+## Quality gates (pre-write and post-write)
+- **Pre-write (narrative content).** Before writing a journal that carries narrative — quest read-aloud, lore/faction/front bodies, a narrative handout — spawn the `rpg-scene-stress-tester` agent on the content + the vault graph. If it returns any 🔴 Blocker, **do not write**: relay the findings and route the fix back to the loremaster/gamemaster. Skip the gate for purely structural journals (a clocks-only front tracker, a bare dashboard) with no prose to vet.
+- **Post-write (every journal).** After each `create-quest-journal` / `update-quest-journal`, spawn the `rpg-journal-verifier` agent with the `journalId`, 2–3 expected verbatim snippets, the expected folder, and the campaign language. Relay its report; on a FAILED check, apply the suggested fix (re-write `mode: 'replace'`, or recreate + flag the orphan) and re-verify. The verifier cannot confirm the visual render — ask the GM for one screenshot before declaring a themed journal done.
+
 No scene-write race here (journals aren't scene-embedded) — but still idempotent via the manifest.
 
-Load `references/journal-mapping.md` and `references/prefer-existing-journals.md`.
+Load `references/journal-mapping.md`, `references/prefer-existing-journals.md`, and (for themed journals) `references/paizo-theme.md`.

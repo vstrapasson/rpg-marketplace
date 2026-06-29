@@ -10,7 +10,9 @@ Present this conversationally.
 
 **Compile units:** a **`sessao`** (a whole game night), an **`encontro`** (one combat), or a **`desafio`** (one non-combat challenge — social/chase/research/infiltration). Acts/whole-campaign are future.
 
-**What it builds:** scenes + mood lighting · creature actors placed as tokens with correct disposition (+ optional AI token art) · quest/lore journals + a campaign dashboard · player ownership · assembled encounters · non-combat challenges (challenge journal + DCs + live `request-player-rolls` + a VP progress clock).
+**What it builds:** scenes + mood lighting · creature actors placed as tokens with correct disposition (+ optional AI token art) · quest/lore journals + a campaign dashboard (optional Paizo theme via `rpg-journal-forge/references/paizo-theme.md`) · player ownership · assembled encounters · non-combat challenges (challenge journal + DCs + live `request-player-rolls` + a VP progress clock).
+
+**Quality gates (per-artifact).** Narrative journals are vetted **before** writing by `rpg-scene-stress-tester` (causal chain, timeline, who-knows-what per NPC and per PC against the clue map + the PCs' GM-secret layer, space physics, prose) — a Blocker stops the write. After writing, `rpg-journal-verifier` fetches the journal back via MCP and checks theme classes, enrichers, language, verbatim snippets, and folder. `rpg-foundry-reviewer` still audits the whole session at the review step.
 
 **Also (on demand, not a compile unit):** `rpg-treasure-forge` **syncs party wealth** — it reads each PC's actual Foundry inventory + currency (`get-character`/`search-character-items`), reconciles the **`## Wealth`** section of the party overview (the kit's **first vault sync-back**), and pushes awarded loot onto the PCs' sheets (`add-to-actor`, approval-gated). Ask for it with "sync the party's wealth" / "push the loot to the sheets".
 

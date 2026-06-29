@@ -18,6 +18,7 @@ It compiles; it does not author. It reads the vault as the contract and writes t
 - **Idempotent & resumable.** A per-world `build-manifest-<world>.md` in the vault root maps every vault entity → its Foundry document id. Re-running skips what's built; a cold session resumes (incl. in-flight async map jobs).
 - **Serialize scene writes.** Parallel writes to one Foundry scene silently drop — the conductor executes one MCP call at a time.
 - **Prefer existing.** Scenes and journals are matched by name before anything is created.
+- **Per-artifact QA, not just whole-build.** Narrative journals pass a pre-write adversarial gate (`rpg-scene-stress-tester`) and a post-write verifier (`rpg-journal-verifier`) — an incoherent timeline, a leaked tell, or a spoilered revelation is caught before it's committed; the silent failures of the journal write path are caught right after. `rpg-foundry-reviewer` still audits the whole session at the end.
 - **Organic walls are the human's job.** Pixel-precise wall tracing of painted maps isn't reliable to automate; the plugin lights scenes and places tokens, and leaves wall drawing to Foundry's own tool.
 
 ## What's inside
@@ -27,11 +28,13 @@ It compiles; it does not author. It reads the vault as the contract and writes t
 | skill | `rpg-scene-forge` | `local` → scenes + mood lighting (prefer existing; generate under confirmation) |
 | skill | `rpg-soundscape-forge` | `soundtrack-manifest` (from `rpg-sound-director`) → playlists + scene Ambience + ambient sound (right after scenes; optional/degradable) |
 | skill | `rpg-actor-forge` | `inimigo`/`npc` → compendium actors + token placement + disposition (+ optional AI art) |
-| skill | `rpg-journal-forge` | `quest`/`lore`/`faccao`/`frente`/`ato` → quest & lore journals + campaign dashboard |
+| skill | `rpg-journal-forge` | `quest`/`lore`/`faccao`/`frente`/`ato` → quest & lore journals + campaign dashboard (optional Paizo theme via `references/paizo-theme.md`) |
 | skill | `rpg-ownership-forge` | `jogador` → Foundry actor ownership (last, approval-gated) |
 | skill | `rpg-encounter-forge` | `encontro` → assembled combat (scene + creatures-by-threat + treasure) |
 | skill | `rpg-embate-forge` | `desafio` → non-combat challenge (challenge journal + DCs + live `request-player-rolls` + a VP progress clock + a one-click hybrid **runner macro** via `create-macro`; scene only if it has a `local`) |
 | skill | `rpg-treasure-forge` | reads the PCs' Foundry inventories → reconciles the party `## Wealth` (the kit's **first vault sync-back**) + pushes awarded loot to sheets (on demand, approval-gated) |
+| agent | `rpg-scene-stress-tester` | pre-write gate: adversarial audit of one scene/journal (causal chain, timeline, who-knows-what, space, prose) before it's written |
+| agent | `rpg-journal-verifier` | post-write check: fetches a journal back via MCP and verifies theme classes, enrichers, language, verbatim snippets, folder |
 | agent | `rpg-foundry-reviewer` | non-interactive auditor: diffs vault graph vs built session |
 | commands | `/forge-compile`, `/forge-preflight`, `/forge-status`, `/forge-verify`, `/rpg-foundry-forge-help` | the build lifecycle |
 | scripts | `scripts/lib/*.mjs` | `vault-read`, `resolve`, `build-plan`, `manifest`, `foundry-args`, `preflight` (zero-dep, `node:*` only) |

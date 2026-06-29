@@ -72,6 +72,9 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 ### B2. `rpg-art-director` — art prompts + campaign visual style bible ✅ SHIPPED (loremaster 0.3.0)
 - **Shipped:** `rpg-art-director` in `rpg-loremaster` — the third system-agnostic creator. Two modes: (A) a campaign **visual style bible** (`campaign-visual-style-<slug>.md`, the visual analogue of the tone spectrum, injected downward like tone); (B) extracts an entity's **visual DNA** from its existing description and renders **multi-target, SDXL-first** prompts (Stable Diffusion/ComfyUI primary + Midjourney `--ar/--style/--cref` + Flux/DALL·E on request), with framing/aspect ratio per use. Covers npc/local/regiao/city/faccao/item/scene; defers relics to `artifact-creator`. **Prompt-only** — image generation stays a documented manual step (reuses `local/comfyui-gen-token.py` + the `journal-forge` handout pattern + `actor-forge` `update-token imagePath`); the skill never calls ComfyUI. See the `rpg-loremaster` README. *(Built; chose loremaster prompt-only, companion style-bible file, multi-target SDXL-first, full coverage.)*
 
+### B3. `rpg-dungeondraft-battlemap` — executable battlemap files ✅ SHIPPED (loremaster 0.5.0)
+- **Shipped:** the **executable counterpart** to `rpg-map-architect`. Where map-architect emits a top-down *image prompt* (painted PNG), this skill generates an **editable `.dungeondraft_map` file** via a stdlib-only Python toolkit (`scripts/ddmap.py`) validated by reverse-engineering the format — designs the functional layout (rooms, circulation, doors/windows, water, terrain, light), composes from a real-DD scaffold (silent-fail-proof header), validates every texture against the pck index. The GM opens it in Dungeondraft, hand-tunes, and exports **Universal VTT (`.dd2vtt`)** carrying vision walls + lights into Foundry. Prompt/file siblings cross-linked; like map-architect it emits the artifact and hands off (no MCP, no scene build — `rpg-scene-forge` lights it by name). **Deps:** Python 3 + the user's Dungeondraft license; third-party asset packs optional. Promoted from the vault lab where it was format-decoded and eval-tested. *(Built; chose loremaster sibling home, file-not-prompt, default-assets + optional-pack.)*
+
 ---
 
 ## C. Smaller enhancements (not full skills)
@@ -81,6 +84,18 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 - **`rpg-travel` / exploration** 💡 — overland travel / journey / hexcrawl (PF2e exploration mode), with encounter + embate hooks along the route.
 - **Marketplace onboarding** 💡 — a top-level tour of the 4 plugins + a "new campaign from zero" wizard chaining loremaster → guardian → gamemaster.
 - **`rpg-quest-creator`?** 💡 — verify whether any skill actually *authors* a `quest` (it's consumed by session-prep / journal-forge but may have no dedicated creator). If not, a quest designer (objective, stakes, clue-map links, reward) is a real gap.
+
+---
+
+## D. Quality & reliability gates
+
+### D1. Per-artifact Foundry QA — pre-write + post-write ✅ SHIPPED (foundry-forge 0.5.0)
+- **Shipped:** two agents that close the per-artifact QA gap (the kit had only the whole-build `rpg-foundry-reviewer`). Promoted from the vault lab, where they paid for themselves on the table.
+  - **`rpg-scene-stress-tester`** (pre-write gate) — adversarial read-only audit of ONE scene/journal before it's written: causal chain, timeline, who-knows-what per NPC and per PC (against `clue-map-*.md` + the PCs' `## ⚠️ Verdade do GM` layer), space physics, prose. A 🔴 Blocker stops the write. Wired into `rpg-journal-forge` (narrative content) + the conductor playbook (step 3.3).
+  - **`rpg-journal-verifier`** (post-write check) — fetches a journal back via read-only MCP and verifies theme classes, well-formed enrichers (+ mojibake), expected language (catches the AI-rewritten generic-English main page), verbatim snippets, and folder; declares it can't confirm the visual render.
+  - **Also shipped:** `rpg-journal-forge/references/paizo-theme.md` — the Paizo (Abomination Vaults) box + enricher cheat-sheet, an optional theme the verifier checks for. *(Built; chose foundry-forge home, journal-forge wiring, genericized from the campaign vault.)*
+
+### D2. Foundry → vault sync-back 🔬 — (see C, pairs with A1)
 
 ---
 
