@@ -8,7 +8,7 @@ Audio binding is optional. Probe whether the tools exist before building; if abs
 
 ## `create-playlist` — a Playlist (world document) + tracks
 
-`create-playlist({ name, mode?, fade?, sounds: [{ path, name?, volume?, loop?, fade? }] })`
+`create-playlist({ name, mode?, fade?, sounds: [{ path, name?, volume?, loop?, fade?, channel? }] })`
 
 | Friendly field | Foundry internal |
 |---|---|
@@ -19,8 +19,11 @@ Audio binding is optional. Probe whether the tools exist before building; if abs
 | `sounds[].volume` (0–1) | `PlaylistSound.volume` |
 | `sounds[].loop` | `PlaylistSound.repeat` |
 | `sounds[].name` | `PlaylistSound.name` (default: filename without extension) |
+| `sounds[].channel` (`music`\|`environment`\|`interface`) | `PlaylistSound.channel` → `CONST.AUDIO_CHANNELS` (default `music`) |
 
 Returns `{ success, playlistId, name, soundIds: [...] }`. Use `soundId` from this when pinning a single track on a scene.
+
+**Channels = independent live faders.** Each `PlaylistSound.channel` routes the track to one of Foundry's three mixer channels, each with its own master slider in the Playlists sidebar. Split a layered `simultaneous` bed across channels so the GM can drop the ambience without touching the music. Take the manifest's **Channel** column verbatim; when it's blank, **auto by role** — a path under `music/` or `motifs/` → `music`; under `ambience/` (or any drone/texture loop) → `environment`; a soundboard/`sfx/` click → `interface`; otherwise `music`. Omitting `channel` keeps the prior behavior (everything on `music`).
 
 ## `set-scene-playlist` — bind a playlist to a scene's Ambience
 

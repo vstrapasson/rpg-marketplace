@@ -26,7 +26,7 @@ It compiles; it does not author. It reads the vault as the contract and writes t
 |---|---|---|
 | skill | `rpg-forge-conductor` | orchestrator: resolve → preflight → plan → build → verify → review; owns the manifest |
 | skill | `rpg-scene-forge` | `local` → scenes + mood lighting (prefer existing; generate under confirmation) |
-| skill | `rpg-soundscape-forge` | `soundtrack-manifest` (from `rpg-sound-director`) → playlists + scene Ambience + ambient sound (right after scenes; optional/degradable) |
+| skill | `rpg-soundscape-forge` | `soundtrack-manifest` (from `rpg-sound-director`) → playlists + scene Ambience + ambient sound, with per-track mixer channels for independent live faders (right after scenes; optional/degradable) |
 | skill | `rpg-actor-forge` | `inimigo`/`npc` → compendium actors + token placement + disposition (+ optional AI art) |
 | skill | `rpg-journal-forge` | `quest`/`lore`/`faccao`/`frente`/`ato` → quest & lore journals + campaign dashboard (optional Paizo theme via `references/paizo-theme.md`) |
 | skill | `rpg-ownership-forge` | `jogador` → Foundry actor ownership (last, approval-gated) |

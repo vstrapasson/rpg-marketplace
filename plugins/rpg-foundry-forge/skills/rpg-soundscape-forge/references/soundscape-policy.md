@@ -26,6 +26,15 @@ A diegetic sung track (Suno, from a bard) is almost always an **AmbientSound one
 - **Loop** (`PlaylistSound.repeat`) — **true for beds** (they play for minutes under exploration), **false for one-shots** (stingers, songs). The manifest's Loop column maps straight to `loop`.
 - **Fade** (ms) — a short crossfade (1000–2000ms) on a bed avoids a jarring cut on scene change; one-shots usually need none. Optional; default 0 unless the manifest asks.
 
+## Channel — independent live faders
+
+Each PlaylistSound routes to one of Foundry's three mixer channels — **Music**, **Environment**, **Interface** — and each channel has its own master slider in the Playlists sidebar. This is what lets the GM **drop the ambience without touching the music mid-scene**. Without it (the old behavior) every track lands on Music, so the one fader moves them together and per-track volume can only be changed by editing each sound — clunky during play.
+
+- **Map by role.** `music` = melodic bed/theme; `environment` = ambience/drone/texture you want to fade on its own; `interface` = soundboard clicks and UI stingers.
+- **Take the manifest's Channel column verbatim.** When it's blank, **auto by role** from the path: `music/` or `motifs/` → `music`; `ambience/` (or any drone/loop) → `environment`; `sfx/`/soundboard → `interface`; otherwise default `music`.
+- **The payoff is in layered beds.** For a `simultaneous` playlist (music + 1–2 ambience tracks), put the music on `music` and the ambience tracks on `environment` — now two independent faders. A one-track bed barely benefits; a layered one is the whole point.
+- **Back-compat.** Omitting `channel` keeps everything on Music — nothing breaks, you just lose the independent fader. Existing playlists created before this aren't migrated (there's no update-playlist tool); re-create or adjust them in the Foundry UI.
+
 ## The Data-relative path rule
 
 Audio paths must be **Foundry Data-relative** — `worlds/<world>/audio/<name>.ogg` — never a remote URL or an absolute filesystem path (same constraint as token `imagePath`). The file must already be in the Foundry data dir; this skill binds it, it does not upload it. There is no MCP file-stat tool, so a wrong path produces a **silent track** (the PlaylistSound/AmbientSound still gets created) — confirm placement with the GM, and verify by activating the scene.
