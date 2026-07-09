@@ -23,8 +23,8 @@
     },
     {
       "name": "rpg-gamemaster",
-      "description": "Session prep and run layer for PF2e campaigns — session zero / party builder, runnable sessions, fronts and clocks, balanced encounters, non-combat challenges (Victory Points), itemized treasure + wealth-by-level tracking, and a GM run sheet.",
-      "version": "0.4.0",
+      "description": "Session prep and run layer for PF2e campaigns — session zero / party builder, runnable sessions, fronts and clocks, balanced encounters, non-combat challenges (Victory Points), itemized treasure + wealth-by-level tracking, a GM run sheet, and a post-session recap that reconciles what happened against the vault (quest status, events, clue reveals) with GM adjudication on any divergence.",
+      "version": "0.5.0",
       "source": "./plugins/rpg-gamemaster",
       "category": "creativity"
     },
