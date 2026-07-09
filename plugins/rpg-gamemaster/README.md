@@ -1,8 +1,8 @@
 # RPG Gamemaster
 
-The **session prep and run layer** for a Pathfinder 2e campaign — the bridge from a built world to a runnable session, plus the session zero that brings the players into it. Seven skills: a **session zero** that builds the player characters and captures the party, then the GM-side loop that advances the living world between sessions, assembles a one-page session plan, balances encounter math, structures non-combat challenges, itemizes treasure and tracks wealth, and produces the GM overlay for the table. Tool-agnostic: no specific VTT, no external compendium; creature data and rules come from the [Archives of Nethys](https://2e.aonprd.com/) category pages only.
+The **session prep and run layer** for a Pathfinder 2e campaign — the bridge from a built world to a runnable session, plus the session zero that brings the players into it and the recap that closes the loop after it. Eight skills: a **session zero** that builds the player characters and captures the party, then the GM-side loop that advances the living world between sessions, assembles a one-page session plan, balances encounter math, structures non-combat challenges, itemizes treasure and tracks wealth, produces the GM overlay for the table, and — after the session ends — reconciles what happened back into the vault. Tool-agnostic: no specific VTT, no external compendium; creature data and rules come from the [Archives of Nethys](https://2e.aonprd.com/) category pages only.
 
-Default tone is **dark-leaning (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. All seven skills inherit tone from the campaign bible; they do not reset it.
+Default tone is **dark-leaning (level 3 of 5)** — heroic fantasy with a shadowy edge; not grimdark, not noblebright. All eight skills inherit tone from the campaign bible; they do not reset it.
 
 ## Philosophy
 
@@ -21,8 +21,9 @@ The kit is grounded in working TTRPG methodology: Sly Flourish's *Return of the 
 | **rpg-embate-builder** | a non-combat challenge — single check or a Victory Points subsystem (social/chase/research/infiltration), DCs shown, wrapped as a situation | when a scene is resolved by skills, not swords |
 | **rpg-treasure-builder** | itemized loot from the official Treasure-by-Level budget (`item` entities) + a wealth-by-level tracker in the party overview | distributing a hoard or the level's loot |
 | **rpg-gm-run-sheet** | a compact printable table overlay — checklist, clocks, NPC quick-refs, backstops | sitting down to run |
+| **rpg-session-recap** | the reconciled `sessao`/`evento`/`quest` state from what actually happened, plus a GM-facing recap document | right after the session ends |
 
-## The seven skills
+## The eight skills
 
 ### rpg-party-forge — session zero / the players' side
 
@@ -50,26 +51,38 @@ The by-the-book counterpart to the encounter builder, for everything below the r
 
 ### rpg-gm-run-sheet — the table overlay
 
-The read-out of the other three skills. It does not generate new fiction — it reads the session-prep one-pager, the clue map, and the active fronts and clocks, and compresses them into one printable page the GM glances at mid-session. Six sections: the strong start (read-aloud block), the scene beats checklist, the secrets-and-clues checklist keyed to revelation IDs with tick boxes for each placed clue, NPC quick-refs (name, want, one voice line), the active clocks dashboard (segments/filled, next portent), and the "if they stall" backstops tied to grim portents. Tool-agnostic — usable next to any VTT or at a physical table. This is the one skill that writes nothing to the vault; the run sheet is ephemeral, saved as a loose `run-sheet-<slug>.md` in the working folder. The canonical session record is the `sessao` note from `rpg-session-prep`.
+The read-out of the other three skills. It does not generate new fiction — it reads the session-prep one-pager, the clue map, and the active fronts and clocks, and compresses them into one printable page the GM glances at mid-session. Six sections: the strong start (read-aloud block), the scene beats checklist, the secrets-and-clues checklist keyed to revelation IDs with tick boxes for each placed clue, NPC quick-refs (name, want, one voice line), the active clocks dashboard (segments/filled, next portent), and the "if they stall" backstops tied to grim portents. Tool-agnostic — usable next to any VTT or at a physical table. This is the one skill that writes nothing to the vault; the run sheet is ephemeral, saved as a loose `run-sheet-<slug>.md` in the working folder. The canonical session record is the `sessao` note from `rpg-session-recap`.
+
+### rpg-session-recap — the return edge
+
+The skill that closes the loop. Every other skill in the kit prepares or runs a session; this one reconciles what happened after it. Given the GM's post-session account — pasted notes, a dictated summary, or a linked transcript to enrich and verify — it extracts the session's key beats, matches every named entity to the vault by exact canonical name, and drafts a change set: updated `sessao` outcomes, new `evento` entities, `quest.status` flips, revealed clue-map IDs, and NPC/faction state shifts. What makes it more than a recap writer is the **reconciliation**: when the account contradicts what the vault or the campaign bible currently holds — an unresolved name, an ambiguous outcome, a fact that breaks canon — it stops and asks the GM which path to take instead of guessing, batching the unambiguous changes for one approval and adjudicating conflicts one at a time. Persists everything through `rpg-preserve`'s **body-preserving update path**, so an existing quest's description or an NPC's dossier prose survives a status change intact — the ordinary create flow would silently rebuild the note and discard it. Hands off to `rpg-front-tracker` (advance the clocks from this session) and `rpg-session-prep` (plan the next one from the reconciled state).
 
 ## Integration — the vault as shared memory
 
 The gamemaster kit communicates with the rest of the ecosystem **via the Obsidian vault**, never plugin-to-plugin. It reads vault entities (`npc`, `local`, `faccao`, `quest`, `inimigo`, `ato`) and loose files (the campaign bible and the clue map). It writes only through the **`rpg-preserve` skill** — the write gate provided by the `rpg-vault-guardian` plugin. This is the ports-and-adapters design: the gamemaster core never imports the guardian's code; it knows only the contract (entity types and required fields) and routes candidates to `rpg-preserve` to validate and write.
 
 ```
-  LOREMASTER (author)            VAULT = shared contract              GAMEMASTER (prep/run)
+  LOREMASTER (author)            VAULT = shared contract              GAMEMASTER (prep/run/recap)
   ──────────────────────         ────────────────────────────         ─────────────────────
-  campaign-foundation ─────────▶ campaign-bible (loose) ─────read──▶ session-prep
+  campaign-foundation ─────────▶ campaign-bible (loose) ◀────update── session-recap (Deliberate Exceptions)
+                                                          ─────read──▶ session-prep
   faction-creator (plan) ──────▶ faccao entity ◀──────advance──────  front-tracker
-  clue-mapper ─────────────────▶ clue-map (loose, R-IDs) ────read──▶ session-prep + run-sheet
+                                                ◀──────update──────  session-recap (status/body note)
+  clue-mapper ─────────────────▶ clue-map (loose, R-IDs) ◀───tick── session-recap
+                                                          ────read──▶ session-prep + run-sheet
   region/city/loc/npc ─────────▶ npc/local/faccao entities ──read──▶ all skills
+                                                ◀──────update──────  session-recap (status/body note)
                                  frente/relogio (ENTITY) ◀──write── front-tracker (via rpg-preserve)
-                                 sessao/encontro (ENTITY) ◀──write── prep + encounter (via rpg-preserve)
+                                 sessao (ENTITY) ◀────write/update── prep + session-recap (via rpg-preserve)
+                                 encontro (ENTITY) ◀─────write────── encounter-builder (via rpg-preserve)
+                                 evento (ENTITY) ◀───────write────── session-recap (via rpg-preserve)
+                                 quest (ENTITY) ◀────────update───── session-recap (status flip, via rpg-preserve)
                                  desafio (ENTITY) ◀──────write────── embate-builder (via rpg-preserve)
                                  jogador (ENTITY) ◀──────write────── party-forge (via rpg-preserve)
                                  item (ENTITY) ◀─────────write────── treasure-builder (via rpg-preserve)
                                  party-<slug> (loose) ◀───────────── party-forge (composition) + treasure-builder (## Wealth)
                                  run-sheet (loose printable) ◀───────────────────── gm-run-sheet
+                                 session-recap-<slug> (loose) ◀────────────────────  session-recap
 ```
 
 ## Four new vault entity types
@@ -89,6 +102,8 @@ If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-in
 
 `rpg-treasure-builder` likewise authors the pre-existing `item` type (folder `itens/`). As of guardian 1.3.0 the `item` schema gained structured loot fields — `value` (gp), `item_level`, `rarity` (`common`/`uncommon`/`rare`/`unique`), and `category` (`permanent`/`consumable`/`currency`/`art`/`gear`) — so the wealth tracker can sum and the Foundry side can type loot correctly.
 
+`rpg-session-recap` authors the pre-existing `evento` type (folder `eventos/`) — defined in the schema since the guardian's first release, but no skill wrote it until now. It's also the first gamemaster skill to **update** existing entities rather than only create new ones: it flips `quest.status`, adds a `sessao`'s outcomes, and records `npc`/`faccao` state shifts through `rpg-preserve`'s body-preserving update path (added alongside this skill), which patches only the changed frontmatter fields and leaves the note's body untouched.
+
 ## Install
 
 ```
@@ -97,7 +112,7 @@ If your vault was scaffolded before `rpg-gamemaster` was installed, run `/rpg-in
 /reload-plugins
 ```
 
-Confirm with `/skills` (you should see the seven `rpg-*` skills: `rpg-party-forge`, `rpg-front-tracker`, `rpg-session-prep`, `rpg-encounter-builder`, `rpg-embate-builder`, `rpg-treasure-builder`, `rpg-gm-run-sheet`).
+Confirm with `/skills` (you should see the eight `rpg-*` skills: `rpg-party-forge`, `rpg-front-tracker`, `rpg-session-prep`, `rpg-encounter-builder`, `rpg-embate-builder`, `rpg-treasure-builder`, `rpg-gm-run-sheet`, `rpg-session-recap`).
 
 For persistence, also install `rpg-vault-guardian` — the gamemaster skills write all vault entities through its `rpg-preserve` write gate. Without it, the skills produce output but will not persist to disk.
 
@@ -112,7 +127,8 @@ New here? Run `/rpg-gamemaster-help` for a guided tour of the kit's workflows.
 3. **Encounter math (if needed):** `rpg-encounter-builder` — balance the flagged fights; write `encontro` entities.
 4. **Non-combat challenges (if needed):** `rpg-embate-builder` — structure the social/chase/research/infiltration scenes and dramatic checks; write `desafio` entities.
 5. **Sitting down to run:** `rpg-gm-run-sheet` — compress everything to one printable page.
-6. **After the session:** `rpg-front-tracker` again — advance the clocks to reflect what the players did.
+6. **After the session:** `rpg-session-recap` — reconcile the GM's account against the vault, adjudicate any divergence, then update `sessao`, create `evento`s, and flip `quest.status`.
+7. **Back to step 1:** `rpg-front-tracker` reads the reconciled `sessao` from step 6 to advance the clocks — and the cycle repeats.
 
 ## Conventions
 

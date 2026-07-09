@@ -81,6 +81,53 @@ Show the errors and ask:
 
 List each error with the affected field. Do not write until validation passes with 0 errors.
 
+## Updating an existing entity (preserve body)
+
+The workflow above **always rebuilds the note from scratch** via `buildFrontmatter`/`buildNoteContent` — correct for a brand-new entity, but it silently discards any hand-authored body (dossier prose, a quest's description, a session's context) if used on a note that already exists. Use this recipe instead whenever the caller wants to **change a few fields on an existing entity** — e.g. flipping `quest.status`, updating an `npc`'s `status`, adding a `sessao`'s outcomes.
+
+The caller (e.g. `rpg-session-recap`) hands you a `type`, a `name`, a `patch` (fields to merge into the existing frontmatter), and optionally an `append` (text to add to the end of the body). You run:
+
+```bash
+PLUGIN="${CLAUDE_PLUGIN_ROOT}"
+node --input-type=module << EOF
+import { readFile } from 'node:fs/promises';
+import { extractFrontmatter } from "${PLUGIN}/scripts/lib/frontmatter.mjs";
+import { serializeFrontmatter, validateCandidate, writeEntityFile, targetPath }
+  from "${PLUGIN}/scripts/lib/preserve.mjs";
+import { stampUpdated, normalizeFrontmatter } from "${PLUGIN}/scripts/lib/autofix.mjs";
+
+const vaultDir = process.cwd();
+const type = 'TYPE';
+const name = 'NAME';
+const patch = { /* only the fields that changed, e.g. status: 'completed' */ };
+const append = null; // or a string to add to the end of the body
+
+const path = targetPath(type, name, vaultDir);
+const existing = await readFile(path, 'utf8');
+const { frontmatter, body } = extractFrontmatter(existing);
+
+const fm = normalizeFrontmatter(stampUpdated({ ...frontmatter, ...patch }), type);
+const newBody = append ? body.replace(/\n*$/, '') + '\n\n' + append.trim() + '\n' : body;
+const content = serializeFrontmatter(fm) + newBody;
+
+const report = await validateCandidate(name, content, type, vaultDir);
+if (report.summary.errors === 0) {
+  const written = await writeEntityFile(type, name, content, vaultDir);
+  console.log('✅ Updated at: ' + written);
+} else {
+  console.log(JSON.stringify(report.issues, null, 2));
+}
+EOF
+```
+
+Same contract as a create: **0 errors → write, otherwise show the errors and ask.** The differences from the create flow:
+- `readFile` + `extractFrontmatter` split the existing note instead of building one from nothing.
+- `patch` fields are merged **on top of** the existing frontmatter (`{ ...frontmatter, ...patch }`) — untouched fields survive untouched.
+- The body is carried through verbatim (`newBody = body` when there's no `append`), so existing prose is never lost.
+- `targetPath` (already exported from `preserve.mjs`) resolves the file to read — throws if the type is unknown, same as the create path.
+
+If the entity doesn't exist yet at that path, `readFile` throws — that means the caller wanted a create, not an update; fall back to the standard workflow above instead.
+
 ## Required fields per type (quick reference)
 
 | Type | Required |

@@ -15,18 +15,15 @@ The kit today is strong on the **forward** flow — author (loremaster) → prep
 
 ## A. Core lifecycle gaps (highest leverage)
 
-### A1. `rpg-session-recap` — close the loop 🔬 · ⭐ top pick · ⏸ parked (revisit later)
-- **Home:** gamemaster · **Size:** M
-- **Status note:** deferred by decision — the concept and input architecture (A1a) are settled, but the build waits until the transcript format and Discord pipeline are pinned down. Highest conceptual leverage; not the next thing to build.
-- The missing return edge. Today the cycle is `front-tracker → session-prep → encounter/embate-builder → run-sheet → ???`. Nothing ingests "what happened" and updates downstream state — the GM re-feeds `front-tracker` by hand, and `evento`/`quest.status`/clue reveals are never captured.
-- **Does:** takes the GM's post-session account and (1) updates the `sessao` note with outcomes, (2) creates `evento` entities, (3) flips `quest.status` (available→active→completed/failed), (4) marks clue-map revelation IDs as revealed, (5) records NPC/faction status shifts, (6) hands off to `rpg-front-tracker` to advance clocks.
-- **Persists / feeds:** `sessao` (update), `evento`, `quest` (status); feeds next `front-tracker` + `session-prep`.
-- **Why first:** turns the vault from a forward pipeline into a living, self-updating system. Closes the one loop the kit is missing.
+### A1. `rpg-session-recap` — close the loop ✅ SHIPPED (gamemaster 0.5.0)
+- **Shipped:** `rpg-session-recap` in `rpg-gamemaster` — the return edge. Takes the GM's post-session account (pasted notes, a dictated summary, or an optional linked transcript to enrich/verify) and **reconciles** it against the vault: extracts the session's beats, matches every named entity to the vault by exact canonical name, then drafts a change set — updates the `sessao` note with outcomes, creates `evento` entities (the schema's first author of that type), flips `quest.status` (available→active→completed/failed/abandoned), marks clue-map revelation IDs as revealed (a loose-file tick, GM-approved), and records NPC/faction status shifts. The distinctive core is the **reconciliation model** (`references/reconciliation-model.md`): a conflict taxonomy (state contradiction / canon-name mismatch / bible drift / ambiguous outcome / missing node) and an adjudication protocol — when the account disagrees with vault or campaign-bible state, the skill **stops and asks the GM which path to take** instead of guessing, batches the unambiguous changes for one approval, and records canon-affecting decisions in the campaign bible's Deliberate Exceptions section. Hands off to `rpg-front-tracker` (advance the clocks from this session) and `rpg-session-prep` (plan the next one).
+- **Persists / feeds:** `sessao` (update), `evento` (create), `quest` (status update), `npc`/`faccao` (status/body update); feeds `front-tracker` + `session-prep`. All updates route through a new **body-preserving update path** on `rpg-preserve` (patches only the changed frontmatter fields, keeps the existing note body) — the write gate's create-only flow would otherwise silently discard hand-authored prose on every status flip.
+- *(Built; chose GM-account-as-spine + optional transcript enrichment — see A1a below; chose batch-clean/adjudicate-conflicts as the apply mode; chose direct GM-approved clue-map ticks over a deferred loremaster handoff.)*
 
-#### A1a. Recap input — the transcript pipeline (architecture, exploration / undecided)
-The schema **already anticipates this**: `transcricao` is a NON_ENTITY (folder `sessoes/transcricoes/`) and `sessao.transcript` is a `linkOnly` relation. So a transcript can already be linked to a session; the recap consumes `sessao.transcript`.
+#### A1a. Recap input — the transcript pipeline (decided: GM account is the spine, transcript stays optional)
+The schema **already anticipates this**: `transcricao` is a NON_ENTITY (folder `sessoes/transcricoes/`) and `sessao.transcript` is a `linkOnly` relation. A1 consumes `sessao.transcript` when it exists, but does **not** require it — this is what let A1 ship without waiting on the Discord pipeline below.
 
-**Key boundary:** audio→attributed-text is an **external pipeline**, not a Claude Code job. The Discord→transcript path is solved by existing OSS, so the kit *consumes* text — it never transcribes. Recommended default pipeline:
+**Key boundary (unchanged):** audio→attributed-text is an **external pipeline**, not a Claude Code job. The Discord→transcript path is solved by existing OSS, so the kit *consumes* text — it never transcribes. Recommended default pipeline, still to be built:
 
 ```
 Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per-speaker tracks
@@ -37,11 +34,11 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 
 **Why per-speaker tracks matter:** Craig records each speaker to a separate track, so speaker labels are clean **for free** — no diarization (the expensive, error-prone step). [Craig](https://craig.chat/) · [TASMAS (Craig→attributed transcript+summary)](https://github.com/KaddaOK/TASMAS) · [WhisperX (word timestamps + diarization)](https://github.com/m-bain/whisperX) · [faster-whisper backend](https://modal.com/blog/choosing-whisper-variants). Local Whisper = free compute; OpenAI Whisper API ≈ $0.006/min (~$1.40 for a 4h session); managed (Deepgram/AssemblyAI) bundle diarization but it's unneeded with per-track audio.
 
-**Open decisions (mine to make):**
-1. **Transcript handling (token crux).** A 3–4h session ≈ 40–80k tokens. Options: raw single-pass (fine on the 1M-context model up to a point) · map-reduce by scene/time (robust for huge logs, mirrors the workflow pattern) · pre-condensed in the pipeline (TASMAS already summarizes; cheapest, lossy). Likely: accept raw, chunk internally past ~100k tokens.
-2. **Input model.** Transcript-only vs. transcript **OR** GM bullet notes **OR** both (notes = spine, transcript = enrich/verify). Lean: both — the transcript is the richest input, never the *required* one (many sessions won't be recorded).
-3. **Speaker → `jogador` mapping.** Craig gives Discord usernames; map once to PCs + GM, stored in the campaign bible/config. Ties to **A2** (party-forge supplies the roster).
-4. **Retention + consent.** Recording requires consent. Keep the raw transcript in the vault (gitignored, like `local/`?) or only the distilled recap + an audio link.
+**Still open (now a follow-up, not a blocker):**
+1. **Transcript handling (token crux).** A 3–4h session ≈ 40–80k tokens. A1 currently reads it whole (fine on the 1M-context model up to a point); map-reduce by scene/time is the fallback if a session runs long enough to need it.
+2. **Input model.** Decided: both — GM notes are the spine, the transcript enriches/verifies specific beats. Neither is required alone.
+3. **Speaker → `jogador` mapping.** Still undecided. Craig gives Discord usernames; map once to PCs + GM, stored in the campaign bible/config. Ties to **A2** (party-forge supplies the roster).
+4. **Retention + consent.** Still undecided. Recording requires consent. Keep the raw transcript in the vault (gitignored, like `local/`?) or only the distilled recap + an audio link.
 
 ### A2. `rpg-party-forge` / session-zero — the players' side ✅ SHIPPED (gamemaster 0.3.0)
 - **Shipped:** `rpg-party-forge` in `rpg-gamemaster` — runs a session zero, builds each PC (belief + active wound, want/need, contradiction, table voice) **anchored to the world** by a hook, with a GM-secret convergence layer, and persists `jogador` via `rpg-preserve`. The `jogador` schema gained a `region` relation (guardian 1.2.0). Party **level/size** are captured in a loose `party-<slug>.md` overview the encounter/embate builders now read instead of re-asking. See the `rpg-gamemaster` README. *(Built; chose gamemaster home, no new party entity — composition lives in the loose overview. The player-handout is offered, secrets stripped.)*
