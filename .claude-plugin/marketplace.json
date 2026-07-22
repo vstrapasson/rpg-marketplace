@@ -34,6 +34,13 @@
       "version": "0.6.0",
       "source": "./plugins/rpg-foundry-forge",
       "category": "productivity"
+    },
+    {
+      "name": "rpg-writers-room",
+      "description": "A panel of five expert critics for a campaign you have already built and partly played — the Alexandrian architect, the Lazy GM, the showrunner, the player advocate, and the dramaturg. Reads the Obsidian vault and the session transcripts and judges two different things with two different rubrics: the quality of the writing, and the quality of the conducting at the table. Every claim is anchored to a verbatim quote with a vault path or a transcript timecode, and every citation is verified against the evidence packet before it ships. Returns a self-contained HTML report — consensus, disagreements kept as trade-offs, and prioritized constructive fixes. Critique only; it generates no content, edits no notes, and gives no score.",
+      "version": "0.2.0",
+      "source": "./plugins/rpg-writers-room",
+      "category": "creativity"
     }
   ]
 }

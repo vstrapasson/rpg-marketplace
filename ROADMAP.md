@@ -95,6 +95,14 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 
 ### D2. Foundry → vault sync-back 🔬 — (see C, pairs with A1)
 
+### D3. `rpg-writers-room` — the critique layer ✅ SHIPPED (new plugin, 0.2.0)
+- **Shipped:** a fifth plugin, `rpg-writers-room`, that judges **quality** where `rpg-campaign-reviewer` judges *coherence* and `rpg-audit` judges *integrity*. One interactive orchestrator skill (`rpg-critique`) + two subagents (`rpg-lore-librarian`, `rpg-critic`) + five persona rubric files. Vault in, HTML report out — it authors nothing, edits nothing, and never touches Foundry/MCP.
+- **The load-bearing idea:** a campaign is **two objects with two rubrics and two data sources** — the *artifacts* (writing quality, from vault notes) and the *conducting* (running quality, judgeable **only** from `sessoes/transcricoes/`). Prep quality is not conducting quality; with no transcripts in scope, conducting is reported as *not judged* rather than inferred from the prep.
+- **The panel:** the kit's own design authorities as lenses — O Arquiteto (Alexandrian: node connectivity, Three Clue Rule, situations-not-plots), O Lazy GM (Sly Flourish: prep-to-play ratio, table usability), O Showrunner (Colville: faction orthogonality, arguable villains, wants + contradictions), O Jogador (agency, spotlight, pacing, memorability — the seat GM-side critics forget), O Dramaturgo (pillars recurring, escalation, tone held, setup paid). One parameterized `rpg-critic` + rubric files, so a sixth lens is a new file, not a new agent. Each rubric names **negative criteria** (explicit failure tells) — rubrics with only positive criteria get rubber-stamped.
+- **Honesty machinery (the part that took the research):** the PoLL literature says a diverse panel beats a single judge, but the correlated-errors result ("Nine Judges, Two Effective Votes") says nine judges carry ~2 independent votes — so **agreement raises salience, never confidence**. Encoded as a four-tier confidence ladder (corroborated > convergent > single-lens > struck), a **citation-verification pass** (`grep -F` each quote against the packet; unverifiable findings are struck, never repaired), **"insufficient evidence"** as a first-class rating, **mixed models across seats** by default, and a mandatory methodology footer. No scores, grades, or percentages anywhere — ever.
+- **Persists / feeds:** nothing by default. Report + evidence packet are loose files in `_criticas/` (the guardian's walker ignores unknown top-level folders, so no schema noise); an optional summary `lore` note goes through `rpg-preserve` only if the GM asks. Pairs with A1 — run `rpg-session-recap` first so the vault reflects the sessions being judged.
+- *(Built; chose skill-owns-all-fan-out over nested agents, packet-to-disk over context-passing ×5, read-only librarian with the orchestrator doing the write, and `_criticas/` over a vault entity type.)*
+
 ---
 
 ## Dependencies worth tracking
