@@ -95,7 +95,7 @@ Discord voice ──Craig (multi-track, per-speaker FLAC, free, 6h)──▶ per
 
 ### D2. Foundry → vault sync-back 🔬 — (see C, pairs with A1)
 
-### D3. `rpg-writers-room` — the critique layer ✅ SHIPPED (new plugin, 0.1.0)
+### D3. `rpg-writers-room` — the critique layer ✅ SHIPPED (new plugin, 0.2.0)
 - **Shipped:** a fifth plugin, `rpg-writers-room`, that judges **quality** where `rpg-campaign-reviewer` judges *coherence* and `rpg-audit` judges *integrity*. One interactive orchestrator skill (`rpg-critique`) + two subagents (`rpg-lore-librarian`, `rpg-critic`) + five persona rubric files. Vault in, HTML report out — it authors nothing, edits nothing, and never touches Foundry/MCP.
 - **The load-bearing idea:** a campaign is **two objects with two rubrics and two data sources** — the *artifacts* (writing quality, from vault notes) and the *conducting* (running quality, judgeable **only** from `sessoes/transcricoes/`). Prep quality is not conducting quality; with no transcripts in scope, conducting is reported as *not judged* rather than inferred from the prep.
 - **The panel:** the kit's own design authorities as lenses — O Arquiteto (Alexandrian: node connectivity, Three Clue Rule, situations-not-plots), O Lazy GM (Sly Flourish: prep-to-play ratio, table usability), O Showrunner (Colville: faction orthogonality, arguable villains, wants + contradictions), O Jogador (agency, spotlight, pacing, memorability — the seat GM-side critics forget), O Dramaturgo (pillars recurring, escalation, tone held, setup paid). One parameterized `rpg-critic` + rubric files, so a sixth lens is a new file, not a new agent. Each rubric names **negative criteria** (explicit failure tells) — rubrics with only positive criteria get rubber-stamped.
