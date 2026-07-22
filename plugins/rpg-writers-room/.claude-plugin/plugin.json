@@ -1,0 +1,8 @@
+{
+  "name": "rpg-writers-room",
+  "description": "A panel of expert critics for a campaign you have already built. Reads the Obsidian vault (lore, NPCs, factions, cities, locations, the campaign bible) and the session transcripts, then convenes five rubric-grounded lenses — the Alexandrian architect, the Lazy GM, the showrunner, the player advocate, and the dramaturg — to judge two different things with two different rubrics: the quality of the writing, and the quality of the conducting at the table. Every claim is anchored to a verbatim quote with a vault path or a transcript timecode; anything unsupported is rated as insufficient evidence rather than guessed. The orchestrator synthesizes consensus, surfaces disagreement as trade-offs instead of resolving it silently, and renders a self-contained HTML report with prioritized, constructive fixes. Critique only — it never generates campaign content, never edits the vault, and never claims to be an objective score.",
+  "version": "0.1.0",
+  "author": { "name": "Vagner Strapasson", "email": "vagnerstrapasson@gmail.com" },
+  "license": "MIT",
+  "keywords": ["rpg", "ttrpg", "pathfinder", "pf2e", "gm-tools", "critique", "review", "feedback", "session-transcripts", "writing-craft", "llm-judge", "panel-of-judges"]
+}
